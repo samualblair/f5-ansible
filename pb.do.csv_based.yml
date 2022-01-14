@@ -1,0 +1,102 @@
+---
+- name: Initial BIG-IP DO Playbook
+  hosts: bigip
+  connection: local
+  gather_facts: false
+
+  vars_prompt:
+    - name: "ansible_user"
+      prompt: "What is your username? "
+      private: no
+ 
+    - name: "ansible_password"
+      prompt: "What is your password? "
+      private: yes
+
+  vars:
+    csvfile: "{{ lookup('file', './variables/device_variables.csv') }}"
+
+  tasks:
+
+    - name: Parse CSV To YAML
+      template:
+        src: "./templates/variable_template.j2"
+        dest: "./output/config_variables.yml"
+      run_once: true
+      tags:
+        - test_files
+        - test_files_and_cleanup
+
+    - include_vars: "./output/config_variables.yml"
+      tags:
+        - test_files
+        - test_files_and_cleanup
+
+    - name: Test Get
+      uri:
+        url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding/info"
+        method: GET
+        status_code: 202
+        timeout: 300
+        force_basic_auth: true
+        user: "{{ ansible_user }}"
+        password: "{{ ansible_password }}"
+        validate_certs: false
+      delegate_to: localhost
+      when: "'bigip' in group_names"
+
+    - name: BIG-IP Only create do payload json based on Jinja2 Template and YAML from CSV
+      template:
+        src: "./templates/do_json_template.j2"
+        dest: "./output/do.{{ item.unit.hostname }}.json"
+      delegate_to: localhost
+      with_items: "{{ devices }}"
+      when: "'bigip' in item.unit.role"
+      tags:
+        - test_files
+        - test_files_and_cleanup
+       
+    - name: BIG-IP Only PUSH DO From Template
+      uri:
+        url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding"
+        method: POST
+        body: "{{ lookup('file','./output/do.{{ inventory_hostname }}.json') }}"
+        status_code: 202
+        timeout: 300
+        body_format: json
+        force_basic_auth: true
+        user: "{{ ansible_user }}"
+        password: "{{ ansible_password }}"
+        validate_certs: false
+      delegate_to: localhost
+      when: "'bigip' in group_names"
+
+#    - name: BIG-IP Only PUSH DO Static File
+#      uri:
+#        url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding"
+#        method: POST
+#        body: "{{ lookup('file','do.json') }}"
+#        status_code: 200
+#        timeout: 300
+#        body_format: json
+#        force_basic_auth: true
+#        user: "{{ ansible_user }}"
+#        password: "{{ ansible_password }}"
+#        validate_certs: false
+#      delegate_to: localhost
+#      when: "'bigip' in group_names"
+#
+    - name: CLEANUP Remove DO JSON File(s) do.[hostname].json on playbook completion
+      file:
+        path: ./output/do.{{ item.unit.hostname }}.json
+        state: absent
+      with_items: "{{ devices }}"
+      tags:
+        - test_files_and_cleanup
+
+    - name: CLEANUP Remove Inventory YML File config_variables.yml on playbook completion
+      file:
+        path: ./output/config_variables.yml
+        state: absent
+      tags:
+        - test_files_and_cleanup

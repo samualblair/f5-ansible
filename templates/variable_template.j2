@@ -1,0 +1,36 @@
+---
+devices:
+{% for item in csvfile.split("\n") %}
+{%   if loop.index != 1 %}
+{%     set list = item.split(",") %}
+
+  - unit: 
+      hostname: '{{ list[0]|trim()|lower }}'
+      role: '{{ list[1]|trim() }}'
+      irule1: '{{ list[2]|trim() }}'
+      part1: '{{ list[3]|trim() }}'
+
+{%   endif %}
+{% endfor %}
+
+
+## CSV Header Listings #Coulmn# Name
+#0# hostname,
+#1# devicetype,
+#2# irule1,
+#3# partition1,
+#4# mgmt_ip,
+#5# upstream_portchannel,
+#6# upstream_uplink_int1,
+#7# upstream_uplink_int2,
+#
+#
+#8# vlan_data_number,
+#9# vlan_data_name,
+#10# vlan_voice_number,
+#11# vlan_voice_name,
+#12# vlan_wlc_number,
+#13# vlan_wlc_name,
+#14# vlan_mgmt_number,
+#15# vlan_mgmt_name
+#

@@ -1,0 +1,29 @@
+---
+# Playbook gathers show command output once devices are live and reachable
+# Playbook starts by asking the username/password of user
+# - List of devices are obtained from inventory files
+
+- name: Pull Information, display
+  hosts: all
+#  connection: network_cli
+  gather_facts: yes
+#  gather_facts: no
+
+  vars_prompt:
+    - name: "ansible_user"
+      prompt: "What is your username? "
+      private: no
+ 
+    - name: "ansible_password"
+      prompt: "What is your password? "
+      private: yes
+
+  tasks:
+
+    - name: "DISPLAY ONLY HOST"
+      debug:
+        var: ansible_host
+
+    - name: "DISPLAY ALL"
+      debug:
+        var: ansible_facts

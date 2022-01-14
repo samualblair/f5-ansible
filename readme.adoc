@@ -1,0 +1,94 @@
+= Live Network Playbooks
+
+. <<Description>>
+. <<Directions on use>>
+. <<Enviornment Requirements>>
+. <<Key Operations>>
+. <<Future TO-DO goals>>
+
+== Description
+
+This is part of a basic Collection of Playbooks, specifically for generating and pushing F5 Declaritive Onboarding and F5 AS3 REST API based configurations.
+EXAMPLE hosts file included, as well as example device variables (in CSV format).
+
+== Directions on use
+
+To Use this the following are expected:
+
+. Create 'group_vars' and 'host_vars' accordingly for devices if needed, these are YAML formmated
+
+. Update 'hosts.yml' accordingly for devices, this is YAML formmated
+
+. Update CSV variables file with detailed variables needed, if coulmns changed update variable_template.j2 for proper parsing
+
+. Update other various templates to change configuration behavior, mainly updates to DO (do_json_template.j2) and AS3 (as3_json_template.j2) files
+
+. To perform operations on live network devices, management and run the ansible playbook (or playbooks) you wish with the **ansible-playbook** command , optionally with specific tags specified to only run part of a given playbook.
+
+. You may (likely) need to change the python interperter in the ansible.cfg file, you can try change from "interpreter_python = /usr/local/bin/python3" to maybe "interpreter_python = /usr/local/bin/python" or comment out to have system try and find the python installed.
+
+== Enviornment Requirements
+NOTE: This can be used to perform live operations on devices, or offline to just create configuration files
+
+Ansible Requirements:
+#Python
+##Ansible
+###url
+#Jinja2
+
+
+== Key Operations
+Key operations of the Ansible Playbooks:
+
+- pb.do.test.yml and pb.as3.test.yml
+  
+  Prompts for username / password (password is 'protected'/hidden from view)
+  Using a static JSON file, test REST service on live device, Push to devices
+  Files used are ./static_example/do.json and ./static_example/as3.json
+
+- pb.do.csv_based.yml and pb.as3.csv_based.yml
+
+  Prompts for username / password (password is 'protected'/hidden from view)
+  Will generate configuration files, test REST service on live device, Push to devices, cleaning up all temp files once done (all generated files including completed JSON files)
+  Can be used with tags to use offline (without device access)
+
+- tag test_files
+  
+  Performs process to generate complete JSON files (DO or AS3) and leaves generated (and temp) files. Useful for running without live devices as no REST calls are made (URI module not used)
+
+- tag test_files_and_cleanup
+  
+  Performs process to generate complete JSON files (DO or AS3) but then removes all files generated
+  Useful for running without live devices as test, or to cleaup after other testing.
+
+
+
+
+Detailed operations of these Ansible Playbooks:
+
+pb.do.test.yml and pb.as3.test.yml
+
+- Start by prompting for user/password
+- Tests REST API GET using URL module
+- Pushes config with REST API POST using URL module and static JSON file
+
+
+pb.do.csv_based.yml and pb.as3.csv_based.yml
+
+- Start by prompting for user/password
+- Pulls in CSV variables
+- Uses Jinja2 template to parse CSV out to a YAML vars file
+- Takes in YAML vars file
+- Uses Jinja2 template with vars to generate JSON output file
+- Tests REST API GET using URL module
+- Pushes config with REST API POST using URL module and generated JSON file
+- Cleans up by removing any generated files
+
+
+
+== Future TO-DO goals
+- Build templates for BIG-IQ , currently templates are just BIG-IP
+- consider producing a better example an inventory file
+- expand documentation
+- Test additional playbooks with data taken in from JSON or YAML directly rather than CSV, although CSV form is primary goal of the project at this time
+- Build out modular playbooks and templates (playbooks and templates that build configuraiton based on other playbooks/templates)

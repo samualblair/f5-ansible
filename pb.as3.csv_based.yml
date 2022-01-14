@@ -1,0 +1,101 @@
+---
+- name: Initial BIG-IP AS3 Playbook
+  hosts: bigip
+  connection: local
+  gather_facts: false
+
+  vars_prompt:
+    - name: "ansible_user"
+      prompt: "What is your username? "
+      private: no
+ 
+    - name: "ansible_password"
+      prompt: "What is your password? "
+      private: yes
+
+  vars:
+    csvfile: "{{ lookup('file', './variables/device_variables.csv') }}"
+
+  tasks:
+
+    - name: Parse CSV To YAML
+      template:
+        src: "./templates/variable_template.j2"
+        dest: "./output/config_variables.yml"
+      run_once: true
+      tags:
+        - test_files
+        - test_files_and_cleanup
+
+    - include_vars: "./output/config_variables.yml"
+      tags:
+        - test_files
+        - test_files_and_cleanup
+
+    - name: Test Get AS3
+      uri:
+        url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/info"
+        method: GET
+        status_code: 200
+        timeout: 300
+        force_basic_auth: true
+        user: "{{ ansible_user }}"
+        password: "{{ ansible_password }}"
+        validate_certs: false
+      delegate_to: localhost
+
+    - name: BIG-IP Only create AS3 payload json based on Jinja2 Template and YAML from CSV
+      template:
+        src: "./templates/as3_json_template.j2"
+        dest: "./output/as3.{{ item.unit.hostname }}.json"
+      delegate_to: localhost
+      with_items: "{{ devices }}"
+      when: "'bigip' in item.unit.role"
+      tags:
+        - test_files
+        - test_files_and_cleanup
+       
+    - name: BIG-IP Only PUSH AS3 From Template
+      uri:
+        url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/declare"
+        method: POST
+        body: "{{ lookup('file','./output/as3.{{ inventory_hostname }}.json') }}"
+        status_code: 200
+        timeout: 300
+        body_format: json
+        force_basic_auth: true
+        user: "{{ ansible_user }}"
+        password: "{{ ansible_password }}"
+        validate_certs: false
+      delegate_to: localhost
+      when: "'bigip' in group_names"
+
+#    - name: PUSH AS3 Static File
+#      uri:
+#        url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/declare"
+#        method: POST
+#        body: "{{ lookup('file','as3.json') }}"
+#        status_code: 200
+#        timeout: 300
+#        body_format: json
+#        force_basic_auth: true
+#        user: "{{ ansible_user }}"
+#        password: "{{ ansible_password }}"
+#        validate_certs: false
+#      delegate_to: localhost
+#      when: "'bigip' in group_names"
+#
+    - name: CLEANUP Remove AS3 JSON File(s) as3.[hostname].json on playbook completion
+      file:
+        path: ./output/as3.{{ item.unit.hostname }}.json
+        state: absent
+      with_items: "{{ devices }}"
+      tags:
+        - test_files_and_cleanup
+
+    - name: CLEANUP Remove Inventory YML File config_variables.yml on playbook completion
+      file:
+        path: ./output/config_variables.yml
+        state: absent
+      tags:
+        - test_files_and_cleanup
