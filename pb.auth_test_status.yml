@@ -34,6 +34,10 @@
         validate_certs: false
       delegate_to: localhost
       register: f5_login_token_post
+      
+    - name: display f5_login_token_post
+      debug:
+        msg: "{{ f5_login_token_post.json.token }}"
 
     - name: Test Service Get
       uri:
@@ -48,18 +52,15 @@
         validate_certs: false
       delegate_to: localhost
 
-    - name: BIG-IP Only PUSH DO Static File
+    - name: Current Status Get
       uri:
-        url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding"
-        method: POST
+        url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding/"
+        method: GET
         headers:
           X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
-#        body: "{{ lookup('file','./static_example/do_large_example.json') }}"
-        body: "{{ lookup('file','./static_example/do.json') }}"
         status_code: 
           - 200
           - 202
         timeout: 300
-        body_format: json
         validate_certs: false
       delegate_to: localhost

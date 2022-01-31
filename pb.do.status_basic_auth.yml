@@ -1,5 +1,5 @@
 ---
-- name: WIPE DO
+- name: TEST DO
   hosts: bigip
   connection: local
   gather_facts: false
@@ -13,37 +13,36 @@
       prompt: "What is your password? "
       private: yes
 
-  vars:
-    - name: Create Auth JSON
-      f5_login_json: "{{ lookup('template', './templates/f5_web_auth.j2') }}"
-
   tasks:
 
-    - name: Login and Obtain Token
+    - name: Test Service Get
       uri:
-        url: "https://{{ ansible_host }}:443/mgmt/shared/authn/login"
-        method: POST
-        body: "{{ f5_login_json }}"
-        body_format: json
+        url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding/info"
+        method: GET
         status_code: 
           - 200
+          - 202
         timeout: 300
         force_basic_auth: true
         user: "{{ ansible_user }}"
         password: "{{ ansible_password }}"
         validate_certs: false
       delegate_to: localhost
-      register: f5_login_token_post
-
-    - name: Get Current DO Configuration
+      tags:
+        - service
+      
+    - name: Check Status Get
       uri:
-        url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding/config"
+        url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding"
         method: GET
-        headers:
-          X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
         status_code: 
           - 200
           - 202
         timeout: 300
+        force_basic_auth: true
+        user: "{{ ansible_user }}"
+        password: "{{ ansible_password }}"
         validate_certs: false
       delegate_to: localhost
+      tags:
+        - status
