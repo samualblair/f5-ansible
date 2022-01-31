@@ -1,0 +1,262 @@
+{
+    "$schema": "https://raw.githubusercontent.com/F5Networks/f5-declarative-onboarding/master/src/schema/latest/base.schema.json",
+    "schemaVersion": "1.27.0",
+    "class": "Device",
+    "async": true,
+    "Common": {
+        "class": "Tenant",
+        "Provision-vAUT0101DL01": {
+            "class": "Provision",
+            "avr": "nominal",
+            "ltm": "nominal"
+        },
+        "myAuth": {
+            "class": "Authentication",
+            "enabledSourceType": "radius",
+            "fallback": true,
+            "remoteUsersDefaults": {
+                "partitionAccess": "all",
+                "terminalAccess": "tmsh",
+                "role": "no-access"
+            },
+            "radius": {
+                "serviceType": "default",
+                "servers": {
+                    "primary": {
+                        "server": "172.16.0.80",
+                        "port": 1812,
+                        "secret": "myAuth_radius_servers_primary_secret"
+                    },
+                    "secondary": {
+                        "server": "172.16.0.81",
+                        "secret": "myAuth_radius_servers_secondary_secret",
+                        "port": 1812
+                    }
+                }
+            }
+        },
+        "adm": {
+            "class": "RemoteAuthRole",
+            "attribute": "F5-LTM-User-Info-1=theadmin",
+            "console": "tmsh",
+            "lineOrder": 1,
+            "role": "admin",
+            "remoteAccess": true,
+            "userPartition": "all"
+        },
+        "System": {
+            "class": "System",
+            "hostname": "examplehost.exampledomain.local"
+        },
+        "ManagementIp_IPv4": {
+            "class": "ManagementIp",
+            "address": "172.16.0.113/24"
+        },
+        "default": {
+            "class": "ManagementRoute",
+            "gw": "172.16.0.201",
+            "network": "default"
+        },
+        "Route_DISCOVERY_LOGGING_80_DEFAULT": {
+            "class": "Route",
+            "gw": "10.1.0.80",
+            "network": "default"
+        },
+        "SelfIP_DISCOVERY_LOGGING_80": {
+            "vlan": "DISCOVERY_LOGGING_80",
+            "class": "SelfIp",
+            "address": "10.1.0.52/24"
+        },
+        "DISCOVERY_LOGGING_80": {
+            "class": "VLAN",
+            "tag": 80,
+            "interfaces": [
+                {
+                    "name": "1.1",
+                    "tagged": false
+                }
+            ]
+        },
+        "traffic-group-1": {
+            "class": "TrafficGroup"
+        },
+        "traffic-group-local-only": {
+            "class": "TrafficGroup"
+        },
+        "SelfIp_HA_CLUSTER_50": {
+            "class": "SelfIp",
+            "address": "192.168.0.1/24",
+            "vlan": "Vlan_HA_CLUSTER_50",
+            "trafficGroup": "traffic-group-local-only",
+            "allowService": "default"
+        },
+        "Vlan_HA_CLUSTER_50": {
+            "class": "VLAN",
+            "tag": 50,
+            "interfaces": [
+                {
+                    "name": "1.2",
+                    "tagged": false
+                }
+            ]
+        },
+        "http-tunnel": {
+            "class": "Tunnel",
+            "remark": "Tunnel for http-explicit profile",
+            "tunnelType": "tcp-forward"
+        },
+        "socks-tunnel": {
+            "class": "Tunnel",
+            "remark": "Tunnel for socks profile",
+            "tunnelType": "tcp-forward"
+        },
+        "DNS": {
+            "class": "DNS",
+            "nameServers": [
+                "1.1.1.1",
+                "8.8.8.8",
+                "9.9.9.9"
+            ],
+            "search": [
+                "regence.com"
+            ]
+        },
+        "HTTPD": {
+            "class": "HTTPD",
+            "allow": [
+                "10.0.0.0/8",
+                "172.16.0.0/12",
+                "192.168.0.0/16"
+            ],
+            "sslProtocol": "all -SSLv2 -SSLv3 -TLSv1 -TLSv1.1",
+            "sslCiphersuite": [
+                "TLS13-AES128-GCM-SHA256",
+                "TLS13-AES256-GCM-SHA384",
+                "TLS13-CHACHA20-POLY1305-SHA256",
+                "ECDHE-RSA-AES128-GCM-SHA256",
+                "ECDHE-RSA-AES256-GCM-SHA384",
+                "ECDHE-ECDSA-AES128-GCM-SHA256",
+                "ECDHE-ECDSA-AES256-GCM-SHA384"
+            ]
+        },
+        "SSHD": {
+            "class": "SSHD",
+            "inactivityTimeout": 14400,
+            "ciphers": [
+                "chacha20-poly1305@openssh.com",
+                "aes128-gcm@openssh.com",
+                "aes256-gcm@openssh.com",
+                "aes128-ctr",
+                "aes192-ctr",
+                "aes256-ctr"
+            ],
+            "MACS": [
+                "hmac-sha2-512-etm@openssh.com",
+                "hmac-sha2-256-etm@openssh.com",
+                "umac-128-etm@openssh.com",
+                "hmac-sha2-512"
+            ],
+            "protocol": 2,
+            "allow": [
+                "10.0.0.0/8",
+                "172.16.0.0/12",
+                "192.168.0.0/16"
+            ]
+        },
+        "NTP": {
+            "class": "NTP",
+            "servers": [
+                "10.1.20.1",
+                "10.2.20.1"
+            ],
+            "timezone": "US/Mountain"
+        },
+        "SnmpAgent": {
+            "class": "SnmpAgent",
+            "contact": "example@exampledomain.local",
+            "location": "Example Location",
+            "allowList": [
+                "127.0.0.0/8",
+                "10.0.0.0/8"
+            ]
+        },
+        "COME-BACK_TO_SNMPV3_SETTINGS": {
+            "class": "SnmpTrapDestination",
+            "version": "3",
+            "destination": "10.2.0.2",
+            "port": 161,
+            "network": "management",
+            "engineId": "snmpEngineID_v3_HERE",
+            "securityName": "snmp_v3_username_1",
+            "authentication": {
+                "protocol": "sha",
+                "password": "example"
+            },
+            "privacy": {
+                "protocol": "aes",
+                "password": "example"
+            }
+        },
+        "SnmpTrapEvents": {
+            "class": "SnmpTrapEvents",
+            "agentStartStop": true,
+            "authentication": true,
+            "device": true
+        },
+        "snmpUser_1": {
+            "class": "SnmpUser",
+            "name": "snmp_v3_username_1",
+            "authentication": {
+                "protocol": "sha",
+                "password": "example321"
+            },
+            "privacy": {
+                "protocol": "aes",
+                "password": "example"
+            }
+        },
+        "EXAMPLE_SVC": {
+            "class": "User",
+            "shell": "none",
+            "userType": "regular",
+            "partitionAccess": {
+                "all-partitions": {
+                    "role": "application-editor"
+                }
+            }
+        },
+        "EXAMPLE2": {
+            "class": "User",
+            "shell": "tmsh",
+            "userType": "regular",
+            "partitionAccess": {
+                "all-partitions": {
+                    "role": "admin"
+                }
+            }
+        },
+        "EXAMPLE3": {
+            "class": "User",
+            "userType": "regular",
+            "shell": "bash",
+            "partitionAccess": {
+                "all-partitions": {
+                    "role": "admin"
+                }
+            }
+        },
+        "Analytics": {
+            "class": "Analytics",
+            "interval": 30,
+            "offboxProtocol": "https",
+            "offboxTcpAddresses": [
+                "10.1.2.1",
+                "10.1.3.1",
+                "10.1.4.1"
+                ],
+            "offboxTcpPort": 443,
+            "offboxEnabled": true,
+            "sourceId": "examplehost.exampledomain.local"
+        }
+    }
+}

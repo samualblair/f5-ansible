@@ -56,7 +56,7 @@
         - test_files
         - test_files_and_cleanup
        
-    - name: BIG-IP Only PUSH DO From Template
+    - name: BIG-IP Only PUSH DO From Template Generated File
       uri:
         url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding"
         method: POST
@@ -71,21 +71,6 @@
       delegate_to: localhost
       when: "'bigip' in group_names"
 
-#    - name: BIG-IP Only PUSH DO Static File
-#      uri:
-#        url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding"
-#        method: POST
-#        body: "{{ lookup('file','do.json') }}"
-#        status_code: 200
-#        timeout: 300
-#        body_format: json
-#        force_basic_auth: true
-#        user: "{{ ansible_user }}"
-#        password: "{{ ansible_password }}"
-#        validate_certs: false
-#      delegate_to: localhost
-#      when: "'bigip' in group_names"
-#
     - name: CLEANUP Remove DO JSON File(s) do.[hostname].json on playbook completion
       file:
         path: ./output/do.{{ item.unit.hostname }}.json

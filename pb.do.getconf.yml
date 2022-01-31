@@ -1,0 +1,30 @@
+---
+- name: WIPE DO
+  hosts: bigip
+  connection: local
+  gather_facts: false
+
+  vars_prompt:
+    - name: "ansible_user"
+      prompt: "What is your username? "
+      private: no
+ 
+    - name: "ansible_password"
+      prompt: "What is your password? "
+      private: yes
+
+  tasks:
+
+    - name: Get Current DO Configuration
+      uri:
+        url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding/config"
+        method: GET
+        status_code: 
+          - 200
+          - 202
+        timeout: 300
+        force_basic_auth: true
+        user: "{{ ansible_user }}"
+        password: "{{ ansible_password }}"
+        validate_certs: false
+      delegate_to: localhost

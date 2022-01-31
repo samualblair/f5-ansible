@@ -1,43 +1,31 @@
 ---
 - name: TEST DO
-  hosts: bigip
+  hosts: bigiq_cm
   connection: local
   gather_facts: false
 
-  vars_prompt:
-    - name: "ansible_user"
-      prompt: "What is your username? "
-      private: no
- 
-    - name: "ansible_password"
-      prompt: "What is your password? "
-      private: yes
-
   tasks:
 
-    - name: Test Service Get
+    - name: Test Get
       uri:
         url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding/info"
         method: GET
-        status_code: 
-          - 200
-          - 202
+        status_code: 202
         timeout: 300
         force_basic_auth: true
         user: "{{ ansible_user }}"
         password: "{{ ansible_password }}"
         validate_certs: false
       delegate_to: localhost
+      tags:
+        - test-do
 
-    - name: BIG-IP Only PUSH DO Static File
+    - name: PUSH DO
       uri:
         url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding"
         method: POST
-        body: "{{ lookup('file','./static_example/do_large_example.json') }}"
-#        body: "{{ lookup('file','./static_example/do.json') }}"
-        status_code: 
-          - 200
-          - 202
+        body: "{{ lookup('file','./static_example/do.json') }}"
+        status_code: 202
         timeout: 300
         body_format: json
         force_basic_auth: true
@@ -45,3 +33,5 @@
         password: "{{ ansible_password }}"
         validate_certs: false
       delegate_to: localhost
+      tags:
+        - new-config

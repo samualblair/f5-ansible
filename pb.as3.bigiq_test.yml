@@ -20,7 +20,9 @@
 #        url: "https://172.26.63.112:443/mgmt/shared/appsvcs/info"
         url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/info"
         method: GET
-        status_code: 200
+        status_code: 
+          - 200
+          - 202
         timeout: 300
 ## Note after BIG-IQ 5.1.0, BASIC AUTH is disabled by default and will just give a 401 error unless turned on
         force_basic_auth: true
@@ -38,7 +40,9 @@
 #        url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/declare?async=true"
         method: POST
         body: "{{ lookup('file','./static_example/as3_bigiq.json') }}"
-        status_code: 200
+        status_code: 
+          - 200
+          - 202
 # IF ASYNC status code is 202
 #        status_code: 202
         timeout: 300
@@ -58,7 +62,9 @@
 #        url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/declare?async=true"
         method: POST
         body: "{{ lookup('file','./static_example/as3_bigiq_erase.json') }}"
-        status_code: 200
+        status_code: 
+          - 200
+          - 202
 # IF ASYNC status code is 202
 #        status_code: 202
         timeout: 300

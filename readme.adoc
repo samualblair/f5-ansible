@@ -31,10 +31,10 @@ To Use this the following are expected:
 NOTE: This can be used to perform live operations on devices, or offline to just create configuration files
 
 Ansible Requirements:
-#Python
-##Ansible
-###url
-#Jinja2
+Python
+ Ansible
+  url
+ Jinja2
 
 
 == Key Operations
@@ -52,11 +52,33 @@ Key operations of the Ansible Playbooks:
   Will generate configuration files, test REST service on live device, Push to devices, cleaning up all temp files once done (all generated files including completed JSON files)
   Can be used with tags to use offline (without device access)
 
-- tag test_files
+- pb.do.getconf.yml
+
+  Get Current DO Configuration
+  Generally this should be current device configuration, but if device has not had a DO pushed before it will be empty.
+  This can also be used to obtain ID of DO configuration.
+  Can be safely used multiple times.
+
+- pb.do.wipeconf.yml (USE WITH CAUTION)
+
+  Wipes a DO configuration, does not delete configuration, just DO status, but can have long-term effects on future DO pushes.
+  This effectivly will reset any DO, as if you have never configured device with DO before. This can be helpful to deal with configuration conflicts such as removing a vlan that previously existed (prior to first DO push). This will require entering the Configuration ID (will be prompted) as this is used in the DELETE message of the DO REST API.
+  You can obtain the Configuration ID from the pb.do.getconf.yml
+
+- pb.do.status.yml
+
+  Allows for checking status of DO, specifically last DO push.
+  Very important/useful when doing ASYNC DO pushes, which is the only official/supported way to perform DO pushes.
+  Can be safely used multiple times.
+
+
+Key Tags
+
+- tag test_files (available in csv_based playbooks)
   
   Performs process to generate complete JSON files (DO or AS3) and leaves generated (and temp) files. Useful for running without live devices as no REST calls are made (URI module not used)
 
-- tag test_files_and_cleanup
+- tag test_files_and_cleanup (available in csv_based playbooks)
   
   Performs process to generate complete JSON files (DO or AS3) but then removes all files generated
   Useful for running without live devices as test, or to cleaup after other testing.
@@ -87,7 +109,7 @@ pb.do.csv_based.yml and pb.as3.csv_based.yml
 
 
 == Future TO-DO goals
-- Build templates for BIG-IQ , currently templates are just BIG-IP
+- Build out more templates for BIG-IQ
 - consider producing a better example an inventory file
 - expand documentation
 - Test additional playbooks with data taken in from JSON or YAML directly rather than CSV, although CSV form is primary goal of the project at this time

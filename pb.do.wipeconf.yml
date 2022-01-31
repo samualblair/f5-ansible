@@ -1,0 +1,36 @@
+---
+- name: WIPE DO
+  hosts: bigip
+  connection: local
+  gather_facts: false
+
+  vars_prompt:
+    - name: "ansible_user"
+      prompt: "What is your username? "
+      private: no
+ 
+    - name: "ansible_password"
+      prompt: "What is your password? "
+      private: yes
+
+    - name: "CONFIG_ID"
+      prompt: "What is the CONFIG_ID you want to Wipe? "
+      private: no
+
+  tasks:
+
+    - name: Wipe Original Config ID
+      uri:
+# Must find original config id with get config which is then in URI below
+        url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding/config/{{ CONFIG_ID }}"
+        method: DELETE
+        status_code: 
+          - 200
+          - 202
+        timeout: 300
+        body_format: json
+        force_basic_auth: true
+        user: "{{ ansible_user }}"
+        password: "{{ ansible_password }}"
+        validate_certs: false
+      delegate_to: localhost
