@@ -1,6 +1,6 @@
 ---
-- name: TEST DO
-  hosts: bigip
+- name: Request full list of DO tasks from BIG-IQ And Provide user with IDs still processing
+  hosts: bigiq_cm
   connection: local
   gather_facts: false
 
@@ -49,10 +49,10 @@
       delegate_to: localhost
       tags:
         - service
-      
-    - name: Check Status Get
+
+    - name: Check Status on ID All
       uri:
-        url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding"
+        url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding/task/"
         method: GET
         headers:
           X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
@@ -62,14 +62,11 @@
         timeout: 300
         validate_certs: false
       delegate_to: localhost
-      register: f5_status
+      register: f5_id_all_status
       tags:
         - status
+      ignore_errors: yes
 
-    - name: "DISPLAY Result"
-      debug:
-        var: f5_status.json.result
-
-    - name: "DISPLAY Errors if Any"
-      debug:
-        var: f5_status.json.errors
+    - name: Loop to show IDs
+      include_tasks: ./templates/id_loop.yml
+      with_items: "{{ f5_id_all_status.json }}"

@@ -1,6 +1,6 @@
 ---
 - name: TEST DO
-  hosts: bigip
+  hosts: bigiq_cm
   connection: local
   gather_facts: false
 
@@ -62,14 +62,5 @@
         timeout: 300
         validate_certs: false
       delegate_to: localhost
-      register: f5_status
       tags:
         - status
-
-    - name: "DISPLAY Result"
-      debug:
-        var: f5_status.json.result
-
-    - name: "DISPLAY Errors if Any"
-      debug:
-        var: f5_status.json.errors

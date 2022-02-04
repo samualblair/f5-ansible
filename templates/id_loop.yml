@@ -1,0 +1,6 @@
+---
+- name: Parse IDs for Processing Tasks
+  debug:
+    msg: "ID {{ item.id }} is in state {{ item.httpStatus }}"
+#  when: not item.result.message is match("success")
+  when: item.result.message is match("processing")

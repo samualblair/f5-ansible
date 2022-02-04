@@ -1,5 +1,5 @@
 ---
-- name: TEST DO
+- name: Satic File based Full DO based on Hostname
   hosts: bigip
   connection: local
   gather_facts: false
@@ -47,29 +47,18 @@
         timeout: 300
         validate_certs: false
       delegate_to: localhost
-      tags:
-        - service
-      
-    - name: Check Status Get
+
+    - name: BIG-IP Only PUSH DO Static File
       uri:
         url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding"
-        method: GET
+        method: POST
         headers:
           X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
+        body: "{{ lookup('file','./static_output/do.bigiq.{{ inventory_hostname }}.json') }}"
         status_code: 
           - 200
           - 202
         timeout: 300
+        body_format: json
         validate_certs: false
       delegate_to: localhost
-      register: f5_status
-      tags:
-        - status
-
-    - name: "DISPLAY Result"
-      debug:
-        var: f5_status.json.result
-
-    - name: "DISPLAY Errors if Any"
-      debug:
-        var: f5_status.json.errors

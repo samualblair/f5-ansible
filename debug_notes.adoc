@@ -1,0 +1,44 @@
+= Useful Debug Notes
+
+. <<Description>>
+. <<Quick Reference: Log Files to watch>>
+. <<DO Direct to BIG-IP>>
+. <<DO Through BIG-IQ to BIG-IP>>
+. <<Future>>
+
+== Description
+
+This is a reference of notes that can be used to debug failures or test new chagnes.
+Most of these references are regarding F5 DO or F5 AS3 not neccisarly the Ansible Playbooks.
+
+== Quick Reference: Log Files to watch
+
+. Direct REST Log File
+
+  - When pushing DO to BIG-IQ, the BIG-IQ uses REST calls to BIG-IP, monitor on the BIG-IP
+  - When Interacting with BIG-IQ or BIG-IP REST (Aka via ansible URL/URI) this can be seen, monitor on the device you are interacting with 
+  
+    tail -f /var/log/restjavad-audit.0.log
+  
+. DO or AS3 agent Log File
+
+  - When DO or AS3 is executing you can see logs here
+  - When pushing DO to BIG-IQ or through BIG-IQ to a BIG-IP monitor on the BIG-IQ
+  - When pushing DO to BIG-IP directly monitor on the BIG-IP
+  
+    tail -f /var/log/restnoded/restnoded.log
+  
+
+== DO General
+
+
+
+== DO Direct to BIG-IP
+
+
+
+== DO Through BIG-IQ to BIG-IP
+
+
+
+== Future

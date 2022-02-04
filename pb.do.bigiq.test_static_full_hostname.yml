@@ -1,6 +1,6 @@
 ---
-- name: TEST DO
-  hosts: bigip
+- name: Satic File based Full DO based on Hostname
+  hosts: bigiq_cm
   connection: local
   gather_facts: false
 
@@ -47,29 +47,58 @@
         timeout: 300
         validate_certs: false
       delegate_to: localhost
-      tags:
-        - service
-      
-    - name: Check Status Get
+      register: f5_status
+
+    - name: "DISPLAY Result"
+      debug:
+        var: f5_status
+
+    - name: BIG-IP Only PUSH DO Static File 1a
       uri:
         url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding"
-        method: GET
+        method: POST
         headers:
           X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
+        body: "{{ lookup('file','./static_output/do.bigiq.bigip1a.json') }}"
         status_code: 
           - 200
           - 202
         timeout: 300
+        body_format: json
         validate_certs: false
       delegate_to: localhost
-      register: f5_status
-      tags:
-        - status
-
-    - name: "DISPLAY Result"
-      debug:
-        var: f5_status.json.result
+      register: f5_status1a
+      ignore_errors: yes
 
     - name: "DISPLAY Errors if Any"
       debug:
-        var: f5_status.json.errors
+        var: f5_status1a.json.errors
+
+    - name: BIG-IP Only PUSH DO Static File 1b
+      uri:
+        url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding"
+        method: POST
+        headers:
+          X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
+        body: "{{ lookup('file','./static_output/do.bigiq.bigip1b.json') }}"
+        status_code: 
+          - 200
+          - 202
+        timeout: 300
+        body_format: json
+        validate_certs: false
+      delegate_to: localhost
+      register: f5_status1b
+      ignore_errors: yes
+
+    - name: "DISPLAY Errors if Any"
+      debug:
+        var: f5_status1b.json.errors
+
+    - name: "DISPLAY ID A"
+      debug:
+        var: f5_status1a.json.id
+
+    - name: "DISPLAY ID B"
+      debug:
+        var: f5_status1b.json.id
