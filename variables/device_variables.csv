@@ -1,7 +1,7 @@
-﻿hostname,devicetype,irule1,partition1,mgmt_ip,upstream_portchannel,upstream_uplink_int1,upstream_uplink_int2,vlan_data_number,vlan_data_name,vlan_voice_number,vlan_voice_name,vlan_wlc_number,vlan_wlc_name,vlan_mgmt_number,vlan_mgmt_name
+﻿hostname,devicetype,irule1,partition1,mgmt_ip,pushdo,upstream_uplink_int1,upstream_uplink_int2,vlan_data_number,vlan_data_name,vlan_voice_number,vlan_voice_name,vlan_wlc_number,vlan_wlc_name,vlan_mgmt_number,vlan_mgmt_name
 example-sw-1,nxos-sw,,,10.0.55.5,Po11,Te1/0/3,Te2/0/3,35,LEGACY_USER_IT,888,Cisco-Voice-Vlan,599,MAIN_LWAP1,250,Net_Mgmt
 example-sw-2,ios-sw,,,10.0.55.6,Po11,Te1/0/3,Te2/0/3,35,LEGACY_USER_IT,888,Cisco-Voice-Vlan,599,MAIN_LWAP1,250,Net_Mgmt
-lab-bigip,bigip,irulename1,partname1,10.0.55.7,,,,,,,,,,,,
-lab-bigip2,bigip,irulename1,partname1,10.0.55.7,,,,,,,,,,,,
-lab-bigip3,bigip,irulename1,partname1,10.0.55.7,,,,,,,,,,,,
+lab-bigip,bigip,irulename1,partname1,10.0.55.7,yes,,,,,,,,,,,
+lab-bigip2,bigip,irulename1,partname1,10.0.55.7,no,,,,,,,,,,,
+lab-bigip3,bigip,irulename1,partname1,10.0.55.7,yes,,,,,,,,,,,
 lab-bigiq,bigiq,2,,10.0.55.8,,,,,,,,,,,,

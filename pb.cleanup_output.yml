@@ -1,0 +1,27 @@
+---
+- name: DO Playbook - Generate and Push DO
+  hosts: all
+  connection: local
+  gather_facts: false
+
+  tasks:
+
+    - name: CLEANUP Remove AS3 JSON File(s) as3.[hostname].json
+      file:
+        path: ./output/as3.{{ ansible_host }}.json
+        state: absent
+
+    - name: CLEANUP Remove DO JSON File(s) do.bigip.[hostname].json
+      file:
+        path: ./output/do.bigip.{{ ansible_host }}.json
+        state: absent
+
+    - name: CLEANUP Remove DO JSON File(s) do.bigiq.[hostname].json
+      file:
+        path: ./output/do.bigiq.{{ ansible_host }}.json
+        state: absent
+
+    - name: CLEANUP Remove Inventory YML File config_variables.yml
+      file:
+        path: ./output/config_variables.yml
+        state: absent

@@ -1,0 +1,139 @@
+---
+- name: DO Playbook - Generate and Push DO
+  hosts: all
+  connection: local
+  gather_facts: false
+
+  vars_prompt:
+    - name: "ansible_user"
+      prompt: "What is your username for BIG-IQ?"
+      private: no
+ 
+    - name: "ansible_password"
+      prompt: "What is your password for BIG-IQ?"
+      private: yes
+
+    - name: "bigip_user"
+      prompt: "What is your username for BIG-IPs?"
+      private: no
+
+    - name: "bigip_password"
+      prompt: "What is your password for BIG-IPs?"
+      private: yes
+
+  vars:
+
+    - name: Import CSV File
+      csvfile: "{{ lookup('file', './variables/device_variables.csv') }}"
+
+    - name: Create Auth JSON
+      f5_login_json: "{{ lookup('template', './templates/f5_web_auth.j2') }}"
+
+  tasks:
+
+    - name: Login and Obtain Token
+      uri:
+        url: "https://{{ ansible_host }}:443/mgmt/shared/authn/login"
+        method: POST
+        body: "{{ f5_login_json }}"
+        body_format: json
+        status_code: 
+          - 200
+        timeout: 300
+        force_basic_auth: true
+        user: "{{ ansible_user }}"
+        password: "{{ ansible_password }}"
+        validate_certs: false
+      delegate_to: localhost
+      register: f5_login_token_post
+      when: "'bigiq_cm' in group_names"
+
+    - name: Parse CSV To YAML
+      template:
+        src: "./templates/variable_template.j2"
+        dest: "./output/config_variables.yml"
+      run_once: true
+      tags:
+        - test_files
+        - test_files_and_cleanup
+
+    - include_vars: "./output/config_variables.yml"
+      tags:
+        - test_files
+        - test_files_and_cleanup
+
+    - name: BIG-IP Only create BIG-IP DO payload json based on Jinja2 Template and YAML from CSV
+      template:
+        src: "./templates/do_json_template.j2"
+        dest: "./output/do.bigip.{{ item.unit.hostname }}.json"
+      delegate_to: localhost
+      with_items: "{{ devices }}"
+      when: "'bigip' in item.unit.role"
+      tags:
+        - test_files
+        - test_files_and_cleanup
+
+    - name: BIG-IP Only create BIG-IQ DO payload json based on nested Jinja2 Template and YAML from CSV
+      template:
+        src: "./templates/do_bigiq_json_template.j2"
+        dest: "./output/do.bigiq.{{ item.unit.hostname }}.json"
+      delegate_to: localhost
+      with_items: "{{ devices }}"
+      when: "'bigip' in item.unit.role"
+      tags:
+        - test_files
+        - test_files_and_cleanup
+
+    - name: Test Service Get
+      uri:
+        url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding/info"
+        method: GET
+        headers:
+          X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
+        status_code: 
+          - 200
+          - 202
+        timeout: 300
+        validate_certs: false
+      delegate_to: localhost
+      when: "'bigiq_cm' in group_names"
+
+    - name: BIG-IP Only PUSH DO From Template Generated File
+      uri:
+        url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding"
+        method: POST
+        headers:
+          X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
+        body: "{{ lookup('file','./output/do.bigiq.{{ item.unit.hostname }}.json') }}"
+        status_code: 
+          - 200
+          - 202
+        timeout: 300
+        body_format: json
+        validate_certs: false
+      delegate_to: localhost
+      when: ('bigiq_cm' in group_names) and ('bigip' in item.unit.role) and ('yes' in item.unit.pushdo)
+      with_items: "{{ devices }}"
+
+    - name: CLEANUP Remove DO JSON File(s) do.bigip.[hostname].json on playbook completion
+      file:
+        path: ./output/do.bigip.{{ item.unit.hostname }}.json
+        state: absent
+      with_items: "{{ devices }}"
+      tags:
+        - test_files_and_cleanup
+
+    - name: CLEANUP Remove DO JSON File(s) do.bigiq.[hostname].json on playbook completion
+      file:
+        path: ./output/do.bigiq.{{ item.unit.hostname }}.json
+        state: absent
+      with_items: "{{ devices }}"
+      tags:
+        - test_files_and_cleanup
+
+    - name: CLEANUP Remove Inventory YML File config_variables.yml on playbook completion
+      file:
+        path: ./output/config_variables.yml
+        state: absent
+      tags:
+        - test_files_and_cleanup

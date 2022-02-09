@@ -1,0 +1,14 @@
+{
+    "class": "DO",
+    "declaration": {% include "./templates/do_json_template.j2" %},
+    "targetUsername": "{{ bigip_user }}",
+    "targetHost": "{{ item.unit.hostname }}",
+    "targetPassphrase": "{{ bigip_password }}",
+    "bigIqSettings": {
+        "clusterName": "lab-bigip-dc1",
+        "conflictPolicy": "USE_BIGIQ",
+        "deviceConflictPolicy": "USE_BIGIP",
+        "failImportOnConflict": true,
+        "versionedConflictPolicy": "KEEP_VERSION"
+    }
+}
