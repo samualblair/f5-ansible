@@ -5,10 +5,14 @@
     "targetHost": "{{ item.unit.hostname }}",
     "targetPassphrase": "{{ bigip_password }}",
     "bigIqSettings": {
-        "clusterName": "lab-bigip-dc1",
+{% for ec in devices %}
+{%   if (ec.unit.cluster == "yes") and (ec.unit.hostname == item.unit.hostname) %}
+        "clusterName": "{{ ec.unit.clustername }}",
+{%   endif %}
+{% endfor %}
         "conflictPolicy": "USE_BIGIQ",
         "deviceConflictPolicy": "USE_BIGIP",
         "failImportOnConflict": true,
         "versionedConflictPolicy": "KEEP_VERSION"
     }
-}
+} 

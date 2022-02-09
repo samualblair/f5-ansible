@@ -2,6 +2,6 @@
 example-sw-1,nxos-sw,,,10.0.55.5,Po11,Te1/0/3,Te2/0/3,35,LEGACY_USER_IT,888,Cisco-Voice-Vlan,599,MAIN_LWAP1,250,Net_Mgmt
 example-sw-2,ios-sw,,,10.0.55.6,Po11,Te1/0/3,Te2/0/3,35,LEGACY_USER_IT,888,Cisco-Voice-Vlan,599,MAIN_LWAP1,250,Net_Mgmt
 lab-bigip,bigip,irulename1,partname1,10.0.55.7,yes,,,,,,,,,,,
-lab-bigip2,bigip,irulename1,partname1,10.0.55.7,no,,,,,,,,,,,
-lab-bigip3,bigip,irulename1,partname1,10.0.55.7,yes,,,,,,,,,,,
+lab-bigip2,bigip,irulename1,partname1,10.0.55.7,no,yes,cluster123,,,,,,,,,
+lab-bigip3,bigip,irulename1,partname1,10.0.55.7,yes,yes,cluster123,,,,,,,,,
 lab-bigiq,bigiq,2,,10.0.55.8,,,,,,,,,,,,

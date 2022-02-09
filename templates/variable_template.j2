@@ -10,6 +10,8 @@ devices:
       irule1: '{{ list[2]|trim() }}'
       part1: '{{ list[3]|trim() }}'
       pushdo: '{{ list[5]|trim() }}'
+      cluster: '{{ list[6]|trim() }}'
+      clustername: '{{ list[7]|trim() }}'
 
 {%   endif %}
 {% endfor %}
