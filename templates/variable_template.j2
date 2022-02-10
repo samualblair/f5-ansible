@@ -5,7 +5,7 @@ devices:
 {%     set list = item.split(",") %}
 
   - unit: 
-      hostname: '{{ list[0]|trim()|lower }}'
+      hostname: '{{ list[0]|trim() }}'
       device_type: '{{ list[1]|trim() }}'
       role: '{{ list[2]|trim() }}'
       push_do: '{{ list[3]|trim() }}'
@@ -20,7 +20,7 @@ devices:
 {%   endif %}
 {% endfor %}
 
-
+{#
 ## CSV Header Listings #Coulmn# Name
 #0# hostname,
 #1# device_type, future use planned - currently f5_bigip or f5_bigiq
@@ -37,3 +37,7 @@ devices:
 #9# irule1, example irule variable used in tests
 #10# partition1, example partition (as3 Tenant) variable used in tests
 
+### If needed can force lower or upper
+### Example would be hostnames
+#       hostname: '{{ list[0]|trim()|lower }}'
+#}
