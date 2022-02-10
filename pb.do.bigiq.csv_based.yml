@@ -69,6 +69,7 @@
       delegate_to: localhost
       with_items: "{{ devices }}"
       when: "'bigip' in item.unit.role"
+      run_once: true
       tags:
         - test_files
         - test_files_and_cleanup
@@ -80,6 +81,7 @@
       delegate_to: localhost
       with_items: "{{ devices }}"
       when: "'bigip' in item.unit.role"
+      run_once: true
       tags:
         - test_files
         - test_files_and_cleanup
@@ -112,7 +114,7 @@
         body_format: json
         validate_certs: false
       delegate_to: localhost
-      when: ('bigiq_cm' in group_names) and ('bigip' in item.unit.role) and ('yes' in item.unit.pushdo)
+      when: ('bigiq_cm' in group_names) and ('bigip' in item.unit.role) and ('yes' in item.unit.push_do)
       with_items: "{{ devices }}"
 
     - name: CLEANUP Remove DO JSON File(s) do.bigip.[hostname].json on playbook completion

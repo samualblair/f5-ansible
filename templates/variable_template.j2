@@ -6,12 +6,16 @@ devices:
 
   - unit: 
       hostname: '{{ list[0]|trim()|lower }}'
-      role: '{{ list[1]|trim() }}'
-      irule1: '{{ list[2]|trim() }}'
-      part1: '{{ list[3]|trim() }}'
-      pushdo: '{{ list[5]|trim() }}'
-      cluster: '{{ list[6]|trim() }}'
-      clustername: '{{ list[7]|trim() }}'
+      device_type: '{{ list[1]|trim() }}'
+      role: '{{ list[2]|trim() }}'
+      push_do: '{{ list[3]|trim() }}'
+      push_as3: '{{ list[4]|trim() }}'
+      oob_mgmt_ip: '{{ list[5]|trim() }}'
+      mgmt_ip: '{{ list[6]|trim() }}'
+      cluster: '{{ list[7]|trim() }}'
+      clustername: '{{ list[8]|trim() }}'
+      irule1: '{{ list[9]|trim() }}'
+      partition1: '{{ list[10]|trim() }}'
 
 {%   endif %}
 {% endfor %}
@@ -19,21 +23,17 @@ devices:
 
 ## CSV Header Listings #Coulmn# Name
 #0# hostname,
-#1# devicetype,
-#2# irule1,
-#3# partition1,
-#4# mgmt_ip,
-#5# upstream_portchannel,
-#6# upstream_uplink_int1,
-#7# upstream_uplink_int2,
-#
-#
-#8# vlan_data_number,
-#9# vlan_data_name,
-#10# vlan_voice_number,
-#11# vlan_voice_name,
-#12# vlan_wlc_number,
-#13# vlan_wlc_name,
-#14# vlan_mgmt_number,
-#15# vlan_mgmt_name
-#
+#1# device_type, future use planned - currently f5_bigip or f5_bigiq
+#2# role, used to match in creation of declarations - currently bigip used, future bigiq_cm and bigiq_dcd
+#3# push_do, this is a "yes" field when it matches, otherwise is a miss (generally put no)
+#4# push_as3, this is a "yes" field when it matches, otherwise is a miss (generally put no)
+
+#5# oob_mgmt_ip , used as primary mgmt ip
+#6# mgmt_ip , used as inband mgmt ip
+
+#7# cluster , this is a "yes' field when it matches, otherwise a miss, used if part of a cluster 
+#8# clustername , this is the name of the cluster as shown in bigiq
+
+#9# irule1, example irule variable used in tests
+#10# partition1, example partition (as3 Tenant) variable used in tests
+

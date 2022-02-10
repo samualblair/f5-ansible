@@ -5,9 +5,9 @@
     "targetHost": "{{ item.unit.hostname }}",
     "targetPassphrase": "{{ bigip_password }}",
     "bigIqSettings": {
-{% for ec in devices %}
-{%   if (ec.unit.cluster == "yes") and (ec.unit.hostname == item.unit.hostname) %}
-        "clusterName": "{{ ec.unit.clustername }}",
+{% for sublist in devices %}
+{%   if (sublist.unit.cluster == "yes") and (sublist.unit.hostname == item.unit.hostname) %}
+        "clusterName": "{{ sublist.unit.clustername }}",
 {%   endif %}
 {% endfor %}
         "conflictPolicy": "USE_BIGIQ",

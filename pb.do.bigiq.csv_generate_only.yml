@@ -1,6 +1,6 @@
 ---
-- name: DO Playbook - Generate and Push DO
-  hosts: all
+- name: DO Playbook - Generate DO files
+  hosts: localhost
   connection: local
   gather_facts: false
 
@@ -39,6 +39,7 @@
       delegate_to: localhost
       with_items: "{{ devices }}"
       when: "'bigip' in item.unit.role"
+      run_once: true
 
     - name: BIG-IP Only create BIG-IQ DO payload json based on nested Jinja2 Template and YAML from CSV
       template:
@@ -47,3 +48,4 @@
       delegate_to: localhost
       with_items: "{{ devices }}"
       when: "'bigip' in item.unit.role"
+      run_once: true

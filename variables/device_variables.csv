@@ -1,7 +1,5 @@
-﻿hostname,devicetype,irule1,partition1,mgmt_ip,pushdo,upstream_uplink_int1,upstream_uplink_int2,vlan_data_number,vlan_data_name,vlan_voice_number,vlan_voice_name,vlan_wlc_number,vlan_wlc_name,vlan_mgmt_number,vlan_mgmt_name
-example-sw-1,nxos-sw,,,10.0.55.5,Po11,Te1/0/3,Te2/0/3,35,LEGACY_USER_IT,888,Cisco-Voice-Vlan,599,MAIN_LWAP1,250,Net_Mgmt
-example-sw-2,ios-sw,,,10.0.55.6,Po11,Te1/0/3,Te2/0/3,35,LEGACY_USER_IT,888,Cisco-Voice-Vlan,599,MAIN_LWAP1,250,Net_Mgmt
-lab-bigip,bigip,irulename1,partname1,10.0.55.7,yes,,,,,,,,,,,
-lab-bigip2,bigip,irulename1,partname1,10.0.55.7,no,yes,cluster123,,,,,,,,,
-lab-bigip3,bigip,irulename1,partname1,10.0.55.7,yes,yes,cluster123,,,,,,,,,
-lab-bigiq,bigiq,2,,10.0.55.8,,,,,,,,,,,,
+﻿hostname,device_type,role,push_do,push_as3,oob_mgmt_ip,mgmt_ip,cluster,clustername,irule1,partition1,oob_mgmt_ip_cidr,mgmt_ip_cidr,variable,variable,variable,variable,variable,variable
+lab-bigiq,f5_bigiq,bigiq_dcd,no,no,10.0.55.6,10.0.56.6,,,example_irulename1,example_partname1,10.0.55.6/24,10.0.56.6/24,,,,,,
+lab-bigip,f5_bigip,bigip,no,no,10.0.55.7,10.0.56.7,yes,,example_irulename1,example_partname1,10.0.55.7/24,10.0.56.7/24,,,,,,
+lab-bigip2,f5_bigip,bigip,no,no,10.0.55.8,10.0.56.8,yes,cluster123,example_irulename1,example_partname1,10.0.55.8/24,10.0.56.8/24,,,,,,
+lab-bigip3,f5_bigip,bigip,no,no,10.0.55.9,10.0.56.9,yes,cluster123,example_irulename1,example_partname1,10.0.55.9/24,10.0.56.9/24,,,,,,

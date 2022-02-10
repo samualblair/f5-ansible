@@ -67,5 +67,5 @@
         body_format: json
         validate_certs: false
       delegate_to: localhost
-      when: ('bigiq_cm' in group_names) and ('bigip' in item.unit.role) and ('yes' in item.unit.pushdo)
+      when: ('bigiq_cm' in group_names) and ('bigip' in item.unit.role) and ('yes' in item.unit.push_do)
       with_items: "{{ devices }}"
