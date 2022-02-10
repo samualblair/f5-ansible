@@ -35,7 +35,7 @@
       uri:
         url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding"
         method: POST
-        body: "{{ lookup('file','./static_example/do.json') }}"
+        body: "{{ lookup('file','./static_example/do.bigiq.json') }}"
         status_code:
           - 200
           - 202

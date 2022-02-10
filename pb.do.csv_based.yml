@@ -68,7 +68,7 @@
     - name: BIG-IP Only create do payload json based on Jinja2 Template and YAML from CSV
       template:
         src: "./templates/do_json_template.j2"
-        dest: "./output/do.{{ item.unit.hostname }}.json"
+        dest: "./output/do.bigip.{{ item.unit.hostname }}.json"
       delegate_to: localhost
       with_items: "{{ devices }}"
       when: "'bigip' in item.unit.role"
@@ -82,7 +82,7 @@
         method: POST
         headers:
           X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
-        body: "{{ lookup('file','./output/do.{{ inventory_hostname }}.json') }}"
+        body: "{{ lookup('file','./output/do.bigip.{{ inventory_hostname }}.json') }}"
         status_code: 202
         timeout: 300
         body_format: json
@@ -92,7 +92,7 @@
 
     - name: CLEANUP Remove DO JSON File(s) do.[hostname].json on playbook completion
       file:
-        path: ./output/do.{{ item.unit.hostname }}.json
+        path: ./output/do.bigip.{{ item.unit.hostname }}.json
         state: absent
       with_items: "{{ devices }}"
       tags:

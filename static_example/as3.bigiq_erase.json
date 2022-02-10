@@ -19,13 +19,7 @@
             "class": "Tenant",
             "Shared": {
                 "class": "Application",
-                "template": "shared",
-                "IRULENAME1": {
-                    "class": "iRule",
-                    "iRule": {
-                        "base64": "d2hlbiBIVFRQX1JFUVVFU1QgewogIGlmIHsgW2NsYXNzIG1hdGNoIFtJUDo6Y2xpZW50X2FkZHJdIGVxICJjY2Ffc2VydmVycyIgXSB9CiAgewogICAgICN0cmFmZmljIGlzIGFsbG93ZWQuIENsaWVudCBJUCBtYXRjaCBmb3VuZCBpbiBjY2Ffc2VydmVycwogICAgcmV0dXJuCiAgfSBlbHNlIHsKICAgICAjdHJhZmZpYyBpcyBkcm9wcGVkLiBDbGllbnQgSVAgbWF0Y2ggbm90IGZvdW5kIGluIGNjYV9zZXJ2ZXJzCiAgICBkcm9wCiAgICAjbG9nICJjY2Ffc2VydmVyIFtJUDo6Y2xpZW50X2FkZHJdIgogIH0KfQ=="
-                    }
-                }
+                "template": "shared"
             }
         },
         "PARTNAME1": {

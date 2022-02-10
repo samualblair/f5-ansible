@@ -54,8 +54,8 @@
         method: POST
         headers:
           X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
-#        body: "{{ lookup('file','./static_example/do_large_example.json') }}"
-        body: "{{ lookup('file','./static_example/do.json') }}"
+#        body: "{{ lookup('file','./static_example/do.bigip_large_example.json') }}"
+        body: "{{ lookup('file','./static_example/do.bigip.json') }}"
         status_code: 
           - 200
           - 202

@@ -39,7 +39,7 @@
 # ASYNC is recomended but harder to test with
 #        url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/declare?async=true"
         method: POST
-        body: "{{ lookup('file','./static_example/as3_bigiq.json') }}"
+        body: "{{ lookup('file','./static_example/as3.json') }}"
         status_code: 
           - 200
           - 202
@@ -61,7 +61,7 @@
 # ASYNC is recomended but harder to test with
 #        url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/declare?async=true"
         method: POST
-        body: "{{ lookup('file','./static_example/as3_bigiq_erase.json') }}"
+        body: "{{ lookup('file','./static_example/as3.bigiq_erase.json') }}"
         status_code: 
           - 200
           - 202
