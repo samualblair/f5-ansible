@@ -1,0 +1,29 @@
+---
+- name: AS3 Playbook - Generate AS3 files
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+
+    - name: Import CSV File
+      csvfile: "{{ lookup('file', './variables/device_variables.csv') }}"
+
+  tasks:
+
+    - name: Parse CSV To YAML
+      template:
+        src: "./templates/variable_template.j2"
+        dest: "./output/config_variables.yml"
+      run_once: true
+
+    - include_vars: "./output/config_variables.yml"
+
+    - name: BIG-IP Only create AS3 payload json based on Jinja2 Template and YAML from CSV
+      template:
+        src: "./templates/as3_json_template.j2"
+        dest: "./output/as3.{{ item.unit.hostname }}.json"
+      delegate_to: localhost
+      with_items: "{{ devices }}"
+      when: "'bigip' in item.unit.role"
+

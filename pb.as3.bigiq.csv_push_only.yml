@@ -1,0 +1,71 @@
+---
+- name: AS3 Playbook - Generate and Push DO via BIG-IQ
+  hosts: bigiq_cm
+  connection: local
+  gather_facts: false
+
+  vars_prompt:
+    - name: "ansible_user"
+      prompt: "What is your username for BIG-IQ?"
+      private: no
+ 
+    - name: "ansible_password"
+      prompt: "What is your password for BIG-IQ?"
+      private: yes
+
+  vars:
+
+    - name: Create Auth JSON
+      f5_login_json: "{{ lookup('template', './templates/f5_web_auth.j2') }}"
+
+  tasks:
+
+    - name: Login and Obtain Token
+      uri:
+        url: "https://{{ ansible_host }}:443/mgmt/shared/authn/login"
+        method: POST
+        body: "{{ f5_login_json }}"
+        body_format: json
+        status_code: 
+          - 200
+        timeout: 300
+        force_basic_auth: true
+        user: "{{ ansible_user }}"
+        password: "{{ ansible_password }}"
+        validate_certs: false
+      delegate_to: localhost
+      register: f5_login_token_post
+      when: "'bigiq_cm' in group_names"
+
+    - include_vars: "./output/config_variables.yml"
+
+    - name: Test Service
+      uri:
+        url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/info"
+        method: GET
+        headers:
+          X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
+        status_code: 
+          - 200
+          - 202
+        timeout: 300
+        validate_certs: false
+      delegate_to: localhost
+      when: "'bigiq_cm' in group_names"
+
+    - name: BIG-IP Only PUSH AS3 From Template Generated File
+      uri:
+        url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/declare?async=true"
+        method: POST
+        headers:
+          X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
+        body: "{{ lookup('file','./output/as3.{{ item.unit.hostname }}.json') }}"
+        status_code: 
+          - 200
+          - 202
+        timeout: 300
+        body_format: json
+        validate_certs: false
+      delegate_to: localhost
+      when: ('bigiq_cm' in group_names) and ('bigip' in item.unit.role) and ('yes' in item.unit.push_as3)
+      with_items: "{{ devices }}"

@@ -1,0 +1,18 @@
+---
+- name: DO Playbook - Generate DO files
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+
+    - name: Import CSV File
+      csvfile: "{{ lookup('file', './variables/device_variables.csv') }}"
+
+  tasks:
+
+    - name: Parse CSV To YAML
+      template:
+        src: "./templates/variable_template.j2"
+        dest: "./output/config_variables.yml"
+      run_once: true
