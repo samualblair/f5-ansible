@@ -67,5 +67,24 @@
         body_format: json
         validate_certs: false
       delegate_to: localhost
+      register: f5_push
       when: ('bigiq_cm' in group_names) and ('bigip' in item.unit.role) and ('yes' in item.unit.push_do)
       with_items: "{{ devices }}"
+
+## Attempting to display task ID from API JSON response - not parsing well right now
+#    - name: "DISPLAY more Errors if Any"
+#      debug:
+#        msg: " info {{item.json}}"
+#      with_items: "{{f5_push.results}}"
+#      ignore_errors: yes
+
+#    - name: "DISPLAY Errors if Any"
+#      debug:
+#        var: f5_push.results[1-12].[item]
+#      ignore_errors: yes
+
+## Attempting to display task ID from API JSON response - if the number of loop item is known this works
+#    - name: "DISPLAY Errors if Any"
+#      debug:
+#        var: f5_push.results[12].json
+#      ignore_errors: yes
