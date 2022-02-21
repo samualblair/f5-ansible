@@ -13,6 +13,11 @@
       prompt: "What is your password? "
       private: yes
 
+    - name: "f5_as3task_id"
+      prompt: "What is the AS3 TASK ID to check? "
+      private: no
+
+
   vars:
     - name: Create Auth JSON
       f5_login_json: "{{ lookup('template', './templates/f5_web_auth.j2') }}"
@@ -35,22 +40,7 @@
       delegate_to: localhost
       register: f5_login_token_post
 
-#    - name: Test Service Get
-#      uri:
-#        url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/info"
-#        method: GET
-#        headers:
-#          X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
-#        status_code: 
-#          - 200
-#          - 202
-#        timeout: 300
-#        validate_certs: false
-#      delegate_to: localhost
-#      tags:
-#        - service
-      
-    - name: Check Status Get
+    - name: Test Service Get
       uri:
         url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/info"
         method: GET
@@ -62,14 +52,46 @@
         timeout: 300
         validate_certs: false
       delegate_to: localhost
+      register: f5_service
+      tags:
+        - service
+
+    - name: "DISPLAY Result"
+      debug:
+        var: f5_service.json.results
+
+    - name: "DISPLAY Errors if Any"
+      debug:
+        var: f5_service.json.errors
+
+
+    - name: Check Status Get
+      uri:
+        url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/task/{{ f5_as3task_id }}"
+#        url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/task/2f4cee61-436c-49c2-8666-68eaddcadad7"
+#        url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/task/18d6b49d-85d1-4e79-b4a4-e61b9a8d960e"
+#        url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/declare/cbb01421-81ce-48ed-b6b1-6f9d1bddca52"
+#        url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/declare/T1,T3?show=expanded"
+#        url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/declare?show=full"
+        method: GET
+        headers:
+          X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
+        status_code:
+          - 200
+          - 202
+          - 204
+        timeout: 300
+        validate_certs: false
+      delegate_to: localhost
       register: f5_status
       tags:
         - status
 
     - name: "DISPLAY Result"
       debug:
-        var: f5_status.json.result
+        var: f5_status.json.results
 
     - name: "DISPLAY Errors if Any"
       debug:
         var: f5_status.json.errors
+
