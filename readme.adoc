@@ -2,7 +2,7 @@
 
 . <<Description>>
 . <<Directions on use>>
-. <<Enviornment Requirements>>
+. <<Environment Requirements>>
 . <<Key Operations>>
 . <<Future TO-DO goals>>
 
@@ -27,7 +27,7 @@ To Use this the following are expected:
 
 . You may (likely) need to change the python interperter in the ansible.cfg file, you can try change from "interpreter_python = /usr/local/bin/python3" to maybe "interpreter_python = /usr/local/bin/python" or comment out to have system try and find the python installed.
 
-== Enviornment Requirements
+== Environment Requirements
 NOTE: This can be used to perform live operations on devices, or offline to just create configuration files
 
 Ansible Requirements:
