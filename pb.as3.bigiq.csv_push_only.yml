@@ -7,11 +7,11 @@
   vars_prompt:
     - name: "ansible_user"
       prompt: "What is your username for BIG-IQ?"
-      private: no
- 
+      private: false
+
     - name: "ansible_password"
       prompt: "What is your password for BIG-IQ?"
-      private: yes
+      private: true
 
   vars:
 
@@ -21,12 +21,12 @@
   tasks:
 
     - name: Login and Obtain Token
-      uri:
+      ansible.builtin.uri:
         url: "https://{{ ansible_host }}:443/mgmt/shared/authn/login"
         method: POST
         body: "{{ f5_login_json }}"
         body_format: json
-        status_code: 
+        status_code:
           - 200
         timeout: 300
         force_basic_auth: true
@@ -37,15 +37,15 @@
       register: f5_login_token_post
       when: "'bigiq_cm' in group_names"
 
-    - include_vars: "./output/config_variables.yml"
+    - ansible.builtin.include_vars: "./output/config_variables.yml"
 
     - name: Test Service
-      uri:
+      ansible.builtin.uri:
         url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/info"
         method: GET
         headers:
           X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
-        status_code: 
+        status_code:
           - 200
           - 202
         timeout: 300
@@ -54,13 +54,13 @@
       when: "'bigiq_cm' in group_names"
 
     - name: BIG-IP Only PUSH AS3 From Template Generated File
-      uri:
+      ansible.builtin.uri:
         url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/declare?async=true"
         method: POST
         headers:
           X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
         body: "{{ lookup('file','./output/as3.{{ item.unit.hostname }}.json') }}"
-        status_code: 
+        status_code:
           - 200
           - 202
         timeout: 300
