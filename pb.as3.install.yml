@@ -1,0 +1,93 @@
+---
+- name: Install AS3
+  hosts: bigip
+  connection: local
+  gather_facts: false
+
+# See https://github.com/f5alliances/f5_provisioner/blob/master/provisioner/roles/f5_setup/tasks/main.yml
+# Was inspiration for this playbook
+
+  vars_prompt:
+
+    - name: "ansible_user"
+      prompt: "What is your username? "
+      private: false
+
+    - name: "ansible_password"
+      prompt: "What is your password? "
+      private: true
+
+    - name: "f5_device_ip"
+      prompt: "What is your device IP? "
+      private: false
+
+    - name: "as3_package_filename"
+      prompt: "What is your file name example: f5-appsvcs-3.42.0-5.noarch.rpm "
+      private: false
+
+  tasks:
+
+    - name: Set a fact named 'provider' with BIG-IP login information
+      ansible.builtin.set_fact:
+        provider_info:
+          server: "{{ f5_device_ip }}"
+          user: "{{ ansible_user }}"
+          password: "{{ ansible_password }}"
+          server_port: 443
+          validate_certs: false
+
+    - name: COLLECT BIG-IP FACTS
+      f5networks.f5_modules.bigip_device_info:
+        provider: "{{ provider_info }}"
+        gather_subset:
+          - system-info
+      register: device_facts
+
+    - name: DISPLAY COMPLETE BIG-IP SYSTEM INFORMATION
+      ansible.builtin.debug:
+        var: device_facts
+
+    - name: DISPLAY ONLY THE MAC ADDRESS
+      ansible.builtin.debug:
+        var: device_facts['system_info']['base_mac_address']
+
+    - name: DISPLAY ONLY THE VERSION
+      ansible.builtin.debug:
+        var: device_facts['system_info']['product_version']
+
+# The bigip_iapplx_package requires rpm installed, on macOS use brew rather than pip or it won't work
+# brew install rpm
+    - name: Install AS3
+      f5networks.f5_modules.bigip_lx_package:
+        package: "./files/{{ as3_package_filename }}"
+        provider: "{{ provider_info }}"
+
+#    - name: Login and Obtain Token
+#      ansible.builtin.uri:
+#        url: "https://{{ ansible_host }}:443/mgmt/shared/authn/login"
+#        method: POST
+#        body: "{{ f5_login_json }}"
+#        body_format: json
+#        status_code:
+#          - 200
+#        timeout: 300
+#        force_basic_auth: true
+#        user: "{{ ansible_user }}"
+#        password: "{{ ansible_password }}"
+#        validate_certs: false
+#      delegate_to: localhost
+#      register: f5_login_token_post
+#
+#    - name: Test Get
+#      ansible.builtin.uri:
+#        url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/info"
+#        method: GET
+#        status_code:
+#          - 200
+#          - 202
+#        timeout: 300
+#        force_basic_auth: true
+#        user: "{{ ansible_user }}"
+#        password: "{{ ansible_password }}"
+#        validate_certs: false
+#      delegate_to: localhost
