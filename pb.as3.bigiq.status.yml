@@ -1,5 +1,5 @@
 ---
-- name: TEST DO
+- name: Check AS3 Status
   hosts: bigiq_cm
   connection: local
   gather_facts: false
