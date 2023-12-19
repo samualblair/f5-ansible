@@ -1,0 +1,78 @@
+---
+- name: TEST AS3 to BIG-IP With Basic Auth
+  hosts: bigip
+  connection: local
+  gather_facts: false
+
+  vars_prompt:
+    - name: "ansible_user"
+      prompt: "What is your username? "
+      private: false
+
+    - name: "ansible_password"
+      prompt: "What is your password? "
+      private: true
+
+  tasks:
+
+    - name: Test Get
+      ansible.builtin.uri:
+        url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/info"
+        method: GET
+        status_code:
+          - 200
+          - 202
+        timeout: 300
+        # On newer versions BASIC AUTH may be disabled by default and will just give a 401 error unless turned on
+        # Reccomended to not use basic auth and instead generate token and then use token
+        force_basic_auth: true
+        user: "{{ ansible_user }}"
+        password: "{{ ansible_password }}"
+        validate_certs: false
+      delegate_to: localhost
+      tags:
+        - test-as3
+
+    - name: PUSH AS3 Config
+      ansible.builtin.uri:
+        # url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/declare"
+        # ASYNC is recomended but harder to test with
+        url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/declare?async=true"
+        method: POST
+        body: "{{ lookup('file', './static_example/as3.json') }}"
+        status_code:
+          - 200
+          - 202
+        # IF ASYNC expected status code is 202 , If not ASYNC expected status code is 200
+        # status_code: 202
+        timeout: 300
+        body_format: json
+        force_basic_auth: true
+        user: "{{ ansible_user }}"
+        password: "{{ ansible_password }}"
+        validate_certs: false
+      delegate_to: localhost
+      tags:
+        - new-config
+
+    - name: PUSH AS3 Blank aka REMOVE Config
+      ansible.builtin.uri:
+        # url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/declare"
+        # ASYNC is recomended but harder to test with
+        url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/declare?async=true"
+        method: POST
+        body: "{{ lookup('file', './static_example/as3.bigiq_erase.json') }}"
+        status_code:
+          - 200
+          - 202
+        # IF ASYNC expected status code is 202 , If not ASYNC expected status code is 200
+        # status_code: 202
+        timeout: 300
+        body_format: json
+        force_basic_auth: true
+        user: "{{ ansible_user }}"
+        password: "{{ ansible_password }}"
+        validate_certs: false
+      delegate_to: localhost
+      tags:
+        - remove-config
