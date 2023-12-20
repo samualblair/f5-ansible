@@ -7,37 +7,33 @@
   vars_prompt:
     - name: "ansible_user"
       prompt: "What is your username for BIG-IQ?"
-      private: no
- 
+      private: false
+
     - name: "ansible_password"
       prompt: "What is your password for BIG-IQ?"
-      private: yes
+      private: true
 
     - name: "bigip_user"
       prompt: "What is your username for BIG-IPs?"
-      private: no
+      private: false
 
     - name: "bigip_password"
       prompt: "What is your password for BIG-IPs?"
-      private: yes
+      private: true
 
-  vars:
-
-    - name: Import CSV File
-      csvfile: "{{ lookup('file', './variables/device_variables.csv') }}"
-
-    - name: Create Auth JSON
-      f5_login_json: "{{ lookup('template', './templates/f5_web_auth.j2') }}"
+  vars: # Import CSV File and Auth JSON
+    csvfile: "{{ lookup('file', './variables/device_variables.csv') }}"
+    f5_login_json: "{{ lookup('template', './templates/f5_web_auth.j2') }}"
 
   tasks:
 
     - name: Login and Obtain Token
-      uri:
+      ansible.builtin.uri:
         url: "https://{{ ansible_host }}:443/mgmt/shared/authn/login"
         method: POST
         body: "{{ f5_login_json }}"
         body_format: json
-        status_code: 
+        status_code:
           - 200
         timeout: 300
         force_basic_auth: true
@@ -48,24 +44,28 @@
       register: f5_login_token_post
       when: "'bigiq_cm' in group_names"
 
-    - name: Parse CSV To YAML
-      template:
+    - name: Parse CSV To YAML # noqa: run-once[task]
+      ansible.builtin.template:
         src: "./templates/variable_template.j2"
         dest: "./output/config_variables.yml"
+        # Set permissions using octal so leading 0 , set to User=RW , Group=R , Other=R
+        mode: "0644"
       run_once: true
       tags:
         - test_files
         - test_files_and_cleanup
 
-    - include_vars: "./output/config_variables.yml"
+    - ansible.builtin.include_vars: "./output/config_variables.yml"
       tags:
         - test_files
         - test_files_and_cleanup
 
-    - name: BIG-IP Only create BIG-IP DO payload json based on Jinja2 Template and YAML from CSV
-      template:
+    - name: BIG-IP Only create BIG-IP DO payload json based on Jinja2 Template and YAML from CSV # noqa: run-once[task]
+      ansible.builtin.template:
         src: "./templates/do_json_template.j2"
         dest: "./output/do.bigip.{{ item.unit.hostname }}.json"
+        # Set permissions using octal so leading 0 , set to User=RW , Group=R , Other=R
+        mode: "0644"
       delegate_to: localhost
       with_items: "{{ devices }}"
       when: "'bigip' in item.unit.role"
@@ -74,10 +74,12 @@
         - test_files
         - test_files_and_cleanup
 
-    - name: BIG-IP Only create BIG-IQ DO payload json based on nested Jinja2 Template and YAML from CSV
-      template:
+    - name: BIG-IP Only create BIG-IQ DO payload json based on nested Jinja2 Template and YAML from CSV # noqa: run-once[task]
+      ansible.builtin.template:
         src: "./templates/do_bigiq_json_template.j2"
         dest: "./output/do.bigiq.{{ item.unit.hostname }}.json"
+        # Set permissions using octal so leading 0 , set to User=RW , Group=R , Other=R
+        mode: "0644"
       delegate_to: localhost
       with_items: "{{ devices }}"
       when: "'bigip' in item.unit.role"
@@ -87,12 +89,12 @@
         - test_files_and_cleanup
 
     - name: Test Service Get
-      uri:
+      ansible.builtin.uri:
         url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding/info"
         method: GET
         headers:
           X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
-        status_code: 
+        status_code:
           - 200
           - 202
         timeout: 300
@@ -101,13 +103,13 @@
       when: "'bigiq_cm' in group_names"
 
     - name: BIG-IP Only PUSH DO From Template Generated File
-      uri:
+      ansible.builtin.uri:
         url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding"
         method: POST
         headers:
           X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
-        body: "{{ lookup('file','./output/do.bigiq.{{ item.unit.hostname }}.json') }}"
-        status_code: 
+        body: "{{ lookup('file', './output/do.bigiq.{{ item.unit.hostname }}.json') }}"
+        status_code:
           - 200
           - 202
         timeout: 300
@@ -118,7 +120,7 @@
       with_items: "{{ devices }}"
 
     - name: CLEANUP Remove DO JSON File(s) do.bigip.[hostname].json on playbook completion
-      file:
+      ansible.builtin.file:
         path: ./output/do.bigip.{{ item.unit.hostname }}.json
         state: absent
       with_items: "{{ devices }}"
@@ -126,7 +128,7 @@
         - test_files_and_cleanup
 
     - name: CLEANUP Remove DO JSON File(s) do.bigiq.[hostname].json on playbook completion
-      file:
+      ansible.builtin.file:
         path: ./output/do.bigiq.{{ item.unit.hostname }}.json
         state: absent
       with_items: "{{ devices }}"
@@ -134,7 +136,7 @@
         - test_files_and_cleanup
 
     - name: CLEANUP Remove Inventory YML File config_variables.yml on playbook completion
-      file:
+      ansible.builtin.file:
         path: ./output/config_variables.yml
         state: absent
       tags:

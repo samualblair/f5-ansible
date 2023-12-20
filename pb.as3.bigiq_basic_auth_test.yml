@@ -4,6 +4,10 @@
   connection: local
   gather_facts: false
 
+# Warning - as of 2023 F5 documentation states
+# AS3 versions 3.42 and later are NOT compatible with BIG-IQ
+# Be aware of what version AS3 is installed on BIG-IQ before attempting to use
+
   vars_prompt:
     - name: "ansible_user"
       prompt: "What is your username? "

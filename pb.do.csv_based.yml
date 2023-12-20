@@ -7,29 +7,25 @@
   vars_prompt:
     - name: "ansible_user"
       prompt: "What is your username? "
-      private: no
- 
+      private: false
+
     - name: "ansible_password"
       prompt: "What is your password? "
-      private: yes
+      private: true
 
-  vars:
-
-    - name: Import CSV File
-      csvfile: "{{ lookup('file', './variables/device_variables.csv') }}"
-
-    - name: Create Auth JSON
-      f5_login_json: "{{ lookup('template', './templates/f5_web_auth.j2') }}"
+  vars: # Import CSV File and Auth JSON
+    csvfile: "{{ lookup('file', './variables/device_variables.csv') }}"
+    f5_login_json: "{{ lookup('template', './templates/f5_web_auth.j2') }}"
 
   tasks:
 
     - name: Login and Obtain Token
-      uri:
+      ansible.builtin.uri:
         url: "https://{{ ansible_host }}:443/mgmt/shared/authn/login"
         method: POST
         body: "{{ f5_login_json }}"
         body_format: json
-        status_code: 
+        status_code:
           - 200
         timeout: 300
         force_basic_auth: true
@@ -39,22 +35,24 @@
       delegate_to: localhost
       register: f5_login_token_post
 
-    - name: Parse CSV To YAML
-      template:
+    - name: Parse CSV To YAML # noqa: run-once[task]
+      ansible.builtin.template:
         src: "./templates/variable_template.j2"
         dest: "./output/config_variables.yml"
+        # Set permissions using octal so leading 0 , set to User=RW , Group=R , Other=R
+        mode: "0644"
       run_once: true
       tags:
         - test_files
         - test_files_and_cleanup
 
-    - include_vars: "./output/config_variables.yml"
+    - ansible.builtin.include_vars: "./output/config_variables.yml"
       tags:
         - test_files
         - test_files_and_cleanup
 
     - name: Test Service Get
-      uri:
+      ansible.builtin.uri:
         url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding/info"
         method: GET
         headers:
@@ -66,23 +64,25 @@
       when: "'bigip' in group_names"
 
     - name: BIG-IP Only create do payload json based on Jinja2 Template and YAML from CSV
-      template:
+      ansible.builtin.template:
         src: "./templates/do_json_template.j2"
         dest: "./output/do.bigip.{{ item.unit.hostname }}.json"
+        # Set permissions using octal so leading 0 , set to User=RW , Group=R , Other=R
+        mode: "0644"
       delegate_to: localhost
       with_items: "{{ devices }}"
       when: "'bigip' in item.unit.role"
       tags:
         - test_files
         - test_files_and_cleanup
-       
+
     - name: BIG-IP Only PUSH DO From Template Generated File
-      uri:
+      ansible.builtin.uri:
         url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding"
         method: POST
         headers:
           X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
-        body: "{{ lookup('file','./output/do.bigip.{{ inventory_hostname }}.json') }}"
+        body: "{{ lookup('file', './output/do.bigip.{{ inventory_hostname }}.json') }}"
         status_code: 202
         timeout: 300
         body_format: json
@@ -91,7 +91,7 @@
       when: "'bigip' in group_names"
 
     - name: CLEANUP Remove DO JSON File(s) do.[hostname].json on playbook completion
-      file:
+      ansible.builtin.file:
         path: ./output/do.bigip.{{ item.unit.hostname }}.json
         state: absent
       with_items: "{{ devices }}"
@@ -99,7 +99,7 @@
         - test_files_and_cleanup
 
     - name: CLEANUP Remove Inventory YML File config_variables.yml on playbook completion
-      file:
+      ansible.builtin.file:
         path: ./output/config_variables.yml
         state: absent
       tags:

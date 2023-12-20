@@ -1,5 +1,5 @@
 ---
-- name: Initial BIG-IP AS3 Playbook
+- name: BIG-IP AS3 Playbook CSV based Generate Push and Cleanup
   hosts: bigip
   connection: local
   gather_facts: false
@@ -7,36 +7,39 @@
   vars_prompt:
     - name: "ansible_user"
       prompt: "What is your username? "
-      private: no
- 
+      private: false
+
     - name: "ansible_password"
       prompt: "What is your password? "
-      private: yes
+      private: true
 
-  vars:
+  vars: # Import CSV File
     csvfile: "{{ lookup('file', './variables/device_variables.csv') }}"
 
   tasks:
 
-    - name: Parse CSV To YAML
-      template:
+    - name: Parse CSV To YAML # noqa: run-once[task]
+      ansible.builtin.template:
         src: "./templates/variable_template.j2"
         dest: "./output/config_variables.yml"
+        # Set permissions using octal so leading 0 , set to User=RW , Group=R , Other=R
+        mode: "0644"
       run_once: true
       tags:
         - test_files
         - test_files_and_cleanup
 
-    - include_vars: "./output/config_variables.yml"
+    - name: Include YAML Vars
+      ansible.builtin.include_vars: "./output/config_variables.yml"
       tags:
         - test_files
         - test_files_and_cleanup
 
     - name: Test Get AS3
-      uri:
+      ansible.builtin.uri:
         url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/info"
         method: GET
-        status_code: 
+        status_code:
           - 200
           - 202
         timeout: 300
@@ -47,22 +50,24 @@
       delegate_to: localhost
 
     - name: BIG-IP Only create AS3 payload json based on Jinja2 Template and YAML from CSV
-      template:
+      ansible.builtin.template:
         src: "./templates/as3_json_template.j2"
         dest: "./output/as3.{{ item.unit.hostname }}.json"
+        # Set permissions using octal so leading 0 , set to User=RW , Group=R , Other=R
+        mode: "0644"
       delegate_to: localhost
       with_items: "{{ devices }}"
       when: "'bigip' in item.unit.role"
       tags:
         - test_files
         - test_files_and_cleanup
-       
+
     - name: BIG-IP Only PUSH AS3 From Template
-      uri:
+      ansible.builtin.uri:
         url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/declare"
         method: POST
-        body: "{{ lookup('file','./output/as3.{{ inventory_hostname }}.json') }}"
-        status_code: 
+        body: "{{ lookup('file', './output/as3.{{ inventory_hostname }}.json') }}"
+        status_code:
           - 200
           - 202
         timeout: 300
@@ -75,7 +80,7 @@
       when: "'bigip' in group_names"
 
 #    - name: PUSH AS3 Static File
-#      uri:
+#      ansible.builtin.uri:
 #        url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/declare"
 #        method: POST
 #        body: "{{ lookup('file','as3.json') }}"
@@ -90,7 +95,7 @@
 #      when: "'bigip' in group_names"
 #
     - name: CLEANUP Remove AS3 JSON File(s) as3.[hostname].json on playbook completion
-      file:
+      ansible.builtin.file:
         path: ./output/as3.{{ item.unit.hostname }}.json
         state: absent
       with_items: "{{ devices }}"
@@ -98,7 +103,7 @@
         - test_files_and_cleanup
 
     - name: CLEANUP Remove Inventory YML File config_variables.yml on playbook completion
-      file:
+      ansible.builtin.file:
         path: ./output/config_variables.yml
         state: absent
       tags:

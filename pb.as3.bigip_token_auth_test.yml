@@ -1,5 +1,5 @@
 ---
-- name: TEST AS3 to BIG-IP With Basic Auth
+- name: TEST AS3 to BIG-IP With Token Auth
   hosts: bigip
   connection: local
   gather_facts: false
@@ -14,8 +14,7 @@
       private: true
 
   vars:
-    - name: Create Auth JSON
-      f5_login_json: "{{ lookup('template', './templates/f5_web_auth.j2') }}"
+    f5_login_json: "{{ lookup('template', './templates/f5_web_auth.j2') }}" # Create Auth JSON Variable
 
   tasks:
 

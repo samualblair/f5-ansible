@@ -1,6 +1,8 @@
 ---
-- name: TEST DO
-  hosts: bigip
+- name: TEST Service Status with Auth Token (AS3 , DO)
+  hosts:
+    - bigip
+    - bigiq
   connection: local
   gather_facts: false
 
@@ -13,9 +15,8 @@
       prompt: "What is your password? "
       private: true
 
-  vars:
-    - name: Create Auth JSON
-      f5_login_json: "{{ lookup('template', './templates/f5_web_auth.j2') }}"
+  vars: # Create Auth JSON
+    f5_login_json: "{{ lookup('template', './templates/f5_web_auth.j2') }}"
 
   tasks:
 
@@ -31,7 +32,8 @@
         force_basic_auth: true
         user: "{{ ansible_user }}"
         password: "{{ ansible_password }}"
-        validate_certs: false
+        # When Possible Validate Certs - For testing may chose not to
+        # validate_certs: false
       delegate_to: localhost
       register: f5_login_token_post
 
@@ -39,7 +41,7 @@
       ansible.builtin.debug:
         msg: "{{ f5_login_token_post.json.token }}"
 
-    - name: Test Service Get
+    - name: Test DO Service Get
       ansible.builtin.uri:
         url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding/info"
         method: GET
@@ -49,12 +51,24 @@
           - 200
           - 202
         timeout: 300
-        validate_certs: false
+        # When Possible Validate Certs - For testing may chose not to
+        # validate_certs: false
       delegate_to: localhost
+      register: f5_do_service
+      tags:
+        - service
 
-    - name: Current Status Get
+    - name: "DISPLAY DO Result"
+      ansible.builtin.debug:
+        var: f5_do_service.json.results
+
+    - name: "DISPLAY DO Errors if Any"
+      ansible.builtin.debug:
+        var: f5_do_service.json.errors
+
+    - name: Test AS3 Service Get
       ansible.builtin.uri:
-        url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding/"
+        url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/info"
         method: GET
         headers:
           X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
@@ -62,5 +76,17 @@
           - 200
           - 202
         timeout: 300
-        validate_certs: false
+        # When Possible Validate Certs - For testing may chose not to
+        # validate_certs: false
       delegate_to: localhost
+      register: f5_as3_service
+      tags:
+        - service
+
+    - name: "DISPLAY AS3 Result"
+      ansible.builtin.debug:
+        var: f5_as3_service.json.results
+
+    - name: "DISPLAY AS3 Errors if Any"
+      ansible.builtin.debug:
+        var: f5_as3_service.json.errors

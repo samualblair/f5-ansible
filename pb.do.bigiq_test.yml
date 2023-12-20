@@ -7,16 +7,16 @@
   vars_prompt:
     - name: "ansible_user"
       prompt: "What is your username? "
-      private: no
- 
+      private: false
+
     - name: "ansible_password"
       prompt: "What is your password? "
-      private: yes
+      private: true
 
   tasks:
 
     - name: Test Get
-      uri:
+      ansible.builtin.uri:
         url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding/info"
         method: GET
         status_code:
@@ -32,10 +32,10 @@
         - test-do
 
     - name: PUSH DO
-      uri:
+      ansible.builtin.uri:
         url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding"
         method: POST
-        body: "{{ lookup('file','./static_example/do.bigiq.json') }}"
+        body: "{{ lookup('file', './static_example/do.bigiq.json') }}"
         status_code:
           - 200
           - 202
@@ -48,4 +48,4 @@
       delegate_to: localhost
       tags:
         - new-config
-      ignore_errors: yes
+      ignore_errors: true

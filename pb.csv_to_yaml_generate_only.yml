@@ -4,15 +4,15 @@
   connection: local
   gather_facts: false
 
-  vars:
-
-    - name: Import CSV File
-      csvfile: "{{ lookup('file', './variables/device_variables.csv') }}"
+  vars: # Import CSV File
+    csvfile: "{{ lookup('file', './variables/device_variables.csv') }}"
 
   tasks:
 
-    - name: Parse CSV To YAML
-      template:
+    - name: Parse CSV To YAML # noqa: run-once[task]
+      ansible.builtin.template:
         src: "./templates/variable_template.j2"
         dest: "./output/config_variables.yml"
+        # Set permissions using octal so leading 0 , set to User=RW , Group=R , Other=R
+        mode: "0644"
       run_once: true

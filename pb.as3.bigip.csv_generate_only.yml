@@ -4,10 +4,6 @@
   connection: local
   gather_facts: false
 
-# Warning - as of 2023 F5 documentation states
-# AS3 versions 3.42 and later are NOT compatible with BIG-IQ
-# Be aware of what version AS3 is installed on BIG-IQ before attempting to use
-
   vars: # Import CSV File
     csvfile: "{{ lookup('file', './variables/device_variables.csv') }}"
 
@@ -26,7 +22,7 @@
 
     - name: BIG-IP Only create AS3 payload json based on Jinja2 Template and YAML from CSV
       ansible.builtin.template:
-        src: "./templates/as3_bigiq_json_template.j2"
+        src: "./templates/as3_json_template.j2"
         dest: "./output/as3.{{ item.unit.hostname }}.json"
         # Set permissions using octal so leading 0 , set to User=RW , Group=R , Other=R
         mode: "0644"

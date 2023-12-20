@@ -1,31 +1,32 @@
 ---
-- name: TEST DO
-  hosts: bigip
+- name: TEST REST Auth Token (used for AS3 , DO, TS, etc.)
+  hosts:
+    - bigip
+    - bigiq
   connection: local
   gather_facts: false
 
   vars_prompt:
     - name: "ansible_user"
       prompt: "What is your username? "
-      private: no
- 
+      private: false
+
     - name: "ansible_password"
       prompt: "What is your password? "
-      private: yes
+      private: true
 
-  vars:
-    - name: Create Auth JSON
-      f5_login_json: "{{ lookup('template', './templates/f5_web_auth.j2') }}"
+  vars: # Create Auth JSON
+    f5_login_json: "{{ lookup('template', './templates/f5_web_auth.j2') }}"
 
   tasks:
 
     - name: Login and Obtain Token
-      uri:
+      ansible.builtin.uri:
         url: "https://{{ ansible_host }}:443/mgmt/shared/authn/login"
         method: POST
         body: "{{ f5_login_json }}"
         body_format: json
-        status_code: 
+        status_code:
           - 200
         timeout: 300
         force_basic_auth: true
@@ -34,8 +35,7 @@
         validate_certs: false
       delegate_to: localhost
       register: f5_login_token_post
-      
-    - name: display f5_login_token_post
-      debug:
-        msg: "{{ f5_login_token_post.json.token }}"
 
+    - name: Display f5_login_token_post
+      ansible.builtin.debug:
+        msg: "{{ f5_login_token_post.json.token }}"

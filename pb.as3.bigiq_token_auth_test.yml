@@ -1,8 +1,12 @@
 ---
-- name: TEST AS3 to BIG-IQ With Basic Auth
+- name: TEST AS3 to BIG-IQ With Token Auth
   hosts: bigiq_cm
   connection: local
   gather_facts: false
+
+# Warning - as of 2023 F5 documentation states
+# AS3 versions 3.42 and later are NOT compatible with BIG-IQ
+# Be aware of what version AS3 is installed on BIG-IQ before attempting to use
 
   vars_prompt:
     - name: "ansible_user"
@@ -14,8 +18,7 @@
       private: true
 
   vars:
-    - name: Create Auth JSON
-      f5_login_json: "{{ lookup('template', './templates/f5_web_auth.j2') }}"
+    f5_login_json: "{{ lookup('template', './templates/f5_web_auth.j2') }}" # Create Auth JSON Variable
 
   tasks:
 

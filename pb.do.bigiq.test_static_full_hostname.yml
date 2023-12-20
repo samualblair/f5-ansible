@@ -7,25 +7,24 @@
   vars_prompt:
     - name: "ansible_user"
       prompt: "What is your username? "
-      private: no
- 
+      private: false
+
     - name: "ansible_password"
       prompt: "What is your password? "
-      private: yes
+      private: true
 
-  vars:
-    - name: Create Auth JSON
-      f5_login_json: "{{ lookup('template', './templates/f5_web_auth.j2') }}"
+  vars: # Import Auth JSON
+    f5_login_json: "{{ lookup('template', './templates/f5_web_auth.j2') }}"
 
   tasks:
 
     - name: Login and Obtain Token
-      uri:
+      ansible.builtin.uri:
         url: "https://{{ ansible_host }}:443/mgmt/shared/authn/login"
         method: POST
         body: "{{ f5_login_json }}"
         body_format: json
-        status_code: 
+        status_code:
           - 200
         timeout: 300
         force_basic_auth: true
@@ -36,12 +35,12 @@
       register: f5_login_token_post
 
     - name: Test Service Get
-      uri:
+      ansible.builtin.uri:
         url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding/info"
         method: GET
         headers:
           X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
-        status_code: 
+        status_code:
           - 200
           - 202
         timeout: 300
@@ -50,17 +49,17 @@
       register: f5_status
 
     - name: "DISPLAY Result"
-      debug:
+      ansible.builtin.debug:
         var: f5_status
 
     - name: BIG-IP Only PUSH DO Static File 1a
-      uri:
+      ansible.builtin.uri:
         url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding"
         method: POST
         headers:
           X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
-        body: "{{ lookup('file','./static_output/do.bigiq.bigip1a.json') }}"
-        status_code: 
+        body: "{{ lookup('file', './static_output/do.bigiq.bigip1a.json') }}"
+        status_code:
           - 200
           - 202
         timeout: 300
@@ -68,20 +67,20 @@
         validate_certs: false
       delegate_to: localhost
       register: f5_status1a
-      ignore_errors: yes
+      ignore_errors: true
 
     - name: "DISPLAY Errors if Any"
-      debug:
+      ansible.builtin.debug:
         var: f5_status1a.json.errors
 
     - name: BIG-IP Only PUSH DO Static File 1b
-      uri:
+      ansible.builtin.uri:
         url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding"
         method: POST
         headers:
           X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
-        body: "{{ lookup('file','./static_output/do.bigiq.bigip1b.json') }}"
-        status_code: 
+        body: "{{ lookup('file', './static_output/do.bigiq.bigip1b.json') }}"
+        status_code:
           - 200
           - 202
         timeout: 300
@@ -89,16 +88,16 @@
         validate_certs: false
       delegate_to: localhost
       register: f5_status1b
-      ignore_errors: yes
+      ignore_errors: true
 
     - name: "DISPLAY Errors if Any"
-      debug:
+      ansible.builtin.debug:
         var: f5_status1b.json.errors
 
     - name: "DISPLAY ID A"
-      debug:
+      ansible.builtin.debug:
         var: f5_status1a.json.id
 
     - name: "DISPLAY ID B"
-      debug:
+      ansible.builtin.debug:
         var: f5_status1b.json.id

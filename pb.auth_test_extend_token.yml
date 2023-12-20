@@ -1,40 +1,40 @@
 ---
-- name: Extend Auth Token
-  hosts: bigip
+- name: TEST REST Auth Token (used for AS3 , DO, TS, etc.)
+  hosts:
+    - bigip
+    - bigiq
   connection: local
   gather_facts: false
 
   vars_prompt:
     - name: "F5Host"
       prompt: "What Host Are you renewing?"
-      private: no
+      private: false
 
     - name: "F5AuthToken"
       prompt: "What is your Current Token?"
-      private: yes
- 
-  vars:
-    - name: Create Auth JSON
-      f5_login_json: "{{ lookup('template', './templates/f5_web_auth.j2') }}"
+      private: true
+
+  vars: # Create Auth JSON
+    f5_login_json: "{{ lookup('template', './templates/f5_web_auth.j2') }}"
 
   tasks:
 
     - name: Patch Token for Timeout of 36000
-      uri:
+      ansible.builtin.uri:
         url: "https://{{ ansible_host }}:443/mgmt/shared/authz/tokens/{{ F5AuthToken }}"
         method: PATCH
         headers:
           X-F5-Auth-Token: "{{ F5AuthToken }}"
         body: '[ { "timeout":"36000" } ]'
         body_format: json
-        status_code: 
+        status_code:
           - 200
         timeout: 300
         validate_certs: false
       delegate_to: localhost
       register: f5_login_token_patch
-      
-    - name: display f5_login_token_patch
-      debug:
-        msg: "{{ f5_login_token_patch }}"
 
+    - name: Display f5_login_token_patch
+      ansible.builtin.debug:
+        msg: "{{ f5_login_token_patch }}"
