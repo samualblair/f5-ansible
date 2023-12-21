@@ -55,7 +55,8 @@
         - test_files
         - test_files_and_cleanup
 
-    - ansible.builtin.include_vars: "./output/config_variables.yml"
+    - name: Import Variables yaml
+      ansible.builtin.include_vars: "./output/config_variables.yml"
       tags:
         - test_files
         - test_files_and_cleanup

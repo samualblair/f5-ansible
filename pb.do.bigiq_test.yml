@@ -23,6 +23,8 @@
           - 200
           - 202
         timeout: 300
+        # On newer versions BASIC AUTH may be disabled by default and will just give a 401 error unless turned on
+        # Reccomended to not use basic auth and instead generate token and then use token
         force_basic_auth: true
         user: "{{ ansible_user }}"
         password: "{{ ansible_password }}"
@@ -41,11 +43,14 @@
           - 202
         timeout: 300
         body_format: json
+        # On newer versions BASIC AUTH may be disabled by default and will just give a 401 error unless turned on
+        # Reccomended to not use basic auth and instead generate token and then use token
         force_basic_auth: true
         user: "{{ ansible_user }}"
         password: "{{ ansible_password }}"
+        # Reccomended to validate certs when possible, otherwise you are accepting a security risk upon connection
         validate_certs: false
       delegate_to: localhost
       tags:
         - new-config
-      ignore_errors: true
+      # ignore_errors: true
