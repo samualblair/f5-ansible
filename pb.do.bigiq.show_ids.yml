@@ -64,7 +64,7 @@
       register: f5_id_all_status
       tags:
         - status
-      ignore_errors: yes
+      ignore_errors: true
 
     - name: Loop to show IDs
       ansible.builtin.include_tasks: ./templates/id_loop.yml

@@ -35,7 +35,8 @@
       register: f5_login_token_post
       when: "'bigiq_cm' in group_names"
 
-    - include_vars: "./output/config_variables.yml"
+    - name: Include YAML Vars
+      ansible.builtin.include_vars: "./output/config_variables.yml"
 
     - name: Test Service Get
       ansible.builtin.uri:

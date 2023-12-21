@@ -66,94 +66,96 @@
 
 
     - name: Block for Last Task
-      block:
-
-      - name: Check Status - General/last
-        ansible.builtin.uri:
-          url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding"
-          method: GET
-          headers:
-            X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
-          status_code: 
-            - 200
-            - 202
-          timeout: 300
-          validate_certs: false
-        delegate_to: localhost
-        register: f5_status
-        tags:
-          - status
-        ignore_errors: yes
-
-      - name: "DISPLAY Result - General/last"
-        ansible.builtin.debug:
-          var: f5_status.json.result
-
-      - name: "DISPLAY Errors if Any - General/last"
-        ansible.builtin.debug:
-          var: f5_status.json.errors
 
       when: not last_task_check == "skip"
 
-
-    - name: Block for A
       block:
 
-      - name: Check Status on ID {{ task_id_a }}
-        ansible.builtin.uri:
-          url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding/task/{{ task_id_a }}"
-          method: GET
-          headers:
-            X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
-          status_code:
-            - 200
-            - 202
-          timeout: 300
-          validate_certs: false
-        delegate_to: localhost
-        register: f5_id_a_status
-        tags:
-          - status
-        ignore_errors: yes
+        - name: Check Status - General/last
+          ansible.builtin.uri:
+            url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding"
+            method: GET
+            headers:
+              X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
+            status_code:
+              - 200
+              - 202
+            timeout: 300
+            validate_certs: false
+          delegate_to: localhost
+          register: f5_status
+          tags:
+            - status
+          ignore_errors: true
 
-      - name: "DISPLAY TASK ID {{ task_id_a }} Result"
-        ansible.builtin.debug:
-          var: f5_id_a_status.json.result
+        - name: "DISPLAY Result - General/last"
+          ansible.builtin.debug:
+            var: f5_status.json.result
 
-      - name: "DISPLAY TASK ID {{ task_id_a }} Errors if Any"
-        ansible.builtin.debug:
-          var: f5_id_a_status.json.errors
+        - name: "DISPLAY Errors if Any - General/last"
+          ansible.builtin.debug:
+            var: f5_status.json.errors
+
+
+    - name: Block for A
 
       when: not task_id_a == "null"
 
+      block:
+
+        - name: Check Status on ID {{ task_id_a }}
+          ansible.builtin.uri:
+            url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding/task/{{ task_id_a }}"
+            method: GET
+            headers:
+              X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
+            status_code:
+              - 200
+              - 202
+            timeout: 300
+            validate_certs: false
+          delegate_to: localhost
+          register: f5_id_a_status
+          tags:
+            - status
+          ignore_errors: true
+
+        - name: "Result - DISPLAY TASK ID {{ task_id_a }}"
+          ansible.builtin.debug:
+            var: f5_id_a_status.json.result
+
+        - name: "Errors if Any - DISPLAY TASK ID {{ task_id_a }}"
+          ansible.builtin.debug:
+            var: f5_id_a_status.json.errors
 
 
     - name: Block for B
-      block:
-
-      - name: Check Status on ID {{ task_id_b }}
-        ansible.builtin.uri:
-          url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding/task/{{ task_id_b }}"
-          method: GET
-          headers:
-            X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
-          status_code:
-            - 200
-            - 202
-          timeout: 300
-          validate_certs: false
-        delegate_to: localhost
-        register: f5_id_b_status
-        tags:
-          - status
-        ignore_errors: yes
-
-      - name: "Result For - DISPLAY TASK ID {{ task_id_b }}"
-        ansible.builtin.debug:
-          var: f5_id_b_status.json.result
-
-      - name: "Errors if Any - DISPLAY TASK ID {{ task_id_b }}"
-        ansible.builtin.debug:
-          var: f5_id_b_status.json.errors
 
       when: not task_id_b is match("null")
+
+      block:
+
+        - name: Check Status on ID {{ task_id_b }}
+          ansible.builtin.uri:
+            url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding/task/{{ task_id_b }}"
+            method: GET
+            headers:
+              X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
+            status_code:
+              - 200
+              - 202
+            timeout: 300
+            validate_certs: false
+          delegate_to: localhost
+          register: f5_id_b_status
+          tags:
+            - status
+          ignore_errors: true
+
+        - name: "Result For - DISPLAY TASK ID {{ task_id_b }}"
+          ansible.builtin.debug:
+            var: f5_id_b_status.json.result
+
+        - name: "Errors if Any - DISPLAY TASK ID {{ task_id_b }}"
+          ansible.builtin.debug:
+            var: f5_id_b_status.json.errors
