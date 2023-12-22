@@ -1,0 +1,45 @@
+---
+devices:
+{% for item in csvfile.split("\n") %}
+{%   if loop.index != 1 %}
+{%     set list = item.split(",") %}
+
+  - unit: 
+      {{ headers_list[0]|trim() }}: '{{ list[0]|trim() }}'
+      {{ headers_list[1]|trim() }}: '{{ list[1]|trim() }}'
+      {{ headers_list[2]|trim() }}: '{{ list[2]|trim() }}'
+      {{ headers_list[3]|trim() }}: '{{ list[3]|trim() }}'
+      {{ headers_list[4]|trim() }}: '{{ list[4]|trim() }}'
+      {{ headers_list[5]|trim() }}: '{{ list[5]|trim() }}'
+      {{ headers_list[6]|trim() }}: '{{ list[6]|trim() }}'
+      {{ headers_list[7]|trim() }}: '{{ list[7]|trim() }}'
+      {{ headers_list[8]|trim() }}: '{{ list[8]|trim() }}'
+      {{ headers_list[9]|trim() }}: '{{ list[9]|trim() }}'
+      {{ headers_list[10]|trim() }}: '{{ list[10]|trim() }}'
+
+{%   endif %}
+{% endfor %}
+
+{#
+This is a modified version of the file - Working to implement auto key value based on header (line1) in CSV
+
+## CSV Header Listings #Coulmn# Name
+#0# hostname,
+#1# device_type, future use planned - currently f5_bigip or f5_bigiq
+#2# role, used to match in creation of declarations - currently bigip used, future bigiq_cm and bigiq_dcd
+#3# push_do, this is a "yes" field when it matches, otherwise is a miss (generally put no)
+#4# push_as3, this is a "yes" field when it matches, otherwise is a miss (generally put no)
+
+#5# oob_mgmt_ip , used as primary mgmt ip
+#6# mgmt_ip , used as inband mgmt ip
+
+#7# cluster , this is a "yes' field when it matches, otherwise a miss, used if part of a cluster 
+#8# clustername , this is the name of the cluster as shown in bigiq
+
+#9# irule1, example irule variable used in tests
+#10# partition1, example partition (as3 Tenant) variable used in tests
+
+### If needed can force lower or upper
+### Example would be hostnames
+#       hostname: '{{ list[0]|trim()|lower }}'
+#}

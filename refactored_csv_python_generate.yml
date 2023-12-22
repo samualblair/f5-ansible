@@ -1,0 +1,56 @@
+---
+- name: DO Playbook - Generate DO files - Works with any number of variables in csv
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars_prompt:
+
+    - name: "bigip_user"
+      prompt: "What is your username for BIG-IPs?"
+      private: false
+
+    - name: "bigip_password"
+      prompt: "What is your password for BIG-IPs?"
+      private: true
+
+  vars: # Import CSV File
+    csvfile: "{{ lookup('file', './variables/device_variables.csv') }}"
+
+  tasks:
+
+    - name: Set a starting header list
+      ansible.builtin.set_fact:
+        headers_list: "{{ csvfile.split('\n')[0].split(',') }}"
+
+    - name: Python Script to create Vars list
+      ansible.builtin.script:
+        cmd: ./scripts/vars_parse.py
+        executable: /usr/bin/python3
+      register: python_result
+
+    - name: Include YAML style Vars from Python Output
+      ansible.builtin.set_fact:
+        devices: "{{ python_result.stdout }}"
+
+    - name: BIG-IP Only create BIG-IP DO payload json based on Jinja2 Template and YAML from CSV # noqa: run-once[task]
+      ansible.builtin.template:
+        src: "./templates/do_json_template.j2"
+        dest: "./output/do.bigip.{{ item.unit.hostname }}.json"
+        # Set permissions using octal so leading 0 , set to User=RW , Group=R , Other=R
+        mode: "0644"
+      delegate_to: localhost
+      with_items: "{{ devices }}"
+      when: "'bigip' in item.unit.role"
+      run_once: true
+
+    - name: BIG-IP Only create BIG-IQ DO payload json based on nested Jinja2 Template and YAML from CSV # noqa: run-once[task]
+      ansible.builtin.template:
+        src: "./templates/do_bigiq_json_template.j2"
+        dest: "./output/do.bigiq.{{ item.unit.hostname }}.json"
+        # Set permissions using octal so leading 0 , set to User=RW , Group=R , Other=R
+        mode: "0644"
+      delegate_to: localhost
+      with_items: "{{ devices }}"
+      when: "'bigip' in item.unit.role"
+      run_once: true
