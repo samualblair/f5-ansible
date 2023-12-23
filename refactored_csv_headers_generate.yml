@@ -55,3 +55,14 @@
       with_items: "{{ devices }}"
       when: "'bigip' in item.unit.role"
       run_once: true
+
+    - name: BIG-IP Only create AS3 payload json based on Jinja2 Template and YAML from CSV # noqa: run-once[task]
+      ansible.builtin.template:
+        src: "./templates/as3_json_template.j2"
+        dest: "./output/as3.{{ item.unit.hostname }}.json"
+        # Set permissions using octal so leading 0 , set to User=RW , Group=R , Other=R
+        mode: "0644"
+      delegate_to: localhost
+      with_items: "{{ devices }}"
+      when: "'bigip' in item.unit.role"
+      run_once: true
