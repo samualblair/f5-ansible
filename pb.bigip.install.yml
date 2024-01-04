@@ -22,8 +22,14 @@
       private: false
 
     - name: "as3_package_filename"
-      prompt: "What is your file name example: f5-appsvcs-3.42.0-5.noarch.rpm "
+      prompt: "What is your AS3 file name? example: f5-appsvcs-3.42.0-5.noarch.rpm "
       private: false
+      default: f5-appsvcs-3.42.0-5.noarch.rpm
+
+    - name: "do_package_filename"
+      prompt: "What is your DO file name? example: f5-declarative-onboarding-1.41.0-8.noarch.rpm "
+      private: false
+      default: f5-declarative-onboarding-1.41.0-8.noarch.rpm
 
   tasks:
 
@@ -60,6 +66,11 @@
     - name: Install AS3
       f5networks.f5_modules.bigip_lx_package:
         package: "./files/{{ as3_package_filename }}"
+        provider: "{{ provider_info }}"
+
+    - name: Install DO
+      f5networks.f5_modules.bigip_lx_package:
+        package: "./files/{{ do_package_filename }}"
         provider: "{{ provider_info }}"
 
 #    - name: Login and Obtain Token
