@@ -12,22 +12,6 @@
     },
     "Common": {
         "class": "Tenant",
-        "Provision": {
-            "class": "Provision",
-{% if item.unit.provision_ltm is defined and item.unit.provision_ltm == "yes" %}
-            "ltm": "nominal",
-{% endif %}
-{% if item.unit.provision_gtm is defined and item.unit.provision_gtm == "yes" %}
-            "gtm": "nominal",
-{% endif %}
-{% if item.unit.provision_apm is defined and item.unit.provision_apm == "yes" %}
-            "apm": "nominal",
-{% endif %}
-{% if item.unit.provision_asm is defined and item.unit.provision_asm == "yes" %}
-            "asm": "nominal",
-{% endif %}
-            "avr": "nominal"
-        },
          "DNS": {
             "class": "DNS",
             "nameServers": [

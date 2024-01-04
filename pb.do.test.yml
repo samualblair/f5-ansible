@@ -53,7 +53,11 @@
         method: POST
         headers:
           X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
-#        body: "{{ lookup('file','./static_example/do.bigip_large_example.json') }}"
+        # An example of using a file generated and with a bigip hostname coming from the ansible variables
+        # body: "{{ lookup('file', './output/do.bigip.{{ ansible_hostname }}.json') }}"
+        # A large example of using a static file for device
+        # body: "{{ lookup('file','./static_example/do.bigip_large_example.json') }}"
+        # A small example of using a static file for device
         body: "{{ lookup('file', './static_example/do.bigip.json') }}"
         status_code:
           - 200
@@ -62,3 +66,8 @@
         body_format: json
         validate_certs: false
       delegate_to: localhost
+      register: f5_do_results
+
+    - name: "DISPLAY DO ID"
+      ansible.builtin.debug:
+        var: f5_do_results.json.id

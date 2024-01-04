@@ -4,6 +4,7 @@
   connection: local
   gather_facts: false
 
+# User and Password only required when generating for BIG-IQ - Better to only use when activly sending
   vars_prompt:
 
     - name: "bigip_user"

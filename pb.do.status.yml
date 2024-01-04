@@ -13,6 +13,16 @@
       prompt: "What is your password? "
       private: true
 
+    - name: "last_task_check"
+      prompt: "Do you want to skip showing last status? (anything but skip will shows last task status)"
+      private: false
+      default: "skip"
+
+    - name: "task_id_a"
+      prompt: "Optional: What is Task ID Are you Checking (a null entry will skip)?"
+      private: false
+      default: "null"
+
   vars: # Import Auth JSON
     f5_login_json: "{{ lookup('template', './templates/f5_web_auth.j2') }}"
 
@@ -49,26 +59,90 @@
       tags:
         - service
 
-    - name: Check Status Get
-      ansible.builtin.uri:
-        url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding"
-        method: GET
-        headers:
-          X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
-        status_code:
-          - 200
-          - 202
-        timeout: 300
-        validate_certs: false
-      delegate_to: localhost
-      register: f5_status
-      tags:
-        - status
+    - name: Block for Last Task
 
-    - name: "DISPLAY Result"
-      ansible.builtin.debug:
-        var: f5_status.json.result
+      when: not last_task_check == "skip"
 
-    - name: "DISPLAY Errors if Any"
-      ansible.builtin.debug:
-        var: f5_status.json.errors
+      block:
+
+        - name: Check Status - General/last
+          ansible.builtin.uri:
+            url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding"
+            method: GET
+            headers:
+              X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
+            status_code:
+              - 200
+              - 202
+            timeout: 300
+            validate_certs: false
+          delegate_to: localhost
+          register: f5_status
+          tags:
+            - status
+          ignore_errors: true
+
+        # Build of custom message to show ID and key status information
+        - name: "Build Custom message"
+          ansible.builtin.set_fact:
+            pp_do_f5_status: {
+              "ID": "{{ f5_status.json.id }}",
+              "code": "{{ f5_status.json.result.code }}",
+              "status": "{{ f5_status.json.result.status }}",
+              "message": "{{ f5_status.json.result.message }}",
+              "warnings": "{{ f5_status.json.result.warnings }}"
+            }
+          # Logic to skip processing rather than error if one of the following is missing
+          when: |
+            f5_status.json.id is defined and
+            f5_status.json.result.code is defined and
+            f5_status.json.result.status is defined and
+            f5_status.json.result.message is defined and
+            f5_status.json.result.warnings is defined
+
+        # TODO: Add simpler output message to use if previous message was not built
+        # Display custom message to user
+        - name: "DISPLAY ID and Results - General/last"
+          ansible.builtin.debug:
+            var: pp_do_f5_status
+
+        # Legacy Method was to simply show result status, not desriable as no ID is shown
+        # - name: "DISPLAY Result - General/last"
+        #   ansible.builtin.debug:
+        #     var: f5_status.json.result
+
+        - name: "DISPLAY Errors if Any - General/last"
+          ansible.builtin.debug:
+            var: f5_status.json.errors
+
+    - name: Block for A
+
+      when: not task_id_a == "null"
+
+      block:
+
+        - name: Check Status on ID {{ task_id_a }}
+          ansible.builtin.uri:
+            url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding/task/{{ task_id_a }}"
+            method: GET
+            headers:
+              X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
+            status_code:
+              - 200
+              - 202
+            timeout: 300
+            validate_certs: false
+          delegate_to: localhost
+          register: f5_id_a_status
+          tags:
+            - status
+          ignore_errors: true
+
+        # No need to show ID as the ID was queried in the first place
+        - name: "Result - DISPLAY TASK ID {{ task_id_a }}"
+          ansible.builtin.debug:
+            var: f5_id_a_status.json.result
+
+        - name: "Errors if Any - DISPLAY TASK ID {{ task_id_a }}"
+          ansible.builtin.debug:
+            var: f5_id_a_status.json.errors
