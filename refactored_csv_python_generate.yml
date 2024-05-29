@@ -1,5 +1,5 @@
 ---
-- name: DO Playbook - Generate DO files - Works with any number of variables in csv
+- name: DO and AS3 Playbook - Generate DO files - Works with any number of variables in csv
   hosts: localhost
   connection: local
   gather_facts: false
