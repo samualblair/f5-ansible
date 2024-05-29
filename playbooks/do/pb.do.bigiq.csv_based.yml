@@ -44,24 +44,17 @@
       register: f5_login_token_post
       when: "'bigiq_cm' in group_names"
 
-    - name: Parse CSV To YAML # noqa: run-once[task]
-      ansible.builtin.template:
-        src: "../../templates/variable_template.j2"
-        dest: "../../output/config_variables.yml"
-        # Set permissions using octal so leading 0 , set to User=RW , Group=R , Other=R
-        mode: "0644"
-      run_once: true
-      tags:
-        - test_files
-        - test_files_and_cleanup
+    - name: Python Script to create Vars list
+      ansible.builtin.script:
+        cmd: ../../scripts/vars_parse.py
+        executable: /usr/bin/python3
+      register: python_result
 
-    - name: Import Variables yaml
-      ansible.builtin.include_vars: "../../output/config_variables.yml"
-      tags:
-        - test_files
-        - test_files_and_cleanup
+    - name: Include YAML style Vars from Python Output
+      ansible.builtin.set_fact:
+        devices: "{{ python_result.stdout }}"
 
-    - name: BIG-IP Only create BIG-IP DO payload json based on Jinja2 Template and YAML from CSV # noqa: run-once[task]
+    - name: BIG-IP Only create BIG-IP DO payload json based on Jinja2 Template and YAML from CSV # noqa: run-once[task] noqa: no-relative-paths
       ansible.builtin.template:
         src: "../../templates/do_json_template.j2"
         dest: "../../output/do.bigip.{{ item.unit.hostname }}.json"
@@ -75,7 +68,7 @@
         - test_files
         - test_files_and_cleanup
 
-    - name: BIG-IP Only create BIG-IQ DO payload json based on nested Jinja2 Template and YAML from CSV # noqa: run-once[task]
+    - name: BIG-IP Only create BIG-IQ DO payload json based on nested Jinja2 Template and YAML from CSV # noqa: run-once[task] noqa: no-relative-paths
       ansible.builtin.template:
         src: "../../templates/do_bigiq_json_template.j2"
         dest: "../../output/do.bigiq.{{ item.unit.hostname }}.json"

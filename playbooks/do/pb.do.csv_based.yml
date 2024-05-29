@@ -35,19 +35,18 @@
       delegate_to: localhost
       register: f5_login_token_post
 
-    - name: Parse CSV To YAML # noqa: run-once[task]
-      ansible.builtin.template:
-        src: "../../templates/variable_template.j2"
-        dest: "../../output/config_variables.yml"
-        # Set permissions using octal so leading 0 , set to User=RW , Group=R , Other=R
-        mode: "0644"
-      run_once: true
+    - name: Python Script to create Vars list
+      ansible.builtin.script:
+        cmd: ../../scripts/vars_parse.py
+        executable: /usr/bin/python3
+      register: python_result
       tags:
         - test_files
         - test_files_and_cleanup
 
-    - name: Import Variables yaml
-      ansible.builtin.include_vars: "../../output/config_variables.yml"
+    - name: Include YAML style Vars from Python Output
+      ansible.builtin.set_fact:
+        devices: "{{ python_result.stdout }}"
       tags:
         - test_files
         - test_files_and_cleanup
@@ -64,7 +63,7 @@
       delegate_to: localhost
       when: "'bigip' in group_names"
 
-    - name: BIG-IP Only create do payload json based on Jinja2 Template and YAML from CSV
+    - name: BIG-IP Only create do payload json based on Jinja2 Template and YAML from CSV # noqa: no-relative-paths
       ansible.builtin.template:
         src: "../../templates/do_json_template.j2"
         dest: "../../output/do.bigip.{{ item.unit.hostname }}.json"
@@ -96,12 +95,5 @@
         path: ../../output/do.bigip.{{ item.unit.hostname }}.json
         state: absent
       with_items: "{{ devices }}"
-      tags:
-        - test_files_and_cleanup
-
-    - name: CLEANUP Remove Inventory YML File config_variables.yml on playbook completion
-      ansible.builtin.file:
-        path: ../../output/config_variables.yml
-        state: absent
       tags:
         - test_files_and_cleanup
