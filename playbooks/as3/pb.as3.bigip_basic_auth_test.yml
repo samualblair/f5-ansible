@@ -1,12 +1,8 @@
 ---
-- name: TEST AS3 to BIG-IQ With Basic Auth
-  hosts: bigiq_cm
+- name: TEST AS3 to BIG-IP With Basic Auth
+  hosts: bigip
   connection: local
   gather_facts: false
-
-# Warning - as of 2023 F5 documentation states
-# AS3 versions 3.42 and later are NOT compatible with BIG-IQ
-# Be aware of what version AS3 is installed on BIG-IQ before attempting to use
 
   vars_prompt:
     - name: "ansible_user"
@@ -27,7 +23,7 @@
           - 200
           - 202
         timeout: 300
-        # Note after BIG-IQ 5.1.0, BASIC AUTH is disabled by default and will just give a 401 error unless turned on
+        # On newer versions BASIC AUTH may be disabled by default and will just give a 401 error unless turned on
         # Reccomended to not use basic auth and instead generate token and then use token
         force_basic_auth: true
         user: "{{ ansible_user }}"
@@ -43,7 +39,7 @@
         # ASYNC is recomended but harder to test with
         url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/declare?async=true"
         method: POST
-        body: "{{ lookup('file', './static_example/as3.json') }}"
+        body: "{{ lookup('file', '../../static_example/as3.json') }}"
         status_code:
           - 200
           - 202
@@ -65,7 +61,7 @@
         # ASYNC is recomended but harder to test with
         url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/declare?async=true"
         method: POST
-        body: "{{ lookup('file', './static_example/as3.bigiq_erase.json') }}"
+        body: "{{ lookup('file', '../../static_example/as3.bigiq_erase.json') }}"
         status_code:
           - 200
           - 202

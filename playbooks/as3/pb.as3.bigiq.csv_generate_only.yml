@@ -9,25 +9,25 @@
 # Be aware of what version AS3 is installed on BIG-IQ before attempting to use
 
   vars: # Import CSV File
-    csvfile: "{{ lookup('file', './variables/device_variables.csv') }}"
+    csvfile: "{{ lookup('file', '../../variables/device_variables.csv') }}"
 
   tasks:
 
     - name: Parse CSV To YAML # noqa: run-once[task]
       ansible.builtin.template:
-        src: "./templates/variable_template.j2"
-        dest: "./output/config_variables.yml"
+        src: "../../templates/variable_template.j2"
+        dest: "../../output/config_variables.yml"
         # Set permissions using octal so leading 0 , set to User=RW , Group=R , Other=R
         mode: "0644"
       run_once: true
 
     - name: Include YAML Vars
-      ansible.builtin.include_vars: "./output/config_variables.yml"
+      ansible.builtin.include_vars: "../../output/config_variables.yml"
 
     - name: BIG-IP Only create AS3 payload json based on Jinja2 Template and YAML from CSV
       ansible.builtin.template:
-        src: "./templates/as3_bigiq_json_template.j2"
-        dest: "./output/as3.{{ item.unit.hostname }}.json"
+        src: "../../templates/as3_bigiq_json_template.j2"
+        dest: "../../output/as3.{{ item.unit.hostname }}.json"
         # Set permissions using octal so leading 0 , set to User=RW , Group=R , Other=R
         mode: "0644"
       delegate_to: localhost

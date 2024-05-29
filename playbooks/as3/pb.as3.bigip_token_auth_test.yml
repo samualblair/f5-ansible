@@ -1,5 +1,5 @@
 ---
-- name: TEST AS3 to BIG-IP With Basic Auth
+- name: TEST AS3 to BIG-IP With Token Auth
   hosts: bigip
   connection: local
   gather_facts: false
@@ -13,7 +13,30 @@
       prompt: "What is your password? "
       private: true
 
+  vars:
+    f5_login_json: "{{ lookup('template', '../../templates/f5_web_auth.j2') }}" # Create Auth JSON Variable
+
   tasks:
+
+    - name: Login and Obtain Token
+      ansible.builtin.uri:
+        url: "https://{{ ansible_host }}:443/mgmt/shared/authn/login"
+        method: POST
+        body: "{{ f5_login_json }}"
+        body_format: json
+        status_code:
+          - 200
+        timeout: 300
+        force_basic_auth: true
+        user: "{{ ansible_user }}"
+        password: "{{ ansible_password }}"
+        validate_certs: false
+      delegate_to: localhost
+      register: f5_login_token_post
+
+    - name: Display f5_login_token_post
+      ansible.builtin.debug:
+        msg: "{{ f5_login_token_post.json.token }}"
 
     - name: Test Get
       ansible.builtin.uri:
@@ -25,10 +48,10 @@
         timeout: 300
         # On newer versions BASIC AUTH may be disabled by default and will just give a 401 error unless turned on
         # Reccomended to not use basic auth and instead generate token and then use token
-        force_basic_auth: true
-        user: "{{ ansible_user }}"
-        password: "{{ ansible_password }}"
-        validate_certs: false
+        headers:
+          X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
+        # Reccomended to validate certs when possible, otherwise you are accepting a security risk upon connection
+        # validate_certs: false
       delegate_to: localhost
       tags:
         - test-as3
@@ -39,7 +62,7 @@
         # ASYNC is recomended but harder to test with
         url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/declare?async=true"
         method: POST
-        body: "{{ lookup('file', './static_example/as3.json') }}"
+        body: "{{ lookup('file', '../../static_example/as3.json') }}"
         status_code:
           - 200
           - 202
@@ -47,10 +70,10 @@
         # status_code: 202
         timeout: 300
         body_format: json
-        force_basic_auth: true
-        user: "{{ ansible_user }}"
-        password: "{{ ansible_password }}"
-        validate_certs: false
+        headers:
+          X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
+        # Reccomended to validate certs when possible, otherwise you are accepting a security risk upon connection
+        # validate_certs: false
       delegate_to: localhost
       tags:
         - new-config
@@ -61,7 +84,7 @@
         # ASYNC is recomended but harder to test with
         url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/declare?async=true"
         method: POST
-        body: "{{ lookup('file', './static_example/as3.bigiq_erase.json') }}"
+        body: "{{ lookup('file', '../../static_example/as3.bigiq_erase.json') }}"
         status_code:
           - 200
           - 202
@@ -69,10 +92,10 @@
         # status_code: 202
         timeout: 300
         body_format: json
-        force_basic_auth: true
-        user: "{{ ansible_user }}"
-        password: "{{ ansible_password }}"
-        validate_certs: false
+        headers:
+          X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
+        # Reccomended to validate certs when possible, otherwise you are accepting a security risk upon connection
+        # validate_certs: false
       delegate_to: localhost
       tags:
         - remove-config

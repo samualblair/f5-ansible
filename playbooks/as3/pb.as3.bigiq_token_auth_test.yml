@@ -1,8 +1,12 @@
 ---
-- name: TEST AS3 to BIG-IP With Token Auth
-  hosts: bigip
+- name: TEST AS3 to BIG-IQ With Token Auth
+  hosts: bigiq_cm
   connection: local
   gather_facts: false
+
+# Warning - as of 2023 F5 documentation states
+# AS3 versions 3.42 and later are NOT compatible with BIG-IQ
+# Be aware of what version AS3 is installed on BIG-IQ before attempting to use
 
   vars_prompt:
     - name: "ansible_user"
@@ -14,7 +18,7 @@
       private: true
 
   vars:
-    f5_login_json: "{{ lookup('template', './templates/f5_web_auth.j2') }}" # Create Auth JSON Variable
+    f5_login_json: "{{ lookup('template', '../../templates/f5_web_auth.j2') }}" # Create Auth JSON Variable
 
   tasks:
 
@@ -46,7 +50,7 @@
           - 200
           - 202
         timeout: 300
-        # On newer versions BASIC AUTH may be disabled by default and will just give a 401 error unless turned on
+        # Note after BIG-IQ 5.1.0, BASIC AUTH is disabled by default and will just give a 401 error unless turned on
         # Reccomended to not use basic auth and instead generate token and then use token
         headers:
           X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
@@ -62,7 +66,7 @@
         # ASYNC is recomended but harder to test with
         url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/declare?async=true"
         method: POST
-        body: "{{ lookup('file', './static_example/as3.json') }}"
+        body: "{{ lookup('file', '../../static_example/as3.json') }}"
         status_code:
           - 200
           - 202
@@ -84,7 +88,7 @@
         # ASYNC is recomended but harder to test with
         url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/declare?async=true"
         method: POST
-        body: "{{ lookup('file', './static_example/as3.bigiq_erase.json') }}"
+        body: "{{ lookup('file', '../../static_example/as3.bigiq_erase.json') }}"
         status_code:
           - 200
           - 202

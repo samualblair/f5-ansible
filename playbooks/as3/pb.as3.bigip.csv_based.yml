@@ -14,14 +14,14 @@
       private: true
 
   vars: # Import CSV File
-    csvfile: "{{ lookup('file', './variables/device_variables.csv') }}"
+    csvfile: "{{ lookup('file', '../../variables/device_variables.csv') }}"
 
   tasks:
 
     - name: Parse CSV To YAML # noqa: run-once[task]
       ansible.builtin.template:
-        src: "./templates/variable_template.j2"
-        dest: "./output/config_variables.yml"
+        src: "../../templates/variable_template.j2"
+        dest: "../../output/config_variables.yml"
         # Set permissions using octal so leading 0 , set to User=RW , Group=R , Other=R
         mode: "0644"
       run_once: true
@@ -30,7 +30,7 @@
         - test_files_and_cleanup
 
     - name: Include YAML Vars
-      ansible.builtin.include_vars: "./output/config_variables.yml"
+      ansible.builtin.include_vars: "../../output/config_variables.yml"
       tags:
         - test_files
         - test_files_and_cleanup
@@ -51,8 +51,8 @@
 
     - name: BIG-IP Only create AS3 payload json based on Jinja2 Template and YAML from CSV
       ansible.builtin.template:
-        src: "./templates/as3_json_template.j2"
-        dest: "./output/as3.{{ item.unit.hostname }}.json"
+        src: "../../templates/as3_json_template.j2"
+        dest: "../../output/as3.{{ item.unit.hostname }}.json"
         # Set permissions using octal so leading 0 , set to User=RW , Group=R , Other=R
         mode: "0644"
       delegate_to: localhost
@@ -66,7 +66,7 @@
       ansible.builtin.uri:
         url: "https://{{ ansible_host }}:443/mgmt/shared/appsvcs/declare"
         method: POST
-        body: "{{ lookup('file', './output/as3.{{ inventory_hostname }}.json') }}"
+        body: "{{ lookup('file', '../../output/as3.{{ inventory_hostname }}.json') }}"
         status_code:
           - 200
           - 202
@@ -96,7 +96,7 @@
 #
     - name: CLEANUP Remove AS3 JSON File(s) as3.[hostname].json on playbook completion
       ansible.builtin.file:
-        path: ./output/as3.{{ item.unit.hostname }}.json
+        path: ../../output/as3.{{ item.unit.hostname }}.json
         state: absent
       with_items: "{{ devices }}"
       tags:
@@ -104,7 +104,7 @@
 
     - name: CLEANUP Remove Inventory YML File config_variables.yml on playbook completion
       ansible.builtin.file:
-        path: ./output/config_variables.yml
+        path: ../../output/config_variables.yml
         state: absent
       tags:
         - test_files_and_cleanup
