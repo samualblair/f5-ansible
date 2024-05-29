@@ -1,6 +1,6 @@
 ---
-- name: Request full list of DO tasks from BIG-IQ And Provide user with IDs still processing
-  hosts: bigiq_cm
+- name: Satic File based Full DO based on Hostname
+  hosts: bigip
   connection: local
   gather_facts: false
 
@@ -13,8 +13,8 @@
       prompt: "What is your password? "
       private: true
 
-  vars: # Import CSV File and Auth JSON
-    f5_login_json: "{{ lookup('template', './templates/f5_web_auth.j2') }}"
+  vars: # Import Auth JSON
+    f5_login_json: "{{ lookup('template', '../../templates/f5_web_auth.j2') }}"
 
   tasks:
 
@@ -46,26 +46,18 @@
         timeout: 300
         validate_certs: false
       delegate_to: localhost
-      tags:
-        - service
 
-    - name: Check Status on ID All
+    - name: BIG-IP Only PUSH DO Static File
       ansible.builtin.uri:
-        url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding/task/"
-        method: GET
+        url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding"
+        method: POST
         headers:
           X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
+        body: "{{ lookup('file', '../../static_output/do.bigiq.{{ inventory_hostname }}.json') }}"
         status_code:
           - 200
           - 202
         timeout: 300
+        body_format: json
         validate_certs: false
       delegate_to: localhost
-      register: f5_id_all_status
-      tags:
-        - status
-      ignore_errors: true
-
-    - name: Loop to show IDs
-      ansible.builtin.include_tasks: ./templates/id_loop.yml
-      with_items: "{{ f5_id_all_status.json }}"

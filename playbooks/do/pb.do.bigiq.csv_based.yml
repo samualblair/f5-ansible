@@ -22,8 +22,8 @@
       private: true
 
   vars: # Import CSV File and Auth JSON
-    csvfile: "{{ lookup('file', './variables/device_variables.csv') }}"
-    f5_login_json: "{{ lookup('template', './templates/f5_web_auth.j2') }}"
+    csvfile: "{{ lookup('file', '../../variables/device_variables.csv') }}"
+    f5_login_json: "{{ lookup('template', '../../templates/f5_web_auth.j2') }}"
 
   tasks:
 
@@ -46,8 +46,8 @@
 
     - name: Parse CSV To YAML # noqa: run-once[task]
       ansible.builtin.template:
-        src: "./templates/variable_template.j2"
-        dest: "./output/config_variables.yml"
+        src: "../../templates/variable_template.j2"
+        dest: "../../output/config_variables.yml"
         # Set permissions using octal so leading 0 , set to User=RW , Group=R , Other=R
         mode: "0644"
       run_once: true
@@ -56,15 +56,15 @@
         - test_files_and_cleanup
 
     - name: Import Variables yaml
-      ansible.builtin.include_vars: "./output/config_variables.yml"
+      ansible.builtin.include_vars: "../../output/config_variables.yml"
       tags:
         - test_files
         - test_files_and_cleanup
 
     - name: BIG-IP Only create BIG-IP DO payload json based on Jinja2 Template and YAML from CSV # noqa: run-once[task]
       ansible.builtin.template:
-        src: "./templates/do_json_template.j2"
-        dest: "./output/do.bigip.{{ item.unit.hostname }}.json"
+        src: "../../templates/do_json_template.j2"
+        dest: "../../output/do.bigip.{{ item.unit.hostname }}.json"
         # Set permissions using octal so leading 0 , set to User=RW , Group=R , Other=R
         mode: "0644"
       delegate_to: localhost
@@ -77,8 +77,8 @@
 
     - name: BIG-IP Only create BIG-IQ DO payload json based on nested Jinja2 Template and YAML from CSV # noqa: run-once[task]
       ansible.builtin.template:
-        src: "./templates/do_bigiq_json_template.j2"
-        dest: "./output/do.bigiq.{{ item.unit.hostname }}.json"
+        src: "../../templates/do_bigiq_json_template.j2"
+        dest: "../../output/do.bigiq.{{ item.unit.hostname }}.json"
         # Set permissions using octal so leading 0 , set to User=RW , Group=R , Other=R
         mode: "0644"
       delegate_to: localhost
@@ -109,7 +109,7 @@
         method: POST
         headers:
           X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
-        body: "{{ lookup('file', './output/do.bigiq.{{ item.unit.hostname }}.json') }}"
+        body: "{{ lookup('file', '../../output/do.bigiq.{{ item.unit.hostname }}.json') }}"
         status_code:
           - 200
           - 202
@@ -122,7 +122,7 @@
 
     - name: CLEANUP Remove DO JSON File(s) do.bigip.[hostname].json on playbook completion
       ansible.builtin.file:
-        path: ./output/do.bigip.{{ item.unit.hostname }}.json
+        path: ../../output/do.bigip.{{ item.unit.hostname }}.json
         state: absent
       with_items: "{{ devices }}"
       tags:
@@ -130,7 +130,7 @@
 
     - name: CLEANUP Remove DO JSON File(s) do.bigiq.[hostname].json on playbook completion
       ansible.builtin.file:
-        path: ./output/do.bigiq.{{ item.unit.hostname }}.json
+        path: ../../output/do.bigiq.{{ item.unit.hostname }}.json
         state: absent
       with_items: "{{ devices }}"
       tags:
@@ -138,7 +138,7 @@
 
     - name: CLEANUP Remove Inventory YML File config_variables.yml on playbook completion
       ansible.builtin.file:
-        path: ./output/config_variables.yml
+        path: ../../output/config_variables.yml
         state: absent
       tags:
         - test_files_and_cleanup

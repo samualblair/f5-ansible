@@ -1,5 +1,5 @@
 ---
-- name: WIPE DO
+- name: Wipe DO Configuration
   hosts: bigip
   connection: local
   gather_facts: false
@@ -13,8 +13,12 @@
       prompt: "What is your password? "
       private: true
 
+    - name: "do_config_id"
+      prompt: "What is the do_config_id you want to Wipe? "
+      private: false
+
   vars: # Import Auth JSON
-    f5_login_json: "{{ lookup('template', './templates/f5_web_auth.j2') }}"
+    f5_login_json: "{{ lookup('template', '../../templates/f5_web_auth.j2') }}"
 
   tasks:
 
@@ -34,15 +38,17 @@
       delegate_to: localhost
       register: f5_login_token_post
 
-    - name: Get Current DO Configuration
+    - name: Wipe Original Config ID
       ansible.builtin.uri:
-        url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding/config"
-        method: GET
+        # Must find original config id with get config. ID is then placed in URI path
+        url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding/config/{{ do_config_id }}"
+        method: DELETE
         headers:
           X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
         status_code:
           - 200
           - 202
         timeout: 300
+        body_format: json
         validate_certs: false
       delegate_to: localhost

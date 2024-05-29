@@ -1,5 +1,5 @@
 ---
-- name: Satic File based Full DO based on Hostname
+- name: WIPE DO
   hosts: bigip
   connection: local
   gather_facts: false
@@ -14,7 +14,7 @@
       private: true
 
   vars: # Import Auth JSON
-    f5_login_json: "{{ lookup('template', './templates/f5_web_auth.j2') }}"
+    f5_login_json: "{{ lookup('template', '../../templates/f5_web_auth.j2') }}"
 
   tasks:
 
@@ -34,9 +34,9 @@
       delegate_to: localhost
       register: f5_login_token_post
 
-    - name: Test Service Get
+    - name: Get Current DO Configuration
       ansible.builtin.uri:
-        url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding/info"
+        url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding/config"
         method: GET
         headers:
           X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
@@ -44,20 +44,5 @@
           - 200
           - 202
         timeout: 300
-        validate_certs: false
-      delegate_to: localhost
-
-    - name: BIG-IP Only PUSH DO Static File
-      ansible.builtin.uri:
-        url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding"
-        method: POST
-        headers:
-          X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
-        body: "{{ lookup('file', './static_output/do.bigiq.{{ inventory_hostname }}.json') }}"
-        status_code:
-          - 200
-          - 202
-        timeout: 300
-        body_format: json
         validate_certs: false
       delegate_to: localhost

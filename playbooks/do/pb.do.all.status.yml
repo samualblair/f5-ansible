@@ -1,6 +1,6 @@
 ---
 - name: TEST DO
-  hosts: bigip
+  hosts: all
   connection: local
   gather_facts: false
 
@@ -13,8 +13,8 @@
       prompt: "What is your password? "
       private: true
 
-  vars: # Import Auth JSON
-    f5_login_json: "{{ lookup('template', './templates/f5_web_auth.j2') }}"
+  vars: # Create Auth JSON
+    f5_login_json: "{{ lookup('template', '../../templates/f5_web_auth.j2') }}"
 
   tasks:
 
@@ -46,28 +46,29 @@
         timeout: 300
         validate_certs: false
       delegate_to: localhost
+      tags:
+        - service
 
-    - name: BIG-IP Only PUSH DO Static File
+    - name: Check Status Get
       ansible.builtin.uri:
         url: "https://{{ ansible_host }}:443/mgmt/shared/declarative-onboarding"
-        method: POST
+        method: GET
         headers:
           X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
-        # An example of using a file generated and with a bigip hostname coming from the ansible variables
-        # body: "{{ lookup('file', './output/do.bigip.{{ ansible_hostname }}.json') }}"
-        # A large example of using a static file for device
-        # body: "{{ lookup('file','./static_example/do.bigip_large_example.json') }}"
-        # A small example of using a static file for device
-        body: "{{ lookup('file', './static_example/do.bigip.json') }}"
         status_code:
           - 200
           - 202
         timeout: 300
-        body_format: json
         validate_certs: false
       delegate_to: localhost
-      register: f5_do_results
+      register: f5_status
+      tags:
+        - status
 
-    - name: "DISPLAY DO ID"
+    - name: "DISPLAY Result"
       ansible.builtin.debug:
-        var: f5_do_results.json.id
+        var: f5_status.json.result
+
+    - name: "DISPLAY Errors if Any"
+      ansible.builtin.debug:
+        var: f5_status.json.errors

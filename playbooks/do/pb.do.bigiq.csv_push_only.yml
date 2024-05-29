@@ -14,7 +14,7 @@
       private: true
 
   vars: # Import Auth JSON
-    f5_login_json: "{{ lookup('template', './templates/f5_web_auth.j2') }}"
+    f5_login_json: "{{ lookup('template', '../../templates/f5_web_auth.j2') }}"
 
   tasks:
 
@@ -36,7 +36,7 @@
       when: "'bigiq_cm' in group_names"
 
     - name: Include YAML Vars
-      ansible.builtin.include_vars: "./output/config_variables.yml"
+      ansible.builtin.include_vars: "../../output/config_variables.yml"
 
     - name: Test Service Get
       ansible.builtin.uri:
@@ -58,7 +58,7 @@
         method: POST
         headers:
           X-F5-Auth-Token: "{{ f5_login_token_post.json.token.token }}"
-        body: "{{ lookup('file', './output/do.bigiq.{{ item.unit.hostname }}.json') }}"
+        body: "{{ lookup('file', '../../output/do.bigiq.{{ item.unit.hostname }}.json') }}"
         status_code:
           - 200
           - 202
