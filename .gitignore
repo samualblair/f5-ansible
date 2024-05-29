@@ -2,3 +2,4 @@
 inventory/.DS_Store
 output/*
 .vscode/settings.json
+variables/qs_device_variables.csv

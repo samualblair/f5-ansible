@@ -4,7 +4,7 @@
 import csv
 import uuid
 
-with open('./variables/device_variables.csv', 'r') as csv_file:
+with open('../../variables/device_variables.csv', 'r') as csv_file:
     reader = csv.reader(csv_file)
 
     # First pass of reading CSV file, seperate lines

@@ -1,0 +1,115 @@
+---
+- name: Example REST changes - DNS , NTP and Banner
+  hosts: bigip
+  connection: local
+  gather_facts: false
+
+  vars_prompt:
+
+    - name: "ansible_user"
+      prompt: "What is your username? "
+      private: false
+
+    - name: "ansible_password"
+      prompt: "What is your password? "
+      private: true
+
+    - name: "snmpv3_password_1"
+      prompt: "What is your BASE64 ENCODED SNMPv3 User_1 Auth and Privacy Password for BIG-IPs?"
+      private: true
+      default: FAKEDEFAULT
+
+    - name: "ladap_auth_bindpassword"
+      prompt: "What is your BASE64 ENCODED LDAP Auth Bind Password for BIG-IPs?"
+      private: true
+      default: FAKEDEFAULT
+
+    - name: "tacacs_auth_secret"
+      prompt: "What is your (not base 64) TACACS Auth Secret Password for BIG-IPs?"
+      private: true
+      default: FAKEDEFAULT
+
+  vars: # Import CSV File
+    csvfile: "{{ lookup('file', '../../variables/device_variables.csv') }}"
+
+  tasks:
+
+    - name: Python Script to create Vars list
+      ansible.builtin.script:
+        cmd: ../../scripts/vars_parse.py
+        executable: /usr/bin/python3
+      register: python_result
+
+    - name: Include YAML style Vars from Python Output
+      ansible.builtin.set_fact:
+        devices: "{{ python_result.stdout }}"
+
+    - name: Include Only Device relevent facts
+      ansible.builtin.set_fact:
+        thisdevice: "{{ item.unit }}"
+      with_items: "{{ devices }}"
+      when: "ansible_hostname in item.unit.hostname"
+      loop_control:
+        label: "Looping {{ item.unit.hostname }}"
+
+    - name: Set a fact named 'provider' with BIG-IP login information
+      ansible.builtin.set_fact:
+        provider_info:
+          server: "{{ thisdevice.oob_mgmt_ip }}"
+          user: "{{ ansible_user }}"
+          password: "{{ ansible_password }}"
+          server_port: 443
+          validate_certs: false
+
+# Set DNS
+    - name: Set DNS for DC1 or DC3
+      f5networks.f5_modules.bigip_device_dns:
+        provider: "{{ provider_info }}"
+        ip_version: 4
+        name_servers:
+          - 203.0.113.2
+          - 203.0.113.3
+        search:
+          - example1.local
+          - example2.local
+      when: thisdevice.device_dc_location == "dc1" or thisdevice.device_dc_location == "dc3"
+
+    - name: Set DNS for DC2
+      f5networks.f5_modules.bigip_device_dns:
+        provider: "{{ provider_info }}"
+        ip_version: 4
+        name_servers:
+          - 203.0.113.4
+          - 203.0.113.5
+        search:
+          - example1.local
+          - example2.local
+      when: thisdevice.device_dc_location == "dc2"
+
+# Set NTP
+    - name: Set NTP OR
+      f5networks.f5_modules.bigip_device_ntp:
+        provider: "{{ provider_info }}"
+        ntp_servers:
+          - 203.0.113.2
+          - 203.0.113.3
+          - 203.0.113.4
+        timezone: US/Central
+      when: thisdevice.device_location_state == "OR"
+
+    - name: Set NTP WA
+      f5networks.f5_modules.bigip_device_ntp:
+        provider: "{{ provider_info }}"
+        ntp_servers:
+          - 203.0.113.4
+          - 203.0.113.5
+          - 203.0.113.2
+        timezone: US/Central
+      when: thisdevice.device_location_state == "WA"
+
+    - name: Configure GUI Login Banner
+      f5networks.f5_modules.bigip_sys_global:
+        provider: "{{ provider_info }}"
+        gui_setup: false
+        security_banner: true
+        banner_text: "[WARNING]\nAuthorized users only.\n\nUnauthorized or improper use may result in civil and criminal penalties."

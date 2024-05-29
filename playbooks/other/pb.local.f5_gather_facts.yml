@@ -1,0 +1,101 @@
+---
+- name: Gather Facts with v1 F5 Module - local - SOAP API
+  hosts: bigip
+  connection: local
+  gather_facts: false
+
+  vars_prompt:
+
+    - name: "ansible_user"
+      prompt: "What is your username? "
+      private: false
+
+    - name: "ansible_password"
+      prompt: "What is your password? "
+      private: true
+
+    - name: "snmpv3_password_1"
+      prompt: "What is your BASE64 ENCODED SNMPv3 User_1 Auth and Privacy Password for BIG-IPs?"
+      private: true
+      default: FAKEDEFAULT
+
+    - name: "ladap_auth_bindpassword"
+      prompt: "What is your BASE64 ENCODED LDAP Auth Bind Password for BIG-IPs?"
+      private: true
+      default: FAKEDEFAULT
+
+    - name: "tacacs_auth_secret"
+      prompt: "What is your (not base 64) TACACS Auth Secret Password for BIG-IPs?"
+      private: true
+      default: FAKEDEFAULT
+
+  vars: # Import CSV File
+    csvfile: "{{ lookup('file', '../../variables/device_variables.csv') }}"
+
+  tasks:
+
+    - name: Python Script to create Vars list
+      ansible.builtin.script:
+        cmd: ../../scripts/vars_parse.py
+        executable: /usr/bin/python3
+      register: python_result
+
+    - name: Include YAML style Vars from Python Output
+      ansible.builtin.set_fact:
+        devices: "{{ python_result.stdout }}"
+
+    - name: Include Only Device relevent facts
+      ansible.builtin.set_fact:
+        thisdevice: "{{ item.unit }}"
+      with_items: "{{ devices }}"
+      when: "ansible_hostname in item.unit.hostname"
+      loop_control:
+        label: "Looping {{ item.unit.hostname }}"
+
+    - name: Set a fact named 'provider' with BIG-IP login information
+      ansible.builtin.set_fact:
+        provider_info:
+          server: "{{ thisdevice.oob_mgmt_ip }}"
+          user: "{{ ansible_user }}"
+          password: "{{ ansible_password }}"
+          server_port: 443
+          validate_certs: false
+          no_f5_teem: false
+
+    - name: COLLECT BIG-IP FACTS # Legacy v1.0 Ansible Plugin
+      f5networks.f5_modules.bigip_device_info:
+        provider: "{{ provider_info }}"
+        gather_subset:
+          - system-info
+      register: device_facts
+
+    - name: DISPLAY COMPLETE BIG-IP SYSTEM INFORMATION
+      ansible.builtin.debug:
+        var: device_facts
+
+    - name: DISPLAY ONLY THE MAC ADDRESS
+      ansible.builtin.debug:
+        var: device_facts['system_info']['base_mac_address']
+
+    - name: DISPLAY ONLY THE VERSION
+      ansible.builtin.debug:
+        var: device_facts['system_info']['product_version']
+
+    - name: COLLECT BIG-IP FACTS
+      f5networks.f5_modules.bigip_device_info:
+        provider: "{{ provider_info }}"
+        gather_subset:
+          - all
+      register: other_facts
+
+    - name: DISPLAY COMPLETE BIG-IP SYSTEM INFORMATION
+      ansible.builtin.debug:
+        var: other_facts
+
+    - name: Save facts to file # noqa: run-once[task]
+      ansible.builtin.copy:
+        content: "{{ other_facts }}"
+        dest: "../../output/full_facts.json"
+        # Set permissions using octal so leading 0 , set to User=RW , Group=R , Other=R
+        mode: "0644"
+      run_once: true

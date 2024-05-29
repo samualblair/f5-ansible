@@ -16,7 +16,7 @@
       private: true
 
   vars: # Import CSV File
-    csvfile: "{{ lookup('file', './variables/device_variables.csv') }}"
+    csvfile: "{{ lookup('file', '../../variables/legacy/device_variables_by_header.csv') }}"
 
   tasks:
 
@@ -24,10 +24,10 @@
       ansible.builtin.set_fact:
         headers_list: "{{ csvfile.split('\n')[0].split(',') }}"
 
-    - name: Parse CSV To YAML # noqa: run-once[task]
+    - name: Parse CSV To YAML # noqa: run-once[task] noqa: no-relative-paths
       ansible.builtin.template:
-        src: "./templates/header_based_variable_template.j2"
-        dest: "./output/config_variables.yml"
+        src: "../../templates/header_based_variable_template.j2"
+        dest: "../../output/config_variables.yml"
         # Set permissions using octal so leading 0 , set to User=RW , Group=R , Other=R
         mode: "0644"
       run_once: true
@@ -35,10 +35,10 @@
     - name: Include YAML Vars
       ansible.builtin.include_vars: "./output/config_variables.yml"
 
-    - name: BIG-IP Only create BIG-IP DO payload json based on Jinja2 Template and YAML from CSV # noqa: run-once[task]
+    - name: BIG-IP Only create BIG-IP DO payload json based on Jinja2 Template and YAML from CSV # noqa: run-once[task] noqa: no-relative-paths
       ansible.builtin.template:
-        src: "./templates/do_json_template.j2"
-        dest: "./output/do.bigip.{{ item.unit.hostname }}.json"
+        src: "../../templates/do_json_template.j2"
+        dest: "../../output/do.bigip.{{ item.unit.hostname }}.json"
         # Set permissions using octal so leading 0 , set to User=RW , Group=R , Other=R
         mode: "0644"
       delegate_to: localhost
@@ -46,10 +46,10 @@
       when: "'bigip' in item.unit.role"
       run_once: true
 
-    - name: BIG-IP Only create BIG-IQ DO payload json based on nested Jinja2 Template and YAML from CSV # noqa: run-once[task]
+    - name: BIG-IP Only create BIG-IQ DO payload json based on nested Jinja2 Template and YAML from CSV # noqa: run-once[task] noqa: no-relative-paths
       ansible.builtin.template:
-        src: "./templates/do_bigiq_json_template.j2"
-        dest: "./output/do.bigiq.{{ item.unit.hostname }}.json"
+        src: "../../templates/do_bigiq_json_template.j2"
+        dest: "../../output/do.bigiq.{{ item.unit.hostname }}.json"
         # Set permissions using octal so leading 0 , set to User=RW , Group=R , Other=R
         mode: "0644"
       delegate_to: localhost
@@ -57,7 +57,7 @@
       when: "'bigip' in item.unit.role"
       run_once: true
 
-    - name: BIG-IP Only create AS3 payload json based on Jinja2 Template and YAML from CSV # noqa: run-once[task]
+    - name: BIG-IP Only create AS3 payload json based on Jinja2 Template and YAML from CSV # noqa: run-once[task] noqa: no-relative-paths
       ansible.builtin.template:
         src: "./templates/as3_json_template.j2"
         dest: "./output/as3.{{ item.unit.hostname }}.json"
