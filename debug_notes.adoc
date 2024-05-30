@@ -4,7 +4,9 @@
 . <<Quick Reference: Log Files to watch>>
 . <<DO Direct to BIG-IP>>
 . <<DO Through BIG-IQ to BIG-IP>>
-. <<Future>>
+. <<Warnings>>
+
+link:readme[README]
 
 == Description
 
@@ -40,5 +42,7 @@ Most of these references are regarding F5 DO or F5 AS3 not neccisarly the Ansibl
 == DO Through BIG-IQ to BIG-IP
 
 
+== Warnings
 
-== Future
+For Better or worse, the primary 'source of truth' is expected to be the CSV formatted variables file.
+This doens't always read or organize as nicely as JSON so I may change to that in the future, but one benifit of CSV is it is very clear for less programatic people to understand and assist with filling (when viewing in a spreadsheet syle layout). I have seen problems in the past with CSV files easily courpted (bad invisble header bytes, or extra trailing characters), so this is something to be aware of. When I say courputed data is usually intact but parsers have a hard time reading so ansible and/or python scripts may start failing when otherwise should be working. Often easy enough to fix once you recognize the issue (copy data out and put in new CSV file, or use advanced editor).

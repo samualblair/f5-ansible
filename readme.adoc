@@ -6,36 +6,41 @@
 . <<Key Operations>>
 . <<Future TO-DO goals>>
 
+link:debug_notes[Troubleshootin FAQ]
+
 == Description
 
-This is part of a basic Collection of Playbooks, specifically for generating and pushing F5 Declaritive Onboarding and F5 AS3 REST API based configurations.
-EXAMPLE hosts file included, as well as example device variables (in CSV format).
+This is part of a basic Collection of Playbooks, specifically for generating and pushing F5 Declaritive Onboarding and F5 AS3 REST API based configurations, using Ansible to generate, and optionally push.
+There are also some Ansible playbooks to make specific changes as well.
+EXAMPLE hosts file included, as well as EXAMPLE device variables (in CSV format).
 
 == Directions on use
 
 To Use this the following are expected:
 
-. Create 'group_vars' and 'host_vars' accordingly for devices if needed, these are YAML formmated
+. Create 'group_vars' and 'host_vars' accordingly for devices if needed. Can be YAML or INI formatted if desired, no examples given.
 
-. Update 'hosts.yml' accordingly for devices, this is YAML formmated
+. Update 'hosts.yml' accordingly for devices, this is YAML formmated example, can be swapped with INI formmated if desired. Most playbooks only need hostname to key in on, as IP will be taken from CSV file. There may be a few older playbooks still expecting IP (if hostname does not resolve in DNS). All other vlaues can (and are generally expected) to come from CSV parsing.
 
-. Update CSV variables file with detailed variables needed, if coulmns changed update variable_template.j2 for proper parsing
+. Update CSV variables file with detailed variables needed. New coulmns (variables) will automatically be detected (except in legacy folder playbooks, only kept for reference to alternative parsing method).
 
-. Update other various templates to change configuration behavior, mainly updates to DO (do_json_template.j2) and AS3 (as3_json_template.j2) files
+. Update other various templates to change configuration behavior, mainly updates to DO (do_json_template.j2) and AS3 (as3_json_template.j2) files, or directly to logic in 'REST' imperative playbooks.
 
-. To perform operations on live network devices, management and run the ansible playbook (or playbooks) you wish with the **ansible-playbook** command , optionally with specific tags specified to only run part of a given playbook.
+. To perform operations on live network devices, management and run the ansible playbook (or playbooks) you wish with the **ansible-playbook** command , optionally with specific tags specified to only run part of a given playbook. Playbooks are organized under '/playbooks/<category>/<name_of_playbook>'
 
 . You may (likely) need to change the python interperter in the ansible.cfg file, you can try change from "interpreter_python = /usr/local/bin/python3" to maybe "interpreter_python = /usr/local/bin/python" or comment out to have system try and find the python installed.
 
 == Environment Requirements
 NOTE: This can be used to perform live operations on devices, or offline to just create configuration files
 
-Ansible Requirements:
-Python
- Ansible
-  url
- Jinja2
+Requirements:
 
+- Python
+- Ansible
+- Ansible - url (builtin uri)
+- Ansible - Jinja2 (builtin Jinja2)
+- Ansible - f5networks.f5_bigip (only some playbooks , not core DO or AS3)
+- Ansible - f5networks.f5_modules (only some playbooks, not core DO or AS3)
 
 == Key Operations
 Key operations of the Ansible Playbooks:
