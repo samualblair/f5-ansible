@@ -4,3 +4,4 @@ output/*
 .vscode/settings.json
 variables/qs_device_variables.csv
 files/*
+inventory/qs_host_vars.yml
