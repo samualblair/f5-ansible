@@ -8,20 +8,20 @@
 
     - name: CLEANUP Remove AS3 JSON File(s) as3.[hostname].json
       ansible.builtin.file:
-        path: ./output/as3.{{ ansible_host }}.json
+        path: ../../output/as3.{{ ansible_host }}.json
         state: absent
 
     - name: CLEANUP Remove DO JSON File(s) do.bigip.[hostname].json
       ansible.builtin.file:
-        path: ./output/do.bigip.{{ ansible_host }}.json
+        path: ../../output/do.bigip.{{ ansible_host }}.json
         state: absent
 
     - name: CLEANUP Remove DO JSON File(s) do.bigiq.[hostname].json
       ansible.builtin.file:
-        path: ./output/do.bigiq.{{ ansible_host }}.json
+        path: ../../output/do.bigiq.{{ ansible_host }}.json
         state: absent
 
     - name: CLEANUP Remove Inventory YML File config_variables.yml
       ansible.builtin.file:
-        path: ./output/config_variables.yml
+        path: ../../output/config_variables.yml
         state: absent

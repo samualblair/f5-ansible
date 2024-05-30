@@ -1,5 +1,5 @@
 ---
-- name: Install AS3
+- name: Install AS3 and DO extentions on TMOS
   hosts: bigip
   connection: local
   gather_facts: false
@@ -65,12 +65,12 @@
 # brew install rpm
     - name: Install AS3
       f5networks.f5_modules.bigip_lx_package:
-        package: "./files/{{ as3_package_filename }}"
+        package: "../../files/{{ as3_package_filename }}"
         provider: "{{ provider_info }}"
 
     - name: Install DO
       f5networks.f5_modules.bigip_lx_package:
-        package: "./files/{{ do_package_filename }}"
+        package: "../../files/{{ do_package_filename }}"
         provider: "{{ provider_info }}"
 
 #    - name: Login and Obtain Token
