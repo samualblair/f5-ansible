@@ -22,6 +22,16 @@
 
   tasks:
 
+    - name: Python Script to create Vars list
+      ansible.builtin.script:
+        cmd: ../../scripts/vars_parse.py
+        executable: /usr/bin/python3
+      register: python_result
+
+    - name: Include YAML style Vars from Python Output
+      ansible.builtin.set_fact:
+        devices: "{{ python_result.stdout }}"
+
     - name: Login and Obtain Token
       ansible.builtin.uri:
         url: "https://{{ ansible_host }}:443/mgmt/shared/authn/login"
@@ -38,9 +48,6 @@
       delegate_to: localhost
       register: f5_login_token_post
       when: "'bigiq_cm' in group_names"
-
-    - name: Include YAML Vars
-      ansible.builtin.include_vars: "../../output/config_variables.yml"
 
     - name: Test Service
       ansible.builtin.uri:
