@@ -39,7 +39,7 @@
 
     - name: Python Script to create Vars list
       ansible.builtin.script:
-        cmd: ../../scripts/vars_parse_folder.py
+        cmd: ../../scripts/vars_parse.py
         executable: /usr/bin/python3
       register: python_result
       delegate_to: localhost
