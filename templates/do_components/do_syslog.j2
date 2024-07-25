@@ -1,0 +1,5 @@
+"Syslog_1":{
+            "class": "SyslogRemoteServer",
+            "host": "{{ item.unit.syslog_server_1_address }}",
+            "remotePort": {{ item.unit.syslog_server_1_port }}
+        }

@@ -1,0 +1,17 @@
+"HTTPD": {
+            "class": "HTTPD",
+            "allow": [
+                "10.0.0.0/8"
+            ],
+            "authPamIdleTimeout": 900,
+            "sslProtocol": "TLSv1.2",
+            "sslCiphersuite": [
+                "TLS13-AES128-GCM-SHA256",
+                "TLS13-AES256-GCM-SHA384",
+                "TLS13-CHACHA20-POLY1305-SHA256",
+                "ECDHE-RSA-AES128-GCM-SHA256",
+                "ECDHE-RSA-AES256-GCM-SHA384",
+                "ECDHE-ECDSA-AES128-GCM-SHA256",
+                "ECDHE-ECDSA-AES256-GCM-SHA384"
+            ]
+        }

@@ -29,12 +29,21 @@
             "avr": "nominal"
         },
         {% include "./do_components/do_dns.j2" %},
+        {% include "./do_components/do_httpd.j2" %},
+        {% include "./do_components/do_sshd.j2" %},
         "System": {
             "class": "System",
             "hostname": "{{ item.unit.hostname }}",
             "autoCheck": true,
+{% if item.unit.login_banner is defined %}
+        "guiSecurityBanner": true,
+        "guiSecurityBannerText": "{{ item.unit.login_banner }}",
+{% endif %}
             "autoPhonehome": true
         },
+{% if item.unit.syslog_server_1_address is defined %}
+        {% include "./do_components/do_syslog.j2" %},
+{% endif %}
         {% include "./do_components/do_ntp.j2" %}
     }
 }
