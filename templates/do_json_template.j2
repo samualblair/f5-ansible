@@ -31,6 +31,7 @@
         {% include "./do_components/do_dns.j2" %},
         {% include "./do_components/do_httpd.j2" %},
         {% include "./do_components/do_sshd.j2" %},
+        {% include "./do_components/do_db_vars.j2" %},
         "System": {
             "class": "System",
             "hostname": "{{ item.unit.hostname }}",
