@@ -28,31 +28,13 @@
 {% endif %}
             "avr": "nominal"
         },
-         "DNS": {
-            "class": "DNS",
-            "nameServers": [
-                "8.8.8.8",
-                "1.1.1.1",
-                "9.9.9.9"
-            ],
-            "search": [
-                "domain.local"
-            ]
-        },
+        {% include "./do_components/do_dns.j2" %},
         "System": {
             "class": "System",
             "hostname": "{{ item.unit.hostname }}",
             "autoCheck": true,
             "autoPhonehome": true
         },
-        "NTP": {
-            "class": "NTP",
-            "servers": [
-                "pool.ntp.org",
-                "0.pool.ntp.org",
-                "1.pool.ntp.org"
-            ],
-            "timezone": "US/Pacific"
-        }
+        {% include "./do_components/do_ntp.j2" %}
     }
 }
