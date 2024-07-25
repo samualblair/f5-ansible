@@ -1,0 +1,134 @@
+{
+	"info": {
+		"_postman_id": "5243d31a-2c58-4f86-89a4-4a058d02a739",
+		"name": "F5 TMOS Basic DO",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "212784"
+	},
+	"item": [
+		{
+			"name": "F5_REST_Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"{{user_name}}\",\n    \"password\": \"{{user_password}}\",\n    \"loginProviderName\": \"tmos\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{f5_hostname}}:443/mgmt/shared/authn/login",
+					"protocol": "https",
+					"host": [
+						"{{f5_hostname}}"
+					],
+					"port": "443",
+					"path": [
+						"mgmt",
+						"shared",
+						"authn",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "F5_DO_Service_Status_Check",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-F5-Auth-Token",
+						"value": "{{f5_auth_token}}",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "https://{{f5_hostname}}:443/mgmt/shared/declarative-onboarding/info",
+					"protocol": "https",
+					"host": [
+						"{{f5_hostname}}"
+					],
+					"port": "443",
+					"path": [
+						"mgmt",
+						"shared",
+						"declarative-onboarding",
+						"info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "F5_DO_Declare_POST",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-F5-Auth-Token",
+						"value": "{{f5_auth_token}}",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{f5_post_json}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{f5_hostname}}:443/mgmt/shared/declarative-onboarding",
+					"protocol": "https",
+					"host": [
+						"{{f5_hostname}}"
+					],
+					"port": "443",
+					"path": [
+						"mgmt",
+						"shared",
+						"declarative-onboarding"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "F5_DO_Service_Status_job_Check",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-F5-Auth-Token",
+						"value": "{{f5_auth_token}}",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "https://{{f5_hostname}}:443/mgmt/shared/declarative-onboarding/task/{{last_declaration_id}}",
+					"protocol": "https",
+					"host": [
+						"{{f5_hostname}}"
+					],
+					"port": "443",
+					"path": [
+						"mgmt",
+						"shared",
+						"declarative-onboarding",
+						"task",
+						"{{last_declaration_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

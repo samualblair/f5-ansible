@@ -1,10 +1,11 @@
-= Live Network Playbooks
+= F5 Ansible Network Playbooks
 
 . <<Description>>
 . <<Directions on use>>
 . <<Environment Requirements>>
 . <<Key Operations>>
 . <<Future TO-DO goals>>
+. <<Postman API Collections>>
 
 link:debug_notes[Troubleshootin FAQ]
 
@@ -12,6 +13,7 @@ link:debug_notes[Troubleshootin FAQ]
 
 This is part of a basic Collection of Playbooks, specifically for generating and pushing F5 Declaritive Onboarding and F5 AS3 REST API based configurations, using Ansible to generate, and optionally push.
 There are also some Ansible playbooks to make specific changes as well.
+To aid in delivery of DO, AS3 declarations, or to prepare enviornments without ansible availble, some Postman API collections are included as well.
 EXAMPLE hosts file included, as well as EXAMPLE device variables (in CSV format).
 
 == Directions on use
@@ -119,3 +121,18 @@ pb.do.csv_based.yml and pb.as3.csv_based.yml
 - expand documentation
 - Test additional playbooks with data taken in from JSON or YAML directly rather than CSV, although CSV form is primary goal of the project at this time
 - Build out modular playbooks and templates (playbooks and templates that build configuraiton based on other playbooks/templates)
+
+
+== Postman API Collections
+The included basic Postman API Collections and Enviornments may help with:
+
+- Preparing of F5OS platforms using F5OS API
+
+ This API is not declarative. Collection of F5OS REST API calls to configure base F5OS system, install and provision tennants Tenants (BIG-IP NEXT or BIG-IP Classic).
+
+- Preparing of BIG-IP Classic using F5 (Classic) REST API
+  
+  This API is not declarative. Instaling/Upgrading DO and/or AS3 packages on BIG-IP Classic. Performing any other initial configurations required.
+
+- Delivering ready to use DO Declarations
+- Delivering ready to use AS3 Declarations

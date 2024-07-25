@@ -1,0 +1,185 @@
+{
+	"info": {
+		"_postman_id": "d8ec003c-5b9d-4fbe-8105-a1a00befd501",
+		"name": "F5 Basic AS3",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "212784"
+	},
+	"item": [
+		{
+			"name": "F5_REST_Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"{{user_name}}\",\n    \"password\": \"{{user_password}}\",\n    \"loginProviderName\": \"tmos\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{f5_hostname}}:443/mgmt/shared/authn/login",
+					"protocol": "https",
+					"host": [
+						"{{f5_hostname}}"
+					],
+					"port": "443",
+					"path": [
+						"mgmt",
+						"shared",
+						"authn",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "F5_REST_Login_TEST-PM-JS",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var headerValue = pm.response.json.token.get(\"token\");",
+							"pm.environment.set(\"f5_auth_token\", headerValue);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"{{user_name}}\",\n    \"password\": \"{{user_password}}\",\n    \"loginProviderName\": \"tmos\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{f5_hostname}}:443/mgmt/shared/authn/login",
+					"protocol": "https",
+					"host": [
+						"{{f5_hostname}}"
+					],
+					"port": "443",
+					"path": [
+						"mgmt",
+						"shared",
+						"authn",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "F5_AS3_Service_Status_Check",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-F5-Auth-Token",
+						"value": "{{f5_auth_token}}",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "https://{{f5_hostname}}:443/mgmt/shared/appsvcs/info",
+					"protocol": "https",
+					"host": [
+						"{{f5_hostname}}"
+					],
+					"port": "443",
+					"path": [
+						"mgmt",
+						"shared",
+						"appsvcs",
+						"info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "F5_AS3_Declare_POST",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-F5-Auth-Token",
+						"value": "{{f5_auth_token}}",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{f5_post_json}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{f5_hostname}}:443/mgmt/shared/appsvcs/declare?async=true",
+					"protocol": "https",
+					"host": [
+						"{{f5_hostname}}"
+					],
+					"port": "443",
+					"path": [
+						"mgmt",
+						"shared",
+						"appsvcs",
+						"declare"
+					],
+					"query": [
+						{
+							"key": "async",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "F5_AS3_Service_Status_job_Check",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-F5-Auth-Token",
+						"value": "{{f5_auth_token}}",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "https://{{f5_hostname}}:443/mgmt/shared/appsvcs/task/{{last_declaration_id}}",
+					"protocol": "https",
+					"host": [
+						"{{f5_hostname}}"
+					],
+					"port": "443",
+					"path": [
+						"mgmt",
+						"shared",
+						"appsvcs",
+						"task",
+						"{{last_declaration_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

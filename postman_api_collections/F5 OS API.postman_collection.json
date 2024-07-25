@@ -1,0 +1,4210 @@
+{
+	"info": {
+		"_postman_id": "b2208c1a-41e1-44c0-8f5b-b052517a9cc0",
+		"name": "F5 OS API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "212784"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "F5_OS_REST_Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var headerValue = pm.response.headers.get(\"x-auth-token\");",
+									"pm.environment.set(\"x-auth-token_rseries_appliance1\", headerValue);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{user_password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user_name}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/openconfig-system:system/aaa",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								"openconfig-system:system",
+								"aaa"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Base_Configuration",
+			"item": [
+				{
+					"name": "Get_F5_OS_Serial_Components",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/openconfig-platform:components",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								"openconfig-platform:components"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get_F5_OS_License",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/openconfig-system:system/f5-system-licensing:licensing",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								"openconfig-system:system",
+								"f5-system-licensing:licensing"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Set_F5_OS_License_auto",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"f5-system-licensing-install:input\": [\n        {\n            \"registration-key\": \"{{license_registration_key_chassis}}\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/openconfig-system:system/f5-system-licensing:licensing/f5-system-licensing-install:install",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								"openconfig-system:system",
+								"f5-system-licensing:licensing",
+								"f5-system-licensing-install:install"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_OS_DNS_GET",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/openconfig-system:system/dns",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								"openconfig-system:system",
+								"dns"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_OS_DNS_PATCH",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"openconfig-system:dns\": {\n        \"config\": {\n            \"search\": [\n                \"{{dns_search_domain_1}}\"\n            ]\n        },\n        \"servers\": {\n            \"server\": [\n                {\n                    \"address\": \"{{dns_server_1}}\",\n                    \"config\": {\n                        \"address\": \"{{dns_server_1}}\"\n                    }\n                },\n                {\n                    \"address\": \"{{dns_server_2}}\",\n                    \"config\": {\n                        \"address\": \"{{dns_server_2}}\"\n                    }\n                }\n            ]\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/openconfig-system:system/dns",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								"openconfig-system:system",
+								"dns"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_OS_NTP_GET",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/openconfig-system:system/ntp",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								"openconfig-system:system",
+								"ntp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_OS_CLOCK_GET Copy",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/openconfig-system:system/clock",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								"openconfig-system:system",
+								"clock"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_OS_NTP_TZ_PATCH",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"openconfig-system:system\": {\n        \"clock\": {\n            \"config\": {\n                \"timezone-name\": \"{{ntp_timezone}}\"\n            }\n        },\n        \"ntp\": {\n            \"config\": {\n                \"enabled\": \"true\"\n            },\n            \"servers\": {\n                \"server\": [\n                    {\n                        \"address\": \"{{ntp_server_1}}\",\n                        \"config\": {\n                            \"address\": \"{{ntp_server_1}}\"\n                        }\n                    },\n                    {\n                        \"address\": \"{{ntp_server_2}}\",\n                        \"config\": {\n                            \"address\": \"{{ntp_server_2}}\"\n                        }\n                    },\n                    {\n                        \"address\": \"{{ntp_server_3}}\",\n                        \"config\": {\n                            \"address\": \"{{ntp_server_3}}\"\n                        }\n                    }\n                ]\n            }\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_OS_Syslog_GET",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/openconfig-system:system/logging",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								"openconfig-system:system",
+								"logging"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_OS_Syslog_PATCH",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"openconfig-system:system\": {\n        \"logging\": {\n            \"remote-servers\": {\n                \"remote-server\": [\n                    {\n                        \"host\": \"{{syslog_server_1_address}}\",\n                        \"config\": {\n                            \"host\": \"{{syslog_server_1_address}}\",\n                            \"remote-port\": \"514\"\n                        },\n                        \"selectors\": {\n                            \"selector\": [\n                                {\n                                    \"facility\": \"LOCAL0\",\n                                    \"severity\": \"WARNING\",\n                                    \"config\": {\n                                        \"facility\": \"LOCAL0\",\n                                        \"severity\": \"WARNING\"\n                                    }\n                                }\n                            ]\n                        }\n                    }\n                ]\n            }\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_OS_Hostname_LoginBanner_GET",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/openconfig-system:system/config",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								"openconfig-system:system",
+								"config"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_OS_Hostname_PATCH",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"openconfig-system:system\": {\n        \"config\": {\n            \"hostname\": \"{{fqdn_hostname}}\"\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_OS_LoginBanner_PATCH",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"openconfig-system:system\": {\n        \"config\": {\n            \"login-banner\": \"{{login_banner}}\"\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Additional_system_config",
+			"item": [
+				{
+					"name": "F5_OS_AAA_GET",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/openconfig-system:system/aaa",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								"openconfig-system:system",
+								"aaa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_OS_AAA_PATCH",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"openconfig-system:system\": {\n        \"server-groups\": {\n            \"server-group\": [\n                {\n                    \"name\": \"tacacas_servers\",\n                    \"config\": {\n                        \"name\": \"tacacas_servers\",\n                        \"type\": \"openconfig-aaa:TACACS\"\n                    },\n                    \"servers\": {\n                        \"server\": [\n                            {\n                                \"address\": \"{{tacacs_1_server_address}}\",\n                                \"config\": {\n                                    \"address\": \"{{tacacs_1_server_address}}\"\n                                },\n                                \"tacacs\": {\n                                    \"config\": {\n                                        \"port\": 49,\n                                        \"secret-key\": \"{{tacacs_1_secret_key}}\"\n                                    }\n                                }\n                            },\n                            {\n                                \"address\": \"{{tacacs_2_server_address}}\",\n                                \"config\": {\n                                    \"address\": \"{{tacacs_2_server_address}}\"\n                                },\n                                \"tacacs\": {\n                                    \"config\": {\n                                        \"port\": 49,\n                                        \"secret-key\": \"{{tacacs_2_secret_key}}\"\n                                    }\n                                }\n                            }\n                        ]\n                    }\n                }\n            ]\n        },\n        \"aaa\": {\n            \"authentication\": {\n                \"config\": {\n                    \"authentication-method\": [\n                        \"openconfig-aaa-types:TACACS_ALL\",\n                        \"openconfig-aaa-types:LOCAL\"\n                    ]\n                }\n            }\n        }\n\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_OS_AAA_ALL_GET",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/openconfig-system:system/aaa",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								"openconfig-system:system",
+								"aaa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_OS_AAA_PASS_POLICY",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/openconfig-system:system/aaa/f5-openconfig-aaa-password-policy:password-policy",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								"openconfig-system:system",
+								"aaa",
+								"f5-openconfig-aaa-password-policy:password-policy"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_OS_AAA_TLS_CERT",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/openconfig-system:system/aaa/f5-openconfig-aaa-tls:tls",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								"openconfig-system:system",
+								"aaa",
+								"f5-openconfig-aaa-tls:tls"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_OS_AAA_PRIM_KEY",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/openconfig-system:system/aaa/f5-primary-key:primary-key",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								"openconfig-system:system",
+								"aaa",
+								"f5-primary-key:primary-key"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_OS_AAA_AUTH_CONFIG",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/openconfig-system:system/aaa/authentication/config",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								"openconfig-system:system",
+								"aaa",
+								"authentication",
+								"config"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_OS_AAA_AUTH_USERS",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/openconfig-system:system/aaa/authentication/f5-system-aaa:users",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								"openconfig-system:system",
+								"aaa",
+								"authentication",
+								"f5-system-aaa:users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_OS_AAA_AUTH_ROLES",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/openconfig-system:system/aaa/authentication/f5-system-aaa:roles",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								"openconfig-system:system",
+								"aaa",
+								"authentication",
+								"f5-system-aaa:roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_OS_SNMP_PATCH",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"openconfig-system:system\": {\n        \"f5-allowed-ips:allowed-ips\": {\n            \"allowed-ip\": [\n                {\n                    \"name\": \"ALLOW_{{snmp_server_name_1}}\",\n                    \"config\": {\n                        \"ipv4\": {\n                            \"address\": \"{{snmp_server_ip_1}}\",\n                            \"prefix-length\": 32,\n                            \"port\": 161\n                        }\n                    }\n                },\n                {\n                    \"name\": \"ALLOW_{{snmp_server_name_2}}\",\n                    \"config\": {\n                        \"ipv4\": {\n                            \"address\": \"{{snmp_server_ip_2}}\",\n                            \"prefix-length\": 32,\n                            \"port\": 161\n                        }\n                    }\n                }\n            ]\n        },\n        \"f5-system-snmp:snmp\": {\n            \"users\": {\n                \"user\": [\n                    {\n                        \"name\": \"{{snmp_v3_user_name_1}}\",\n                        \"config\": {\n                            \"name\": \"{{snmp_v3_user_name_1}}\",\n                            \"authentication-protocol\": \"sha\",\n                            \"privacy-protocol\": \"aes\"\n                        }\n                    }\n                ]\n            },\n            \"targets\": {\n                \"target\": [\n                    {\n                        \"name\": \"{{snmp_server_name_1}}\",\n                        \"config\": {\n                            \"name\": \"{{snmp_server_name_1}}\",\n                            \"user\": \"{{snmp_v3_user_name_1}}\",\n                            \"ipv4\": {\n                                \"address\": \"{{snmp_server_ip_1}}\",\n                                \"port\": 162\n                            }\n                        }\n                    },\n                    {\n                        \"name\": \"{{snmp_server_name_2}}\",\n                        \"config\": {\n                            \"name\": \"{{snmp_server_name_2}}\",\n                            \"user\": \"{{snmp_v3_user_name_1}}\",\n                            \"ipv4\": {\n                                \"address\": \"{{snmp_server_ip_2}}\",\n                                \"port\": 162\n                            }\n                        }\n                    }\n                ]\n            }\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_OS_SNMP_GET1",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/openconfig-system:system/f5-allowed-ips:allowed-ips",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								"openconfig-system:system",
+								"f5-allowed-ips:allowed-ips"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_OS_SNMP_GET2",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/openconfig-system:system/f5-system-snmp:snmp",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								"openconfig-system:system",
+								"f5-system-snmp:snmp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_OS_MGMT_IP_PATCH",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"config\": {\n        \"dhcp-enabled\": false,\n        \"ipv4\": {\n            \"system\": {\n                \"address\": \"{{f5_mgmt_ip4_static}}\"\n            },\n            \"prefix-length\": {{f5_mgmt_ip4_cidr_static}},\n            \"gateway\": \"{{f5_mgmt_ip4_gw_static}}\"\n        },\n        \"ipv6\": {\n            \"system\": {\n                \"address\": \"{{f5_mgmt_ip6_static}}\"\n            },\n            \"prefix-length\": {{f5_mgmt_ip6_cidr_static}},\n            \"gateway\": \"{{f5_mgmt_ip6_gw_static}}\"\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/openconfig-system:system/f5-mgmt-ip:mgmt-ip",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								"openconfig-system:system",
+								"f5-mgmt-ip:mgmt-ip"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_OS_MGMT_IP_GET",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/openconfig-system:system/f5-mgmt-ip:mgmt-ip",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								"openconfig-system:system",
+								"f5-mgmt-ip:mgmt-ip"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_OS_CIPHERS_HTTPS_SSH_PATCH",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"openconfig-system:system\": {\n            \"f5-security-ciphers:security\": {\n                \"services\": {\n                    \"service\": [\n                        {\n                            \"name\": \"httpd\",\n                            \"config\": {\n                                \"name\": \"httpd\",\n                                \"ssl-ciphersuite\": \"ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-DSS-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA256:DHE-RSA-AES256-SHA:DHE-DSS-AES256-SHA:DHE-RSA-CAMELLIA256-SHA:DHE-DSS-CAMELLIA256-SHA:ECDH-RSA-AES256-GCM-SHA384:ECDH-ECDSA-AES256-GCM-SHA384:ECDH-RSA-AES256-SHA384:ECDH-ECDSA-AES256-SHA384:ECDH-RSA-AES256-SHA:ECDH-ECDSA-AES256-SHA:AES256-GCM-SHA384:AES256-SHA256:AES256-SHA:CAMELLIA256-SHA:PSK-AES256-CBC-SHA:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:DHE-DSS-AES128-GCM-SHA256:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES128-SHA256:DHE-DSS-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA:DHE-RSA-CAMELLIA128-SHA:DHE-DSS-CAMELLIA128-SHA:ECDH-RSA-AES128-GCM-SHA256:ECDH-ECDSA-AES128-GCM-SHA256:ECDH-RSA-AES128-SHA256:ECDH-ECDSA-AES128-SHA256:ECDH-RSA-AES128-SHA:ECDH-ECDSA-AES128-SHA:AES128-GCM-SHA256:AES128-SHA256:AES128-SHA:CAMELLIA128-SHA:PSK-AES128-CBC-SHA\"\n                            }\n                        },\n                        {\n                            \"name\": \"sshd\",\n                            \"config\": {\n                                \"name\": \"sshd\",\n                                \"ciphers\": [\n                                    \"aes128-cbc\",\n                                    \"aes128-ctr\",\n                                    \"aes128-gcm@openssh.com\",\n                                    \"aes256-cbc\",\n                                    \"aes256-ctr\",\n                                    \"aes256-gcm@openssh.com\"\n                                ],\n                                \"kexalgorithms\": [\n                                    \"diffie-hellman-group14-sha1\",\n                                    \"diffie-hellman-group14-sha256\",\n                                    \"diffie-hellman-group16-sha512\",\n                                    \"ecdh-sha2-nistp256\",\n                                    \"ecdh-sha2-nistp384\",\n                                    \"ecdh-sha2-nistp521\"\n                                ]\n                            }\n                        }\n                    ]\n                }\n            },\n            \"f5-system-settings:settings\": {\n                \"state\": {\n                    \"sshd-idle-timeout\": \"{{ssh_idle_timeout_value}}\"\n                }\n            }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_OS_CIPHERS_HTTPS_SSH_GET",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/openconfig-system:system/f5-security-ciphers:security",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								"openconfig-system:system",
+								"f5-security-ciphers:security"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_OS_SSH_IDLE_GET",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/openconfig-system:system/f5-system-settings:settings",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								"openconfig-system:system",
+								"f5-system-settings:settings"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Post_versions_overwrites",
+			"item": [
+				{
+					"name": "F5_OS_DNS_POST",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"openconfig-system:dns\": {\n        \"config\": {\n            \"search\": [\n                \"{{dns_search_domain_1}}\"\n            ]\n        },\n        \"servers\": {\n            \"server\": [\n                {\n                    \"address\": \"{{dns_server_1}}\",\n                    \"config\": {\n                        \"address\": \"{{dns_server_1}}\",\n                        \"port\": 53\n                    }\n                },\n                {\n                    \"address\": \"{{dns_server_2}}\",\n                    \"config\": {\n                        \"address\": \"{{dns_server_2}}\",\n                        \"port\": 53\n                    }\n                }\n            ]\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/openconfig-system:system/dns",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								"openconfig-system:system",
+								"dns"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Other_info",
+			"item": [
+				{
+					"name": "F5_OS_system_all_GET",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/openconfig-system:system/",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								"openconfig-system:system",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Upgrade process",
+			"item": [
+				{
+					"name": "Check_Status",
+					"item": [
+						{
+							"name": "F5_OS_Software_Staging_GET-via-POST",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"f5-utils-file-transfer:path\": \"images/staging\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/f5-utils-file-transfer:file/list",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"f5-utils-file-transfer:file",
+										"list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_OS_Software_Imported_GET-via-POST",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"f5-utils-file-transfer:path\": \"images/import/iso\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/f5-utils-file-transfer:file/list",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"f5-utils-file-transfer:file",
+										"list"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Upload_via_server",
+					"item": [
+						{
+							"name": "F5_OS_Software_import_upload_f5downloads_POST",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"input\": [\n        {\n            \"remote-host\": \"{{remote_file_server}}\",\n            \"remote-file\": \"{{Appliance_ISO_Image_uri}}\",\n            \"local-file\": \"images/staging/{{Appliance_ISO_Image_nameonly}}\",\n            \"insecure\": \"\"\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/f5-utils-file-transfer:file/import",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"f5-utils-file-transfer:file",
+										"import"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_OS_Software_import_upload_POST",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"input\": [\n        {\n            \"remote-host\": \"{{remote_file_server}}\",\n            \"remote-file\": \"upload/{{Appliance_ISO_Image}}\",\n            \"local-file\": \"images/staging/{{Appliance_ISO_Image}}\",\n            \"insecure\": \"\",\n            \"f5-utils-file-transfer:username\": \"{{file_transfer_user}}\",\n            \"f5-utils-file-transfer:password\": \"{{file_transfer_pass}}\"\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/f5-utils-file-transfer:file/import",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"f5-utils-file-transfer:file",
+										"import"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_OS_Software_import_upload_status_POST",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/f5-utils-file-transfer:file/transfer-status",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"f5-utils-file-transfer:file",
+										"transfer-status"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_OS_Software_import_upload_status_POST Copy",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/openconfig-system:system/f5-system-image:image/state",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"openconfig-system:system",
+										"f5-system-image:image",
+										"state"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Upload_via_pc",
+					"item": [
+						{
+							"name": "F5_OS_Software_get_upload_id_POST",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var resp = pm.response.json();",
+											"pm.environment.set(\"upload-id\", resp[\"f5-file-upload-meta-data:output\"][\"upload-id\"])"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"size\": {{upload_file_size}},\n    \"name\": \"{{upload_file_name}}\",\n    \"file-path\": \"images/staging/\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/f5-utils-file-transfer:file/f5-file-upload-meta-data:upload/start-upload",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"f5-utils-file-transfer:file",
+										"f5-file-upload-meta-data:upload",
+										"start-upload"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_OS_Software_get_upload_status_GET",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/f5-utils-file-transfer:file/f5-file-upload-meta-data:upload/meta-data",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"f5-utils-file-transfer:file",
+										"f5-file-upload-meta-data:upload",
+										"meta-data"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_OS_Software_send_upload_id_POST",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									},
+									{
+										"key": "file-upload-id",
+										"value": "{{upload-id}}"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "",
+											"type": "file",
+											"src": "F5OS-A-1.7.0-8741.R2R4.iso"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/restconf/data/openconfig-system:system/f5-image-upload:image/upload-image",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"restconf",
+										"data",
+										"openconfig-system:system",
+										"f5-image-upload:image",
+										"upload-image"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Perform_Upgrade_F5OS",
+					"item": [
+						{
+							"name": "F5_OS_Software_Staging_GET-via-POST",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"f5-utils-file-transfer:path\": \"images/staging\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/f5-utils-file-transfer:file/list",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"f5-utils-file-transfer:file",
+										"list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_OS_Software_Imported_GET-via-POST",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"f5-utils-file-transfer:path\": \"images/import/iso\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/f5-utils-file-transfer:file/list",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"f5-utils-file-transfer:file",
+										"list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_OS_Software_upgrade_check_POST",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"input\": {\n        \"iso-version\": \"{{appliance_image_version_number_only}}\"\n    }\n}"
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/openconfig-system:system/f5-system-image:image/check-version",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"openconfig-system:system",
+										"f5-system-image:image",
+										"check-version"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_OS_Software_upgrade_perform_POST",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"input\": {\n        \"iso-version\": \"{{appliance_image_version_number_only}}\"\n    }\n}"
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/openconfig-system:system/f5-system-image:image/set-version",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"openconfig-system:system",
+										"f5-system-image:image",
+										"set-version"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Port_Interface_Configs",
+			"item": [
+				{
+					"name": "Port_Groups",
+					"item": [
+						{
+							"name": "F5_OS_Port_Groups_GET",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/f5-portgroup:portgroups",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"f5-portgroup:portgroups"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_OS_Port_Groups_PATCH",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"f5-portgroup:portgroups\": {\n        \"portgroup\": [\n            {\n                \"portgroup_name\": \"{{10}}\",\n                \"config\": {\n                    \"mode\": \"{{MODE_25GB}}\"\n                }\n            },\n            {\n                \"portgroup_name\": \"{{9}}\",\n                \"config\": {\n                    \"mode\": \"{{MODE_10GB}}\"\n                }\n            }\n        ]\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/f5-portgroup:portgroups",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"f5-portgroup:portgroups"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Interfaces_Non-LAG",
+					"item": [
+						{
+							"name": "F5_OS_Interfaces_GET",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/openconfig-interfaces:interfaces",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"openconfig-interfaces:interfaces"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_OS_Interfaces_NOT-LAG_PATCH",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"openconfig-interfaces:interfaces\": {\n        \"interface\": [\n            {\n                \"name\": \"{{6.0}}\",\n                \"openconfig-if-ethernet:ethernet\": {\n                    \"openconfig-vlan:switched-vlan\": {\n                        \"config\": {\n                            \"trunk-vlans\": [\n                                {{501}}\n                            ]\n                        }\n                    }\n                }\n            },\n            {\n                \"name\": \"{{2.0}}\",\n                \"openconfig-if-ethernet:ethernet\": {\n                    \"openconfig-vlan:switched-vlan\": {\n                        \"config\": {\n                            \"trunk-vlans\": [\n                                {{444}},\n                                {{555}}\n                            ]\n                        }\n                    }\n                }\n            }\n        ]\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/openconfig-interfaces:interfaces",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"openconfig-interfaces:interfaces"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Interfaces_Lag",
+					"item": [
+						{
+							"name": "F5_OS_Interfaces_GET",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/openconfig-interfaces:interfaces",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"openconfig-interfaces:interfaces"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_OS_LACP_GET",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/openconfig-lacp:lacp",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"openconfig-lacp:lacp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_OS_Interfaces_LAG_Create_PATCH",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"openconfig-interfaces:interfaces\": {\n        \"interface\": [\n            {\n                \"name\": \"{{Arista}}\",\n                \"config\": {\n                    \"name\": \"{{Arista}}\",\n                    \"type\": \"iana-if-type:ieee8023adLag\",\n                    \"enabled\": true\n                },\n                \"openconfig-if-aggregate:aggregation\": {\n                    \"config\": {\n                        \"lag-type\": \"LACP\",\n                        \"f5-if-aggregate:distribution-hash\": \"src-dst-ipport\"\n                    },\n                    \"openconfig-vlan:switched-vlan\": {\n                        \"config\": {\n                            \"trunk-vlans\": [\n                                {{3010}},\n                                {{3011}}\n                            ]\n                        }\n                    }\n                }\n            },\n            {\n                \"name\": \"{{HA-Interconnect}}\",\n                \"config\": {\n                    \"name\": \"{{HA-Interconnect}}\",\n                    \"type\": \"iana-if-type:ieee8023adLag\",\n                    \"enabled\": true\n                },\n                \"openconfig-if-aggregate:aggregation\": {\n                    \"config\": {\n                        \"lag-type\": \"LACP\",\n                        \"f5-if-aggregate:distribution-hash\": \"src-dst-ipport\"\n                    },\n                    \"openconfig-vlan:switched-vlan\": {\n                        \"config\": {\n                            \"trunk-vlans\": [\n                                {{500}},\n                                {{503}}\n                            ]\n                        }\n                    }\n                }\n            }\n        ]\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_OS_Interfaces_LAG_add_Ports_PATCH",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"openconfig-interfaces:interfaces\": {\n        \"interface\": [\n            {\n                \"name\": \"{{1.0}}\",\n                \"config\": {\n                    \"name\": \"{{1.0}}\"\n                },\n                \"openconfig-if-ethernet:ethernet\": {\n                    \"config\": {\n                        \"openconfig-if-aggregate:aggregate-id\": \"{{Arista}}\"\n                    }\n                }\n            },\n            {\n                \"name\": \"{{2.0}}\",\n                \"config\": {\n                    \"name\": \"{{2.0}}\"\n                },\n                \"openconfig-if-ethernet:ethernet\": {\n                    \"config\": {\n                        \"openconfig-if-aggregate:aggregate-id\": \"{{Arista}}\"\n                    }\n                }\n            },\n            {\n                \"name\": \"{{8.0}}\",\n                \"config\": {\n                    \"name\": \"{{8.0}}\"\n                },\n                \"openconfig-if-ethernet:ethernet\": {\n                    \"config\": {\n                        \"openconfig-if-aggregate:aggregate-id\": \"{{HA-Interconnect}}\"\n                    }\n                }\n            },\n            {\n                \"name\": \"{{9.0}}\",\n                \"config\": {\n                    \"name\": \"{{9.0}}\"\n                },\n                \"openconfig-if-ethernet:ethernet\": {\n                    \"config\": {\n                        \"openconfig-if-aggregate:aggregate-id\": \"{{HA-Interconnect}}\"\n                    }\n                }\n            }\n        ]\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_OS_Interfaces_LAG_set_LACP_Fast_PATCH",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"ietf-restconf:data\": {\n        \"openconfig-lacp:lacp\": {\n            \"interfaces\": {\n                \"interface\": [\n                    {\n                        \"name\": \"{{Arista}}\",\n                        \"config\": {\n                            \"name\": \"{{Arista}}\",\n                            \"interval\": \"FAST\",\n                            \"lacp-mode\": \"ACTIVE\"\n                        }\n                    },\n                    {\n                        \"name\": \"{{HA-Interconnect}}\",\n                        \"config\": {\n                            \"name\": \"{{HA-Interconnect}}\",\n                            \"interval\": \"FAST\",\n                            \"lacp-mode\": \"ACTIVE\"\n                        }\n                    }\n                ]\n            }\n        }\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "VLANs",
+					"item": [
+						{
+							"name": "F5_OS_Interfaces_GET Copy",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/openconfig-interfaces:interfaces",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"openconfig-interfaces:interfaces"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_OS_VLANs_GET",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/openconfig-vlan:vlans",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"openconfig-vlan:vlans"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_OS_VLANs_PATCH",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"openconfig-vlan:vlans\": {\n        \"vlan\": [\n            {\n                \"vlan-id\": \"{{3010}}\",\n                \"config\": {\n                    \"vlan-id\": {{3010}},\n                    \"name\": \"{{Internal-VLAN}}\"\n                }\n            },\n            {\n                \"vlan-id\": \"{{3011}}\",\n                \"config\": {\n                    \"vlan-id\": {{3011}},\n                    \"name\": \"{{External-VLAN}}\"\n                }\n            }\n        ]\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "LLDP",
+					"item": [
+						{
+							"name": "F5_OS_LLDP_GET",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/openconfig-lldp:lldp",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"openconfig-lldp:lldp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_OS_Interfaces_LLDP_set_POST",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"openconfig-lldp:interface\":[\n        {\n            \"name\":\"5.0\",\n            \"config\":{\n                \"name\":\"5.0\",\n                \"enabled\":true,\n                \"f5-lldp:tlv-advertisement-state\":\"txrx\",\n                \"f5-lldp:tlvmap\":\"chassis-id port-id ttl port-description system-name system-description system-capabilities pvid ppvid vlan-name protocol-identity macphy link-aggregation power-mdi mfs product-model\"\n                }\n        },\n        {\n            \"name\":\"6.0\",\n            \"config\":{\n                \"name\":\"6.0\",\n                \"enabled\":true,\n                \"f5-lldp:tlv-advertisement-state\":\"txrx\",\n                \"f5-lldp:tlvmap\":\"chassis-id port-id ttl port-description system-name system-description system-capabilities pvid ppvid vlan-name protocol-identity macphy link-aggregation power-mdi mfs product-model\"\n                }\n        },\n        {\n            \"name\":\"7.0\",\n            \"config\":{\n                \"name\":\"7.0\",\n                \"enabled\":true,\n                \"f5-lldp:tlv-advertisement-state\":\"txrx\",\n                \"f5-lldp:tlvmap\":\"chassis-id port-id ttl port-description system-name system-description system-capabilities pvid ppvid vlan-name protocol-identity macphy link-aggregation power-mdi mfs product-model\"\n                }\n        },\n        {\n            \"name\":\"8.0\",\n            \"config\":{\n                \"name\":\"8.0\",\n                \"enabled\":true,\n                \"f5-lldp:tlv-advertisement-state\":\"txrx\",\n                \"f5-lldp:tlvmap\":\"chassis-id port-id ttl port-description system-name system-description system-capabilities pvid ppvid vlan-name protocol-identity macphy link-aggregation power-mdi mfs product-model\"\n                }\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/openconfig-lldp:lldp/interfaces",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"openconfig-lldp:lldp",
+										"interfaces"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_OS_Interfaces_LLDP_set_general_PATCH",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"openconfig-lldp:lldp\":{\n        \"config\": {\n            \"enabled\": true,\n            \"system-name\": \"{{base_hostname}}\",\n            \"system-description\": \"{{optional_system_description}}\",\n            \"f5-lldp:tx-interval\": 30,\n            \"f5-lldp:tx-hold\": 4,\n            \"f5-lldp:reinit-delay\": 2,\n            \"f5-lldp:tx-delay\": 2,\n            \"f5-lldp:max-neighbors-per-port\": 10\n        }\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/openconfig-lldp:lldp",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"openconfig-lldp:lldp"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Bounce Ports",
+					"item": [
+						{
+							"name": "F5_OS_Interfaces_GET Copy 2",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/openconfig-interfaces:interfaces",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"openconfig-interfaces:interfaces"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_OS_Interfaces_DOWN_Patch",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"openconfig-interfaces:interfaces\": {\n        \"interface\": [\n            {\n                \"name\": \"5.0\",\n                \"config\": {\n                    \"enabled\": false\n                }\n            },\n            {\n                \"name\": \"6.0\",\n                \"config\": {\n                    \"enabled\": false\n                }\n            },\n            {\n                \"name\": \"7.0\",\n                \"config\": {\n                    \"enabled\": false\n                }\n            },\n            {\n                \"name\": \"8.0\",\n                \"config\": {\n                    \"enabled\": false\n                }\n            }\n        ]\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_OS_Interfaces_UP_Patch",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"openconfig-interfaces:interfaces\": {\n        \"interface\": [\n            {\n                \"name\": \"5.0\",\n                \"config\": {\n                    \"enabled\": true\n                }\n            },\n            {\n                \"name\": \"6.0\",\n                \"config\": {\n                    \"enabled\": true\n                }\n            },\n            {\n                \"name\": \"7.0\",\n                \"config\": {\n                    \"enabled\": true\n                }\n            },\n            {\n                \"name\": \"8.0\",\n                \"config\": {\n                    \"enabled\": true\n                }\n            }\n        ]\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Deploy Tenant",
+			"item": [
+				{
+					"name": "Tenant_Upload_Image",
+					"item": [
+						{
+							"name": "F5_OS_Software_get_upload_status_GET",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/f5-tenant-images:images",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"f5-tenant-images:images"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_OS_Software_Tenant_get_upload_id_POST",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var resp = pm.response.json();",
+											"pm.environment.set(\"upload-id\", resp[\"f5-file-upload-meta-data:output\"][\"upload-id\"])"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"size\": {{upload_file_size}},\n    \"name\": \"{{upload_file_name}}\",\n    \"file-path\": \"images/tenant/\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/f5-utils-file-transfer:file/f5-file-upload-meta-data:upload/start-upload",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"f5-utils-file-transfer:file",
+										"f5-file-upload-meta-data:upload",
+										"start-upload"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_OS_Software_get_upload_status_GET",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/f5-utils-file-transfer:file/f5-file-upload-meta-data:upload/meta-data",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"f5-utils-file-transfer:file",
+										"f5-file-upload-meta-data:upload",
+										"meta-data"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_OS_Software_send_tenant_upload_id_POST",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									},
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "file-upload-id",
+										"value": "{{upload-id}}"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "",
+											"type": "file",
+											"src": "BIGIP-17.1.1.3-0.0.5.ALL-F5OS.qcow2.zip.bundle"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/restconf/data/openconfig-system:system/f5-image-upload:image/upload-image",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"restconf",
+										"data",
+										"openconfig-system:system",
+										"f5-image-upload:image",
+										"upload-image"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_OS_Software_Imported_GET-via-POST",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"f5-utils-file-transfer:path\": \"images/tenant\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/f5-utils-file-transfer:file/list",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"f5-utils-file-transfer:file",
+										"list"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Tenant_Deploy_Modify",
+					"item": [
+						{
+							"name": "F5_OS_ALL_Tenant_Status_GET",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/f5-tenants:tenants",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"f5-tenants:tenants"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_OS_Deploy_New_Tenant_POST",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"tenant\": [\n        {\n            \"name\": \"{{New_Tenant1_Name}}\",\n            \"config\": {\n                \"image\": \"{{Tenant_Image}}\",\n                \"nodes\": [\n                    1\n                ],\n                \"mgmt-ip\": \"{{Chassis1_Tenant1_IP}}\",\n                \"gateway\": \"{{OutofBand_GW}}\",\n                \"prefix-length\": {{OutofBand_CIDR}},\n                \"vlans\": [{{chassis1_tenant1_vlan_list}}],\n                \"vcpu-cores-per-node\": 4,\n                \"memory\": 12288,\n                \"cryptos\": \"enabled\",\n                \"storage\": {\n                    \"size\": {{tenant_disk_size}}\n                },\n                \"running-state\": \"deployed\"\n            }\n        }\n    ]\n}"
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/f5-tenants:tenants",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"f5-tenants:tenants"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_OS_ONE_Tenant_State",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/f5-tenants:tenants/tenant={{tenant_name}}/config/running-state",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"f5-tenants:tenants",
+										"tenant={{tenant_name}}",
+										"config",
+										"running-state"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_OS_ONE_Tenant_ALL",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/f5-tenants:tenants/tenant={{tenant_name}}/config/",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"f5-tenants:tenants",
+										"tenant={{tenant_name}}",
+										"config",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_OS_ONE_Tenant_SHUTDOWN_State",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"running-state\": \"provisioned\"\n}"
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/f5-tenants:tenants/tenant={{tenant_name}}/config/running-state",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"f5-tenants:tenants",
+										"tenant={{tenant_name}}",
+										"config",
+										"running-state"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_OS_Modify_Shutdown_Tenant",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"vcpu-cores-per-node\": 4,\n    \"memory\": 14848\n}"
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/f5-tenants:tenants/tenant={{tenant_name}}/config/vcpu-cores-per-node",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"f5-tenants:tenants",
+										"tenant={{tenant_name}}",
+										"config",
+										"vcpu-cores-per-node"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_OS_ONE_Tenant_STARTUP_State",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"running-state\": \"deployed\"\n}"
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/f5-tenants:tenants/tenant={{tenant_name}}/config/running-state",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"f5-tenants:tenants",
+										"tenant={{tenant_name}}",
+										"config",
+										"running-state"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
