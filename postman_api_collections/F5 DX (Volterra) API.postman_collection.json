@@ -1,0 +1,325 @@
+{
+	"info": {
+		"_postman_id": "897fb418-91d6-4c2b-bfc2-739656a5418b",
+		"name": "F5 DX (Volterra) API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "212784"
+	},
+	"item": [
+		{
+			"name": "Basic_Operations",
+			"item": [
+				{
+					"name": "Tennat - Namespaces",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/web/namespaces",
+							"protocol": "https",
+							"host": [
+								"{{short_tennat_id}}",
+								"console",
+								"ves",
+								"volterra",
+								"io"
+							],
+							"path": [
+								"api",
+								"web",
+								"namespaces"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Tennat - Namespaces Current",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/web/namespaces/{{current_namespace}}",
+							"protocol": "https",
+							"host": [
+								"{{short_tennat_id}}",
+								"console",
+								"ves",
+								"volterra",
+								"io"
+							],
+							"path": [
+								"api",
+								"web",
+								"namespaces",
+								"{{current_namespace}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show HTTP_LB Overview",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/namespaces/{{current_namespace}}/http_loadbalancers",
+							"protocol": "https",
+							"host": [
+								"{{short_tennat_id}}",
+								"console",
+								"ves",
+								"volterra",
+								"io"
+							],
+							"path": [
+								"api",
+								"config",
+								"namespaces",
+								"{{current_namespace}}",
+								"http_loadbalancers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create HTTP_LB",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{{http_lb_json_body}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/namespaces/{{current_namespace}}/http_loadbalancers",
+							"protocol": "https",
+							"host": [
+								"{{short_tennat_id}}",
+								"console",
+								"ves",
+								"volterra",
+								"io"
+							],
+							"path": [
+								"api",
+								"config",
+								"namespaces",
+								"{{current_namespace}}",
+								"http_loadbalancers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show HTTP_LB Single Config",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/namespaces/{{current_namespace}}/http_loadbalancers/{{http_lb_name}}",
+							"protocol": "https",
+							"host": [
+								"{{short_tennat_id}}",
+								"console",
+								"ves",
+								"volterra",
+								"io"
+							],
+							"path": [
+								"api",
+								"config",
+								"namespaces",
+								"{{current_namespace}}",
+								"http_loadbalancers",
+								"{{http_lb_name}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show Virtual Hosts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/namespaces/{{current_namespace}}/virtual_hosts",
+							"protocol": "https",
+							"host": [
+								"{{short_tennat_id}}",
+								"console",
+								"ves",
+								"volterra",
+								"io"
+							],
+							"path": [
+								"api",
+								"config",
+								"namespaces",
+								"{{current_namespace}}",
+								"virtual_hosts"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "HTTP_LB_Details",
+			"item": [
+				{
+					"name": "Show HTTP_LB Single Config",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/namespaces/{{current_namespace}}/http_loadbalancers/{{http_lb_name}}",
+							"protocol": "https",
+							"host": [
+								"{{short_tennat_id}}",
+								"console",
+								"ves",
+								"volterra",
+								"io"
+							],
+							"path": [
+								"api",
+								"config",
+								"namespaces",
+								"{{current_namespace}}",
+								"http_loadbalancers",
+								"{{http_lb_name}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show HTTP_LB Single Config DNS",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/namespaces/{{current_namespace}}/http_loadbalancers/{{http_lb_name}}/get-dns-info",
+							"protocol": "https",
+							"host": [
+								"{{short_tennat_id}}",
+								"console",
+								"ves",
+								"volterra",
+								"io"
+							],
+							"path": [
+								"api",
+								"config",
+								"namespaces",
+								"{{current_namespace}}",
+								"http_loadbalancers",
+								"{{http_lb_name}}",
+								"get-dns-info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show HTTP_LB Security Config",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/namespaces/{{current_namespace}}/http_loadbalancers/get_security_config",
+							"protocol": "https",
+							"host": [
+								"{{short_tennat_id}}",
+								"console",
+								"ves",
+								"volterra",
+								"io"
+							],
+							"path": [
+								"api",
+								"config",
+								"namespaces",
+								"{{current_namespace}}",
+								"http_loadbalancers",
+								"get_security_config"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show API Endpoints - ML",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/ml/data/namespaces/{{current_namespace}}/app_types/{{app_type_name}}/api_endpoints",
+							"protocol": "https",
+							"host": [
+								"{{short_tennat_id}}",
+								"console",
+								"ves",
+								"volterra",
+								"io"
+							],
+							"path": [
+								"api",
+								"ml",
+								"data",
+								"namespaces",
+								"{{current_namespace}}",
+								"app_types",
+								"{{app_type_name}}",
+								"api_endpoints"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Virtual_Hosts",
+			"item": [
+				{
+					"name": "Show Virtual Hosts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/namespaces/{{current_namespace}}/virtual_hosts",
+							"protocol": "https",
+							"host": [
+								"{{short_tennat_id}}",
+								"console",
+								"ves",
+								"volterra",
+								"io"
+							],
+							"path": [
+								"api",
+								"config",
+								"namespaces",
+								"{{current_namespace}}",
+								"virtual_hosts"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
