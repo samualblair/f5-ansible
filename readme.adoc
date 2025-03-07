@@ -136,3 +136,14 @@ The included basic Postman API Collections and Enviornments may help with:
 
 - Delivering ready to use DO Declarations
 - Delivering ready to use AS3 Declarations
+
+== Authors
+Michael Johnson (https://github.com/samualblair[@samualblair])
+
+== Versioning
+Using Calendar Versioning: https://calver.org/
+
+FORMAT: YY.0M.0D
+* 2025.03.07 - Updates to Documentation , new TLS templates
+* 2025.01.21 - General release
+* Pre-release development
