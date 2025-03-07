@@ -8,3 +8,4 @@ inventory/qs_host_vars.yml
 output/*
 # Except this file
 !output/.gitignore
+templates/.DS_Store
