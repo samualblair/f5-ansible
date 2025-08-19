@@ -1,0 +1,60 @@
+{
+    "$schema": "https://raw.githubusercontent.com/F5Networks/f5-appsvcs-extension/main/schema/latest/as3-schema.json",
+    "class": "AS3",
+    "declaration": {
+        "class": "ADC",
+        "schemaVersion": "3.46.2",
+        "id": "urn:uuid:2b4e9b5a-0ca0-4d25-acbd-b710535eda12",
+        "label": "Secure Base Examples Snippit",
+        "remark": "Secure HTTP aka HTTPS via HSTS Headers base Profiles Examples",
+        "t_Example_HSTS_Samples": {
+            "class": "Tenant",
+            "app_Example_HSTS_Samples": {
+                "class": "Application",
+                "template": "shared",
+                "http_profile_hsts_base_30min_nosubdomains": {
+                    "class": "HTTP_Profile",
+                    "hstsInsert": true,
+                    "hstsPeriod": 1800,
+                    "hstsIncludeSubdomains": false,
+                    "hstsPreload": false
+                },
+                "http_profile_hsts_base_30min_subdomains": {
+                    "class": "HTTP_Profile",
+                    "hstsInsert": true,
+                    "hstsPeriod": 1800,
+                    "hstsIncludeSubdomains": true,
+                    "hstsPreload": false
+                },
+                "http_profile_hsts_base_30min_preload": {
+                    "class": "HTTP_Profile",
+                    "hstsInsert": true,
+                    "hstsPeriod": 1800,
+                    "hstsIncludeSubdomains": true,
+                    "hstsPreload": true
+                },
+                "http_profile_hsts_base_4hours": {
+                    "class": "HTTP_Profile",
+                    "hstsInsert": true,
+                    "hstsPeriod": 14400,
+                    "hstsIncludeSubdomains": true,
+                    "hstsPreload": false
+                },
+                "http_profile_hsts_base_91days": {
+                    "class": "HTTP_Profile",
+                    "hstsInsert": true,
+                    "hstsPeriod": 7862400,
+                    "hstsIncludeSubdomains": true,
+                    "hstsPreload": true
+                },
+                "http_profile_hsts_base_5yr": {
+                    "class": "HTTP_Profile",
+                    "hstsInsert": true,
+                    "hstsPeriod": 157680000,
+                    "hstsIncludeSubdomains": true,
+                    "hstsPreload": true
+                }
+            }
+        }
+    }
+}
