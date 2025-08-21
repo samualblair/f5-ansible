@@ -1,0 +1,666 @@
+{
+	"info": {
+		"_postman_id": "f7200550-b583-4120-b8a4-4f1adc299b2a",
+		"name": "F5 iHealth API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "212784"
+	},
+	"item": [
+		{
+			"name": "Upload_qKview_Flow",
+			"item": [
+				{
+					"name": "Upload_qkview",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"('use strict');",
+									"",
+									"",
+									"function autoSetF5iHealthLocations() {",
+									"    'use strict';",
+									"    const xml2js = require('xml2js');",
+									"    let jsonResponse;",
+									"",
+									"    xml2js.parseString(pm.response.text(), { explicitArray: false }, (err, result) => {",
+									"        jsonResponse = result;",
+									"    });",
+									"",
+									"    pm.environment.set(\"api_diagnostics\", jsonResponse.qkview.diagnostics);",
+									"};",
+									"",
+									"autoSetF5iHealthLocations();",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ihealth_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.f5.ihealth.api",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "qkview",
+									"type": "file",
+									"src": "example.qkview"
+								},
+								{
+									"key": "visible_in_gui",
+									"value": "{{ihealth_visible_in_gui}}",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "{{ihealth_description}}",
+									"type": "text"
+								},
+								{
+									"key": "f5_support_case",
+									"value": "{{ihealth_f5_support_case}}",
+									"type": "text"
+								},
+								{
+									"key": "share_with_case_owner",
+									"value": "{{ihealth_share_with_case_owner}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://ihealth2-api.f5.com/qkview-analyzer/api/qkviews",
+							"protocol": "https",
+							"host": [
+								"ihealth2-api",
+								"f5",
+								"com"
+							],
+							"path": [
+								"qkview-analyzer",
+								"api",
+								"qkviews"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get_diagnostics_hits_json_VAR",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ihealth_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.f5.ihealth.api",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_diagnostics}}.json?set=hit",
+							"host": [
+								"{{api_diagnostics}}",
+								"json"
+							],
+							"query": [
+								{
+									"key": "set",
+									"value": "hit"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get_files_list_json_VAR",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ihealth_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.f5.ihealth.api",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_files}}.json",
+							"host": [
+								"{{api_files}}",
+								"json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get_files_download_one_file",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ihealth_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/octet-stream",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_files}}/{{files_api_file_id}}",
+							"host": [
+								"{{api_files}}"
+							],
+							"path": [
+								"{{files_api_file_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get_files_download_full_qkview",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ihealth_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/octet-stream",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_files}}/qkview",
+							"host": [
+								"{{api_files}}"
+							],
+							"path": [
+								"qkview"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get_commands_list_json_VAR",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ihealth_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.f5.ihealth.api",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_commands}}.json",
+							"host": [
+								"{{api_commands}}",
+								"json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get_commands_run_one_command_json_VAR",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ihealth_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.f5.ihealth.api",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_commands}}/{{command_api_command_id}}.json",
+							"host": [
+								"{{api_commands}}"
+							],
+							"path": [
+								"{{command_api_command_id}}.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get_commands_run_multiple_commands_json_VAR",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ihealth_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.f5.ihealth.api",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_commands}}.json?resources={{command_api_command_id_comma_list}}",
+							"host": [
+								"{{api_commands}}",
+								"json"
+							],
+							"query": [
+								{
+									"key": "resources",
+									"value": "{{command_api_command_id_comma_list}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "iHealth_Login_Access_Token_Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"('use strict');",
+							"",
+							"function autoSetF5iHealthToken() {",
+							"    'use strict';",
+							"    var responseJsonData = pm.response.json();",
+							"    pm.environment.set(\"ihealth_access_token\", responseJsonData.access_token);",
+							"};",
+							"",
+							"autoSetF5iHealthToken();",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"packages": {},
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "{{user}}",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "{{pass}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "ihealth",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://identity.account.f5.com/oauth2/ausp95ykc80HOU7SQ357/v1/token",
+					"protocol": "https",
+					"host": [
+						"identity",
+						"account",
+						"f5",
+						"com"
+					],
+					"path": [
+						"oauth2",
+						"ausp95ykc80HOU7SQ357",
+						"v1",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get_diagnostics_hits",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ihealth_access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/vnd.f5.ihealth.api",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://ihealth-api.f5.com/qkview-analyzer/api/qkviews/{{qkview_id}}/diagnostics?set=hit",
+					"protocol": "https",
+					"host": [
+						"ihealth-api",
+						"f5",
+						"com"
+					],
+					"path": [
+						"qkview-analyzer",
+						"api",
+						"qkviews",
+						"{{qkview_id}}",
+						"diagnostics"
+					],
+					"query": [
+						{
+							"key": "set",
+							"value": "hit"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get_diagnostics_hit_JSON",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ihealth_access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/vnd.f5.ihealth.api",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://ihealth-api.f5.com/qkview-analyzer/api/qkviews/{{qkview_id}}/diagnostics.json?set=hit",
+					"protocol": "https",
+					"host": [
+						"ihealth-api",
+						"f5",
+						"com"
+					],
+					"path": [
+						"qkview-analyzer",
+						"api",
+						"qkviews",
+						"{{qkview_id}}",
+						"diagnostics.json"
+					],
+					"query": [
+						{
+							"key": "set",
+							"value": "hit"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload_qkview",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"('use strict');",
+							"",
+							"",
+							"function autoSetF5iHealthLocations() {",
+							"    'use strict';",
+							"    const xml2js = require('xml2js');",
+							"    let jsonResponse;",
+							"",
+							"    xml2js.parseString(pm.response.text(), { explicitArray: false }, (err, result) => {",
+							"        jsonResponse = result;",
+							"    });",
+							"",
+							"    pm.environment.set(\"api_diagnostics\", jsonResponse.qkview.diagnostics);",
+							"    pm.environment.set(\"api_files\", jsonResponse.qkview.files);",
+							"    pm.environment.set(\"api_commands\", jsonResponse.qkview.commands);",
+							"    pm.environment.set(\"api_bigip\", jsonResponse.qkview.bigip);",
+							"    pm.environment.set(\"gui_uri\", jsonResponse.qkview.gui_uri);",
+							"",
+							"};",
+							"",
+							"autoSetF5iHealthLocations();",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ihealth_access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/vnd.f5.ihealth.api",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "qkview",
+							"type": "file",
+							"src": "example.qkview"
+						},
+						{
+							"key": "visible_in_gui",
+							"value": "{{ihealth_visible_in_gui}}",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "{{ihealth_description}}",
+							"type": "text"
+						},
+						{
+							"key": "f5_support_case",
+							"value": "{{ihealth_f5_support_case}}",
+							"type": "text"
+						},
+						{
+							"key": "share_with_case_owner",
+							"value": "{{ihealth_share_with_case_owner}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://ihealth2-api.f5.com/qkview-analyzer/api/qkviews",
+					"protocol": "https",
+					"host": [
+						"ihealth2-api",
+						"f5",
+						"com"
+					],
+					"path": [
+						"qkview-analyzer",
+						"api",
+						"qkviews"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LEGACY_Authenticate_With_iHealth",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user_id\": \"{{user}}\", \n    \"user_secret\": \"{{pass}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.f5.com/auth/pub/sso/login/ihealth-api",
+					"protocol": "https",
+					"host": [
+						"api",
+						"f5",
+						"com"
+					],
+					"path": [
+						"auth",
+						"pub",
+						"sso",
+						"login",
+						"ihealth-api"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

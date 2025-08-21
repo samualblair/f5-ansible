@@ -1,0 +1,980 @@
+{
+	"info": {
+		"_postman_id": "f573eca6-f025-4bac-bb9b-16ab24c06f8f",
+		"name": "F5 TMOS installs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "212784"
+	},
+	"item": [
+		{
+			"name": "Device Cert SelfSign Renew",
+			"item": [
+				{
+					"name": "F5_REST_Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseJsonData = pm.response.json();",
+									"pm.environment.set(\"f5_auth_token\", responseJsonData.token.token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{user_name}}\",\n    \"password\": \"{{user_password}}\",\n    \"loginProviderName\": \"tmos\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/mgmt/shared/authn/login",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"mgmt",
+								"shared",
+								"authn",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_REST_Login_strict",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"('use strict');",
+									"",
+									"function autoSetF5Token() {",
+									"    'use strict';",
+									"    var responseJsonData = pm.response.json();",
+									"    pm.environment.set(\"f5_auth_token\", responseJsonData.token.token);",
+									"};",
+									"",
+									"autoSetF5Token();",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{user_name}}\",\n    \"password\": \"{{user_password}}\",\n    \"loginProviderName\": \"tmos\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/mgmt/shared/authn/login",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"mgmt",
+								"shared",
+								"authn",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_Device_Cert_Renew",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-F5-Auth-Token",
+								"value": "{{f5_auth_token}}",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "https://{{f5_hostname}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json;charset=UTF-8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"command\":\"run\",\n    \"utilCmdArgs\":\" -n \\\"{{cert_key_filename_ha_share}}\\\" -p \\\"/config/httpd/conf/\\\" -e \\\"{{cert_admin_email}}\\\" -h \\\"{{fqdn_hostname}}\\\" -c \\\"{{cert_country}}\\\" -s \\\"{{cert_state}}\\\" -t \\\"{{cert_city}}\\\" --org \\\"{{cert_org}}\\\" -u \\\"{{cert_ou}}\\\" -k RSA {{cert_key_size}}\" \n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/mgmt/tm/util/gencert",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"mgmt",
+								"tm",
+								"util",
+								"gencert"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_Device_Cert_Renew Copy",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-F5-Auth-Token",
+								"value": "{{f5_auth_token}}",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "https://{{f5_hostname}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json;charset=UTF-8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"command\":\"run\",\n    \"utilCmdArgs\":\" -n \\\"{{cert_key_filename_ha_share}}\\\" -p \\\"/config/httpd/conf/\\\" -e \\\"{{cert_admin_email}}\\\" -h \\\"{{fqdn_hostname}}\\\" -c \\\"{{cert_country}}\\\" -s \\\"{{cert_state}}\\\" -t \\\"{{cert_city}}\\\" --org \\\"{{cert_org}}\\\" -u \\\"{{cert_ou}}\\\" -k RSA {{cert_key_size}}\" \n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/mgmt/tm/util/gencert",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"mgmt",
+								"tm",
+								"util",
+								"gencert"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_Generate_Device_Cert_Renew_ServiceRestart-OFTEN-FAILS",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-F5-Auth-Token",
+								"value": "{{f5_auth_token}}",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "https://{{f5_hostname}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json;charset=UTF-8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"httpd\",\n    \"command\":\"restart\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/mgmt/tm/sys/service",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"mgmt",
+								"tm",
+								"sys",
+								"service"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Install Extentions - AS3 DO etc",
+			"item": [
+				{
+					"name": "F5_REST_Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseJsonData = pm.response.json();",
+									"pm.environment.set(\"f5_auth_token\", responseJsonData.token.token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{user_name}}\",\n    \"password\": \"{{user_password}}\",\n    \"loginProviderName\": \"tmos\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/mgmt/shared/authn/login",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"mgmt",
+								"shared",
+								"authn",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_REST_Login_strict",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"('use strict');",
+									"",
+									"function autoSetF5Token() {",
+									"    'use strict';",
+									"    var responseJsonData = pm.response.json();",
+									"    pm.environment.set(\"f5_auth_token\", responseJsonData.token.token);",
+									"};",
+									"",
+									"autoSetF5Token();",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{user_name}}\",\n    \"password\": \"{{user_password}}\",\n    \"loginProviderName\": \"tmos\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/mgmt/shared/authn/login",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"mgmt",
+								"shared",
+								"authn",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_OS_Software_TMOS_Extensions_DO",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-F5-Auth-Token",
+								"value": "{{f5_auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/octet-stream"
+							},
+							{
+								"key": "Content-Range",
+								"value": "{{file_upload_range}}",
+								"description": "This needs to be: 0-$((LEN - 1))/$LEN , example:  0-2372152/2372153",
+								"type": "text"
+							},
+							{
+								"key": "Content-Length",
+								"value": "{{file_upload_length}}",
+								"description": "This needs to be file size or 'LEN';: One way to get is on cli , wc -c $FN | cut -f 2 -d ' ', linux it is 'cut -f 1 -d'",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": "f5-declarative-onboarding-1.45.0-6.noarch.rpm"
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/mgmt/shared/file-transfer/uploads/{{do_filename}}",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"mgmt",
+								"shared",
+								"file-transfer",
+								"uploads",
+								"{{do_filename}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_Install_Extension_LX_DO",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-F5-Auth-Token",
+								"value": "{{f5_auth_token}}",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "https://{{f5_hostname}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json;charset=UTF-8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"operation\": \"INSTALL\",\n    \"packageFilePath\": \"/var/config/rest/downloads/{{do_filename}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/mgmt/shared/iapp/package-management-tasks",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"mgmt",
+								"shared",
+								"iapp",
+								"package-management-tasks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_OS_Software_TMOS_Extensions_AS3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-F5-Auth-Token",
+								"value": "{{f5_auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/octet-stream"
+							},
+							{
+								"key": "Content-Range",
+								"value": "{{file_upload_range}}",
+								"description": "This needs to be: 0-$((LEN - 1))/$LEN , example:  0-26045534/26045535",
+								"type": "text"
+							},
+							{
+								"key": "Content-Length",
+								"value": "{{file_upload_length}}",
+								"description": "This needs to be file size or 'LEN';: One way to get is on cli , wc -c $FN | cut -f 2 -d ' ', linux it is 'cut -f 1 -d'",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": "f5-appsvcs-3.52.0-5.noarch.rpm"
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/mgmt/shared/file-transfer/uploads/{{as3_filename}}",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"mgmt",
+								"shared",
+								"file-transfer",
+								"uploads",
+								"{{as3_filename}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_Install_Extension_LX_AS3",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-F5-Auth-Token",
+								"value": "{{f5_auth_token}}",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "https://{{f5_hostname}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json;charset=UTF-8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"operation\": \"INSTALL\",\n    \"packageFilePath\": \"/var/config/rest/downloads/{{as3_filename}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/mgmt/shared/iapp/package-management-tasks",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"mgmt",
+								"shared",
+								"iapp",
+								"package-management-tasks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_UnInstall_Extension_LX_AS3_or_DO",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-F5-Auth-Token",
+								"value": "{{f5_auth_token}}",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "https://{{f5_hostname}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json;charset=UTF-8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"operation\": \"UNINSTALL\",\n    \"packageFilePath\": \"/var/config/rest/downloads/{{package_filename_no_dot_rpm}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/mgmt/shared/iapp/package-management-tasks",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"mgmt",
+								"shared",
+								"iapp",
+								"package-management-tasks"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "UCSBackup",
+			"item": [
+				{
+					"name": "F5_REST_Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseJsonData = pm.response.json();",
+									"pm.environment.set(\"f5_auth_token\", responseJsonData.token.token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{user_name}}\",\n    \"password\": \"{{user_password}}\",\n    \"loginProviderName\": \"tmos\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/mgmt/shared/authn/login",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"mgmt",
+								"shared",
+								"authn",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_REST_Login_strict",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"('use strict');",
+									"",
+									"function autoSetF5Token() {",
+									"    'use strict';",
+									"    var responseJsonData = pm.response.json();",
+									"    pm.environment.set(\"f5_auth_token\", responseJsonData.token.token);",
+									"};",
+									"",
+									"autoSetF5Token();",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{user_name}}\",\n    \"password\": \"{{user_password}}\",\n    \"loginProviderName\": \"tmos\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/mgmt/shared/authn/login",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"mgmt",
+								"shared",
+								"authn",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_Create_LogRotate_First",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "X-F5-Auth-Token",
+								"value": "{{f5_auth_token}}",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "https://{{f5_hostname}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json;charset=UTF-8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \n    \"syslogInclude\": \"/var/ucs/*.ucs {\\n    nocompress\\n    missingok\\n    notifempty\\n    sharedscripts\\n    postrotate\\n    endscript\\n    rotate 2\\n }\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/mgmt/tm/sys/log-rotate",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"mgmt",
+								"tm",
+								"sys",
+								"log-rotate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_Create_LogRotate_First Copy",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-F5-Auth-Token",
+								"value": "{{f5_auth_token}}",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "https://{{f5_hostname}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json;charset=UTF-8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/mgmt/tm/sys/log-rotate",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"mgmt",
+								"tm",
+								"sys",
+								"log-rotate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Save_to_disk",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-F5-Auth-Token",
+								"value": "{{f5_auth_token}}",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "https://{{f5_hostname}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json;charset=UTF-8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"command\":\"save\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/mgmt/tm/sys/config",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"mgmt",
+								"tm",
+								"sys",
+								"config"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_Create_UCS_often_timesout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-F5-Auth-Token",
+								"value": "{{f5_auth_token}}",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "https://{{f5_hostname}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json;charset=UTF-8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"command\": \"save\",\n    \"name\": \"/var/local/ucs/{{base_hostname}}_baseha.ucs\",\n    \"includePrivateKeys\": true,\n    \"isEncrypted\": false,\n    \"description\": \"UCS Backup {{backup_description}}\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/mgmt/tm/sys/ucs",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"mgmt",
+								"tm",
+								"sys",
+								"ucs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_Show_UCS",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-F5-Auth-Token",
+								"value": "{{f5_auth_token}}",
+								"type": "default"
+							},
+							{
+								"key": "Origin",
+								"value": "https://{{f5_hostname}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json;charset=UTF-8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/mgmt/tm/sys/ucs",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"mgmt",
+								"tm",
+								"sys",
+								"ucs"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
