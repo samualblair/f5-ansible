@@ -8,6 +8,19 @@
 	"item": [
 		{
 			"name": "F5_REST_Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var responseJsonData = pm.response.json();",
+							"pm.environment.set(\"f5_auth_token\", responseJsonData.token.token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -38,14 +51,22 @@
 			"response": []
 		},
 		{
-			"name": "F5_REST_Login_TEST-PM-JS",
+			"name": "F5_REST_Login_StrictScript",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var headerValue = pm.response.json.token.get(\"token\");",
-							"pm.environment.set(\"f5_auth_token\", headerValue);"
+							"('use strict');",
+							"",
+							"function autoSetF5Token() {",
+							"    'use strict';",
+							"    var responseJsonData = pm.response.json();",
+							"    pm.environment.set(\"f5_auth_token\", responseJsonData.token.token);",
+							"};",
+							"",
+							"autoSetF5Token();",
+							""
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -111,6 +132,19 @@
 		},
 		{
 			"name": "F5_AS3_Declare_POST",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var responseJsonData = pm.response.json();",
+							"pm.environment.set(\"last_declaration_id\", responseJsonData.id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [
@@ -147,6 +181,59 @@
 							"key": "async",
 							"value": "true"
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "F5_AS3_Declare_GET-PREVIOUS",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-F5-Auth-Token",
+						"value": "{{f5_auth_token}}",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{f5_hostname}}:443/mgmt/shared/appsvcs/declare/{{tenant_name}}",
+					"protocol": "https",
+					"host": [
+						"{{f5_hostname}}"
+					],
+					"port": "443",
+					"path": [
+						"mgmt",
+						"shared",
+						"appsvcs",
+						"declare",
+						"{{tenant_name}}"
 					]
 				}
 			},

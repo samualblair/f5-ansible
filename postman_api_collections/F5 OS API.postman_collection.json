@@ -70,6 +70,282 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "F5_OS_REST_Login_strict",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"('use strict');",
+									"",
+									"function autoSetF5OSToken() {",
+									"    'use strict';",
+									"    var headerValue = pm.response.headers.get(\"x-auth-token\");",
+									"    pm.environment.set(\"x-auth-token_rseries_appliance1\", headerValue);",
+									"};",
+									"",
+									"autoSetF5OSToken();",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{user_password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user_name}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/openconfig-system:system/aaa",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								"openconfig-system:system",
+								"aaa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_OS_API_RESTCONF_KEY_LIFETIME_Operational",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/openconfig-system:system/aaa/f5-aaa-confd-restconf-token:restconf-token/state/lifetime",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								"openconfig-system:system",
+								"aaa",
+								"f5-aaa-confd-restconf-token:restconf-token",
+								"state",
+								"lifetime"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_OS_API_RESTCONF_KEY_LIFETIME_Config",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"openconfig-system:system\": {\n            \"aaa\": {\n                \"f5-aaa-confd-restconf-token:restconf-token\": {\n                    \"config\": {\n                        \"f5-aaa-confd-restconf-token:lifetime\": 15\n                    }\n                }\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_OS_API_RESTCONF_KEY_LIFETIME_Operational",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"openconfig-system:system\": {\n            \"aaa\": {\n                \"f5-aaa-confd-restconf-token:restconf-token\": {\n                    \"state\": {\n                        \"f5-aaa-confd-restconf-token:lifetime\": 15\n                    }\n                }\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_OS_API_RESTCONF_KEY_LIFETIME_Config_SPECIFIC",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{x-auth-token_rseries_appliance1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "X-Auth-Token",
+								"value": "{{x-auth-token_rseries_appliance1}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang-data+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \n    \"config\": { \n        \"f5-aaa-confd-restconf-token:lifetime\": 30\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/api/data/openconfig-system:system/aaa/f5-aaa-confd-restconf-token:restconf-token/config",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"api",
+								"data",
+								"openconfig-system:system",
+								"aaa",
+								"f5-aaa-confd-restconf-token:restconf-token",
+								"config"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -2986,7 +3262,7 @@
 					"name": "VLANs",
 					"item": [
 						{
-							"name": "F5_OS_Interfaces_GET Copy",
+							"name": "F5_OS_Interfaces_GET",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -4138,6 +4414,124 @@
 										"tenant={{tenant_name}}",
 										"config",
 										"vcpu-cores-per-node"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_OS_ModifyTenant_VLANs_ifnone_add_replace",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"vlans\": [\n        1920,\n        1923,\n        1924\n    ]\n}"
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/f5-tenants:tenants/tenant={{tenant_name}}/config/vlans",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"f5-tenants:tenants",
+										"tenant={{tenant_name}}",
+										"config",
+										"vlans"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_OS_ModifyTenant_VLANs_ifupdate_adjust",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{x-auth-token_rseries_appliance1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "X-Auth-Token",
+										"value": "{{x-auth-token_rseries_appliance1}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/yang-data+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"vlans\": [\n        1920,\n        1923,\n        1924\n    ]\n}"
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/api/data/f5-tenants:tenants/tenant={{tenant_name}}/config/vlans",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"api",
+										"data",
+										"f5-tenants:tenants",
+										"tenant={{tenant_name}}",
+										"config",
+										"vlans"
 									]
 								}
 							},

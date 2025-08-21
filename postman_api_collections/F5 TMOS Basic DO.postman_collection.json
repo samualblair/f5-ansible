@@ -8,6 +8,71 @@
 	"item": [
 		{
 			"name": "F5_REST_Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var responseJsonData = pm.response.json();",
+							"pm.environment.set(\"f5_auth_token\", responseJsonData.token.token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"{{user_name}}\",\n    \"password\": \"{{user_password}}\",\n    \"loginProviderName\": \"tmos\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{f5_hostname}}:443/mgmt/shared/authn/login",
+					"protocol": "https",
+					"host": [
+						"{{f5_hostname}}"
+					],
+					"port": "443",
+					"path": [
+						"mgmt",
+						"shared",
+						"authn",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "F5_REST_Login_strict",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"('use strict');",
+							"",
+							"function autoSetF5Token() {",
+							"    'use strict';",
+							"    var responseJsonData = pm.response.json();",
+							"    pm.environment.set(\"f5_auth_token\", responseJsonData.token.token);",
+							"};",
+							"",
+							"autoSetF5Token();",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -67,6 +132,19 @@
 		},
 		{
 			"name": "F5_DO_Declare_POST",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var responseJsonData = pm.response.json();",
+							"pm.environment.set(\"last_declaration_id\", responseJsonData.id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [
