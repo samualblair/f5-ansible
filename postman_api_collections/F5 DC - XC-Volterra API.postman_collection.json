@@ -4034,6 +4034,420 @@
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "7 - IP Filter Policy",
+					"item": [
+						{
+							"name": "1 - Show IP Prefix List Set",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/namespaces/{{current_namespace}}/ip_prefix_sets",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"namespaces",
+										"{{current_namespace}}",
+										"ip_prefix_sets"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "1 - Create IP Prefix List Set",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"metadata\": {\n    \"name\": \"{{ip_prefix_set_name}}\",\n    \"description\": \"IP Restriction based IPv4 List\"\n  },\n  \"spec\": {\n    \"ipv4_prefixes\": [\n      {\n        \"ipv4_prefix\": \"192.0.2.0/24\",\n        \"description\": \"TEST-NET-1 IPv4 Documentation Space\"\n      },\n      {\n        \"ipv4_prefix\": \"198.51.100.0/24\",\n        \"description\": \"TEST-NET-2 IPv4 Documentation Space\"\n      },\n      {\n        \"ipv4_prefix\": \"203.0.113.0/24\",\n        \"description\": \"TEST-NET-3 IPv4 Documentation Space\"\n      }\n    ]\n  }\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/namespaces/{{current_namespace}}/ip_prefix_sets",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"namespaces",
+										"{{current_namespace}}",
+										"ip_prefix_sets"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "1 - Show IP Prefix List Set Specific Entry",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/namespaces/{{current_namespace}}/ip_prefix_sets/{{ip_prefix_set_name}}",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"namespaces",
+										"{{current_namespace}}",
+										"ip_prefix_sets",
+										"{{ip_prefix_set_name}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "2 - Show Service Policy",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/namespaces/{{current_namespace}}/service_policys",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"namespaces",
+										"{{current_namespace}}",
+										"service_policys"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "2 - Create Service Policy",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"metadata\": {\n    \"name\": \"{{service_policy_name}}\"\n  },\n  \"spec\": {\n    \"algo\": \"FIRST_MATCH\",\n    \"any_server\": {},\n    \"rules\": [\n      {\n        \"kind\": \"service_policy_rule\",\n        \"tenant\": \"{{long_tennat_id}}\",\n        \"namespace\": \"{{current_namespace}}\",\n        \"name\": \"{{policy_rule_1_allow_name}}\"\n      },\n      {\n        \"kind\": \"service_policy_rule\",\n        \"tenant\": \"{{long_tennat_id}}\",\n        \"namespace\": \"{{current_namespace}}\",\n        \"name\": \"{{policy_rule_2_deny_name}}\"\n      }\n    ],\n    \"rule_list\": {\n      \"rules\": [\n        {\n          \"metadata\": {\n            \"name\": \"{{policy_rule_list_name}}\",\n            \"disable\": false\n          },\n          \"spec\": {\n            \"action\": \"ALLOW\",\n            \"any_client\": {},\n            \"label_matcher\": {\n              \"keys\": []\n            },\n            \"headers\": [],\n            \"query_params\": [],\n            \"http_method\": {\n              \"methods\": [],\n              \"invert_matcher\": false\n            },\n            \"ip_matcher\": {\n              \"prefix_sets\": [\n                {\n                  \"kind\": \"ip_prefix_set\",\n                  \"tenant\": \"{{long_tennat_id}}\",\n                  \"namespace\": \"{{current_namespace}}\",\n                  \"name\": \"{{ip_prefix_set_name}}\"\n                }\n              ],\n              \"invert_matcher\": false\n            },\n            \"any_asn\": {},\n            \"additional_api_group_matchers\": [],\n            \"body_matcher\": {\n              \"exact_values\": [],\n              \"regex_values\": [],\n              \"transformers\": []\n            },\n            \"arg_matchers\": [],\n            \"cookie_matchers\": [],\n            \"waf_action\": {\n              \"none\": {}\n            },\n            \"domain_matcher\": {\n              \"exact_values\": [],\n              \"regex_values\": [],\n              \"transformers\": []\n            },\n            \"rate_limiter\": [],\n            \"forwarding_class\": [],\n            \"scheme\": [],\n            \"challenge_action\": \"DEFAULT_CHALLENGE\",\n            \"bot_action\": {\n              \"none\": {}\n            },\n            \"mum_action\": {\n              \"default\": {}\n            },\n            \"user_identity_matcher\": {\n              \"exact_values\": [],\n              \"regex_values\": []\n            },\n            \"segment_policy\": {\n              \"src_any\": {}\n            },\n            \"origin_server_subsets_action\": {},\n            \"jwt_claims\": []\n          }\n        },\n        {\n          \"metadata\": {\n            \"name\": \"deny-others\",\n            \"disable\": false\n          },\n          \"spec\": {\n            \"action\": \"DENY\",\n            \"any_client\": {},\n            \"label_matcher\": {\n              \"keys\": []\n            },\n            \"headers\": [],\n            \"query_params\": [],\n            \"http_method\": {\n              \"methods\": [],\n              \"invert_matcher\": false\n            },\n            \"any_ip\": {},\n            \"any_asn\": {},\n            \"additional_api_group_matchers\": [],\n            \"body_matcher\": {\n              \"exact_values\": [],\n              \"regex_values\": [],\n              \"transformers\": []\n            },\n            \"arg_matchers\": [],\n            \"cookie_matchers\": [],\n            \"waf_action\": {\n              \"none\": {}\n            },\n            \"domain_matcher\": {\n              \"exact_values\": [],\n              \"regex_values\": [],\n              \"transformers\": []\n            },\n            \"rate_limiter\": [],\n            \"forwarding_class\": [],\n            \"scheme\": [],\n            \"challenge_action\": \"DEFAULT_CHALLENGE\",\n            \"bot_action\": {\n              \"none\": {}\n            },\n            \"mum_action\": {\n              \"default\": {}\n            },\n            \"user_identity_matcher\": {\n              \"exact_values\": [],\n              \"regex_values\": []\n            },\n            \"segment_policy\": {\n              \"src_any\": {}\n            },\n            \"origin_server_subsets_action\": {},\n            \"jwt_claims\": []\n          }\n        }\n      ]\n    },\n    \"simple_rules\": []\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/namespaces/{{current_namespace}}/service_policys",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"namespaces",
+										"{{current_namespace}}",
+										"service_policys"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "2 - Show Service Policy Specific Entry",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/namespaces/{{current_namespace}}/service_policys/{{service_policy_name}}",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"namespaces",
+										"{{current_namespace}}",
+										"service_policys",
+										"{{service_policy_name}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3 - Create HTTP L7 LB with Policy - Integrated DNS",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"metadata\": {\n        \"name\": \"{{lb_l7_name}}\",\n        \"namespace\": \"{{current_namespace}}\",\n        \"labels\": {},\n        \"annotations\": {},\n        \"description\": \"{{lb_l7_description}}\",\n        \"disable\": false\n    },\n    \"spec\": {\n        \"domains\": [\n            \"{{dns_short_name}}.{{integrated_dns_domain}}\"\n        ],\n        \"https_auto_cert\": {\n            \"http_redirect\": false,\n            \"add_hsts\": false,\n            \"tls_config\": {\n                \"default_security\": {}\n            },\n            \"no_mtls\": {},\n            \"default_header\": {},\n            \"enable_path_normalize\": {},\n            \"port\": {{lb_l7_port}},\n            \"non_default_loadbalancer\": {},\n            \"header_transformation_type\": {\n                \"legacy_header_transformation\": {}\n            },\n            \"connection_idle_timeout\": 120000,\n            \"http_protocol_options\": {\n                \"http_protocol_enable_v1_v2\": {}\n            }\n        },\n        \"downstream_tls_certificate_expiration_timestamps\": [],\n        \"advertise_on_public_default_vip\": {},\n        \"default_route_pools\": [\n            {\n                \"pool\": {\n                    \"name\": \"{{lb_origin_pool_name}}\",\n                    \"tenant\": \"{{long_tennat_id}}\",\n                    \"namespace\": \"{{current_namespace}}\"\n                },\n                \"weight\": 1,\n                \"priority\": 1,\n                \"endpoint_subsets\": {}\n            }\n        ],\n        \"origin_server_subset_rule_list\": null,\n        \"routes\": [\n            {\n                \"simple_route\": {\n                    \"path\": {\n                        \"prefix\": \"/\"\n                    },\n                    \"http_method\": \"ANY\",\n                    \"origin_pools\": [\n                        {\n                            \"pool\": {\n                                \"name\": \"{{lb_origin_pool_name}}\",\n                                \"tenant\": \"{{long_tennat_id}}\",\n                                \"namespace\": \"{{current_namespace}}\"\n                            },\n                            \"weight\": 1,\n                            \"priority\": 1,\n                            \"endpoint_subsets\": {}\n                        }\n                    ],\n                    \"auto_host_rewrite\": {},\n                    \"headers\": [],\n                    \"incoming_port\": {\n                        \"no_port_match\": {}\n                    },\n                    \"advanced_options\": null\n                }\n            }\n        ],\n        \"cors_policy\": null,\n        \"app_firewall\": {\n            \"tenant\": \"{{long_tennat_id}}\",\n            \"namespace\": \"{{current_namespace}}\",\n            \"name\": \"{{waf_policy_name}}\",\n            \"kind\": \"app_firewall\"\n        },\n        \"add_location\": true,\n        \"no_challenge\": {},\n        \"more_option\": null,\n        \"user_id_client_ip\": {},\n        \"disable_rate_limit\": {},\n        \"malicious_user_mitigation\": null,\n        \"waf_exclusion_rules\": [],\n        \"data_guard_rules\": [],\n        \"blocked_clients\": [],\n        \"trusted_clients\": [],\n        \"api_protection_rules\": null,\n        \"ddos_mitigation_rules\": [],\n        \"active_service_policies\": {\n            \"policies\": [\n                {\n                    \"tenant\": \"{{long_tennat_id}}\",\n                    \"namespace\": \"{{current_namespace}}\",\n                    \"name\": \"policy-example-name\",\n                    \"kind\": \"service_policy\"\n                }\n            ]\n        },\n        \"cookie_stickiness\": {\n            \"name\": \"lb_cookie_test_1\",\n            \"ttl\": 0,\n            \"path\": \"\",\n            \"ignore_samesite\": {},\n            \"ignore_secure\": {},\n            \"ignore_httponly\": {}\n        },\n        \"disable_trust_client_ip_headers\": {},\n        \"disable_malicious_user_detection\": {},\n        \"disable_api_discovery\": {},\n        \"disable_bot_defense\": {},\n        \"default_sensitive_data_policy\": {},\n        \"disable_api_definition\": {},\n        \"disable_ip_reputation\": {},\n        \"disable_client_side_defense\": {},\n        \"csrf_policy\": null,\n        \"graphql_rules\": [],\n        \"protected_cookies\": [],\n        \"host_name\": \"\",\n        \"dns_info\": [],\n        \"state\": \"VIRTUAL_HOST_DNS_A_RECORD_ADDED\",\n        \"internet_vip_info\": [],\n        \"system_default_timeouts\": {},\n        \"jwt_validation\": null,\n        \"disable_threat_mesh\": {},\n        \"l7_ddos_action_default\": {}\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/namespaces/{{current_namespace}}/http_loadbalancers",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"namespaces",
+										"{{current_namespace}}",
+										"http_loadbalancers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3 - Show HTTP L7 LB Specific Entry",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/namespaces/{{current_namespace}}/http_loadbalancers/{{lb_l7_name}}",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"namespaces",
+										"{{current_namespace}}",
+										"http_loadbalancers",
+										"{{lb_l7_name}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "4 - Replace-Update HTTP L7 LB with Policy - Integrated DNS Specific Entry",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"metadata\": {\n        \"name\": \"{{lb_l7_name}}\",\n        \"namespace\": \"{{current_namespace}}\",\n        \"labels\": {},\n        \"annotations\": {},\n        \"description\": \"{{lb_l7_description}}\",\n        \"disable\": false\n    },\n    \"spec\": {\n        \"domains\": [\n            \"{{dns_short_name}}.{{integrated_dns_domain}}\"\n        ],\n        \"https_auto_cert\": {\n            \"http_redirect\": false,\n            \"add_hsts\": false,\n            \"tls_config\": {\n                \"default_security\": {}\n            },\n            \"no_mtls\": {},\n            \"default_header\": {},\n            \"enable_path_normalize\": {},\n            \"port\": {{lb_l7_port}},\n            \"non_default_loadbalancer\": {},\n            \"header_transformation_type\": {\n                \"legacy_header_transformation\": {}\n            },\n            \"connection_idle_timeout\": 120000,\n            \"http_protocol_options\": {\n                \"http_protocol_enable_v1_v2\": {}\n            }\n        },\n        \"downstream_tls_certificate_expiration_timestamps\": [],\n        \"advertise_on_public_default_vip\": {},\n        \"default_route_pools\": [\n            {\n                \"pool\": {\n                    \"name\": \"{{lb_origin_pool_name}}\",\n                    \"tenant\": \"{{long_tennat_id}}\",\n                    \"namespace\": \"{{current_namespace}}\"\n                },\n                \"weight\": 1,\n                \"priority\": 1,\n                \"endpoint_subsets\": {}\n            }\n        ],\n        \"origin_server_subset_rule_list\": null,\n        \"routes\": [\n            {\n                \"simple_route\": {\n                    \"path\": {\n                        \"prefix\": \"/\"\n                    },\n                    \"http_method\": \"ANY\",\n                    \"origin_pools\": [\n                        {\n                            \"pool\": {\n                                \"name\": \"{{lb_origin_pool_name}}\",\n                                \"tenant\": \"{{long_tennat_id}}\",\n                                \"namespace\": \"{{current_namespace}}\"\n                            },\n                            \"weight\": 1,\n                            \"priority\": 1,\n                            \"endpoint_subsets\": {}\n                        }\n                    ],\n                    \"auto_host_rewrite\": {},\n                    \"headers\": [],\n                    \"incoming_port\": {\n                        \"no_port_match\": {}\n                    },\n                    \"advanced_options\": null\n                }\n            }\n        ],\n        \"cors_policy\": null,\n        \"app_firewall\": {\n            \"tenant\": \"{{long_tennat_id}}\",\n            \"namespace\": \"{{current_namespace}}\",\n            \"name\": \"{{waf_policy_name}}\",\n            \"kind\": \"app_firewall\"\n        },\n        \"add_location\": true,\n        \"no_challenge\": {},\n        \"more_option\": null,\n        \"user_id_client_ip\": {},\n        \"disable_rate_limit\": {},\n        \"malicious_user_mitigation\": null,\n        \"waf_exclusion_rules\": [],\n        \"data_guard_rules\": [],\n        \"blocked_clients\": [],\n        \"trusted_clients\": [],\n        \"api_protection_rules\": null,\n        \"ddos_mitigation_rules\": [],\n        \"active_service_policies\": {\n            \"policies\": [\n                {\n                    \"tenant\": \"{{long_tennat_id}}\",\n                    \"namespace\": \"{{current_namespace}}\",\n                    \"name\": \"policy-example-name\",\n                    \"kind\": \"service_policy\"\n                }\n            ]\n        },\n        \"cookie_stickiness\": {\n            \"name\": \"lb_cookie_test_1\",\n            \"ttl\": 0,\n            \"path\": \"\",\n            \"ignore_samesite\": {},\n            \"ignore_secure\": {},\n            \"ignore_httponly\": {}\n        },\n        \"disable_trust_client_ip_headers\": {},\n        \"disable_malicious_user_detection\": {},\n        \"disable_api_discovery\": {},\n        \"disable_bot_defense\": {},\n        \"default_sensitive_data_policy\": {},\n        \"disable_api_definition\": {},\n        \"disable_ip_reputation\": {},\n        \"disable_client_side_defense\": {},\n        \"csrf_policy\": null,\n        \"graphql_rules\": [],\n        \"protected_cookies\": [],\n        \"host_name\": \"\",\n        \"dns_info\": [],\n        \"state\": \"VIRTUAL_HOST_DNS_A_RECORD_ADDED\",\n        \"internet_vip_info\": [],\n        \"system_default_timeouts\": {},\n        \"jwt_validation\": null,\n        \"disable_threat_mesh\": {},\n        \"l7_ddos_action_default\": {}\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/namespaces/{{current_namespace}}/http_loadbalancers/{{lb_l7_name}}",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"namespaces",
+										"{{current_namespace}}",
+										"http_loadbalancers",
+										"{{lb_l7_name}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "4 - Show HTTP L7 LB Specific Entry",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/namespaces/{{current_namespace}}/http_loadbalancers/{{lb_l7_name}}",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"namespaces",
+										"{{current_namespace}}",
+										"http_loadbalancers",
+										"{{lb_l7_name}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "5a - Delete HTTP L7 LB with Policy",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/namespaces/{{current_namespace}}/http_loadbalancers/{{lb_l7_name}}",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"namespaces",
+										"{{current_namespace}}",
+										"http_loadbalancers",
+										"{{lb_l7_name}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "5b - Delete L7 Policy",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/namespaces/{{current_namespace}}/service_policys/{{service_policy_name}}",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"namespaces",
+										"{{current_namespace}}",
+										"service_policys",
+										"{{service_policy_name}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "5c - Delete IP Prefix List Set",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/namespaces/{{current_namespace}}/ip_prefix_sets/{{ip_prefix_set_name}}",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"namespaces",
+										"{{current_namespace}}",
+										"ip_prefix_sets",
+										"{{ip_prefix_set_name}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		}
