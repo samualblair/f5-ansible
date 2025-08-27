@@ -3491,91 +3491,6 @@
 							]
 						},
 						{
-							"name": "2 - Cloud Init Config - Templating Script",
-							"item": [
-								{
-									"name": "2 -  BROKEN - Request Cloud Init Config for CE Site",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"('use strict');",
-													"",
-													"function autoSetCECloudInit() {",
-													"    'use strict';",
-													"",
-													"    const Handlebars = pm.require('npm:handlebars');",
-													"    const responseJsonData = pm.response.json();",
-													"    // console.log(responseJsonData)",
-													"",
-													"    pm.environment.set(\"ce_cloud_init\", responseJsonData.cloud_init_config);",
-													"    console.log(pm.environment.ce_cloud_init)",
-													"",
-													"    // const token = { \".token\": pm.environment.jwt_token_name_value };",
-													"    const token = { \".token\": \"abc\" };",
-													"    console.log(token)",
-													"",
-													"    // const mytemplate = handlebars.compile(responseJsonData.cloud_init_config);",
-													"    const mytemplate = Handlebars.compile(\"#cloud-config\\nwrite_files:\\n- path: /etc/vpm/user_data\\n  permissions: 0644\\n  owner: root\\n  content: |\\n    token: {{ .token }}\\n    #slo_ip: Un-comment and set Static IP/mask for SLO if needed.\\n    #slo_gateway: Un-comment and set default gateway for SLO when static IP is  needed.\\n\")",
-													"    console.log(mytemplate)",
-													"",
-													"    const renderedCloudInit = mytemplate(token);",
-													"    console.log(renderedCloudInit)",
-													"",
-													"    pm.environment.set(\"ce_cloud_init_rendered\", renderedCloudInit);",
-													"",
-													"};",
-													"",
-													"autoSetCECloudInit();",
-													""
-												],
-												"type": "text/javascript",
-												"packages": {
-													"npm:handlebars": {
-														"id": "npm:handlebars"
-													}
-												}
-											}
-										}
-									],
-									"request": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/register/namespaces/{{sites_namespace}}/get-cloud-init-config?provider={{ce_type}}&site_name={{ce_site_name}}",
-											"protocol": "https",
-											"host": [
-												"{{short_tennat_id}}",
-												"console",
-												"ves",
-												"volterra",
-												"io"
-											],
-											"path": [
-												"api",
-												"register",
-												"namespaces",
-												"{{sites_namespace}}",
-												"get-cloud-init-config"
-											],
-											"query": [
-												{
-													"key": "provider",
-													"value": "{{ce_type}}"
-												},
-												{
-													"key": "site_name",
-													"value": "{{ce_site_name}}"
-												}
-											]
-										}
-									},
-									"response": []
-								}
-							]
-						},
-						{
 							"name": "1 - Show Sites - Including CE Sites Copy",
 							"request": {
 								"method": "GET",
@@ -3720,7 +3635,96 @@
 							"response": []
 						},
 						{
-							"name": "2 - Request Cloud Init Config for CE Site --- MANUAL COPY",
+							"name": "2 - Request Cloud Init Config for CE Site",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"('use strict');",
+											"",
+											"function autoSetCECloudInit() {",
+											"    'use strict';",
+											"",
+											"    const Handlebars = pm.require('npm:handlebars');",
+											"    const responseJsonData = pm.response.json();",
+											"    // console.log(responseJsonData);",
+											"",
+											"    pm.environment.set(\"ce_cloud_init\", responseJsonData.cloud_init_config);",
+											"    // console.log(pm.environment.get(\"ce_cloud_init\"));",
+											"",
+											"    ",
+											"    // console.log(pm.environment.get(\"jwt_token_name_value\"));",
+											"    const token = { \".token\": pm.environment.get(\"jwt_token_name_value\") };",
+											"    // console.log(token);",
+											"    const startTemplate = responseJsonData.cloud_init_config;",
+											"    // console.log(startTemplate);",
+											"    const myTemplate = startTemplate.replace(\".token\", \"[.token]\"); // Replace .token with [.token] to allow Handlebars to process the token correctly.;",
+											"    // console.log(myTemplate);",
+											"    const myHandlebarTemplate = Handlebars.compile(myTemplate);",
+											"",
+											"    // # DEBUG TESTING SECTION;",
+											"    // const token = { \".token\": \"abc\" };",
+											"    // const myHandlebarTemplate = Handlebars.compile(responseJsonData.cloud_init_config);",
+											"    // # Template Comes in with the .token placeholder but is missing [] brackets to allow the . in the name;",
+											"    // const myHandlebarTemplate = Handlebars.compile(\"#cloud-config\\nwrite_files:\\n- path: /etc/vpm/user_data\\n  permissions: 0644\\n  owner: root\\n  content: |\\n    token: {{ [.token] }}\\n    #slo_ip: Un-comment and set Static IP/mask for SLO if needed.\\n    #slo_gateway: Un-comment and set default gateway for SLO when static IP is  needed.\\n\");",
+											"    // const myHandlebarTemplate = Handlebars.compile(responseJsonData.cloud_init_config);",
+											"",
+											"    const renderedCloudInit = myHandlebarTemplate(token);",
+											"    console.log(renderedCloudInit);",
+											"",
+											"    pm.environment.set(\"ce_cloud_init_rendered\", renderedCloudInit);",
+											"",
+											"};",
+											"",
+											"autoSetCECloudInit();",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {
+											"npm:handlebars": {
+												"id": "npm:handlebars"
+											}
+										}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/register/namespaces/{{sites_namespace}}/get-cloud-init-config?provider={{ce_type}}&site_name={{ce_site_name}}",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"register",
+										"namespaces",
+										"{{sites_namespace}}",
+										"get-cloud-init-config"
+									],
+									"query": [
+										{
+											"key": "provider",
+											"value": "{{ce_type}}"
+										},
+										{
+											"key": "site_name",
+											"value": "{{ce_site_name}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "2 - Request Cloud Init Config for CE Site - MANUAL Template",
 							"event": [
 								{
 									"listen": "test",
