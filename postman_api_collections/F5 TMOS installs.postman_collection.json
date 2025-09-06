@@ -16,50 +16,6 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"var responseJsonData = pm.response.json();",
-									"pm.environment.set(\"f5_auth_token\", responseJsonData.token.token);"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"username\": \"{{user_name}}\",\n    \"password\": \"{{user_password}}\",\n    \"loginProviderName\": \"tmos\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://{{f5_hostname}}:443/mgmt/shared/authn/login",
-							"protocol": "https",
-							"host": [
-								"{{f5_hostname}}"
-							],
-							"port": "443",
-							"path": [
-								"mgmt",
-								"shared",
-								"authn",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "F5_REST_Login_strict",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
 									"('use strict');",
 									"",
 									"function autoSetF5Token() {",
@@ -969,6 +925,1094 @@
 								"tm",
 								"sys",
 								"ucs"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Initial License REST",
+			"item": [
+				{
+					"name": "Manual-File-Upload",
+					"item": [
+						{
+							"name": "F5_TM_REST_First_Password_Change",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "{{default_web_user}}",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "{{default_web_pass}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"password\": \"{{user_password}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/mgmt/tm/auth/user/admin",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"mgmt",
+										"tm",
+										"auth",
+										"user",
+										"admin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_REST_Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"('use strict');",
+											"",
+											"function autoSetF5Token() {",
+											"    'use strict';",
+											"    var responseJsonData = pm.response.json();",
+											"    pm.environment.set(\"f5_auth_token\", responseJsonData.token.token);",
+											"};",
+											"",
+											"autoSetF5Token();",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"{{user_name}}\",\n    \"password\": \"{{user_password}}\",\n    \"loginProviderName\": \"tmos\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/mgmt/shared/authn/login",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"mgmt",
+										"shared",
+										"authn",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_Device_License_MANUAL",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-F5-Auth-Token",
+										"value": "{{f5_auth_token}}",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"baseRegKey\":\"{{base_registration_key}}\",\n    \"automaticActivation\":\"false\",\n    \"activationMethod\":\"MANUAL\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/mgmt/tm/shared/licensing/activation",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"mgmt",
+										"tm",
+										"shared",
+										"licensing",
+										"activation"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_Device_License_MANUAL_Get_Dossier",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"('use strict');",
+											"",
+											"function autoSetF5Dossier() {",
+											"    'use strict';",
+											"    var responseJsonData = pm.response.json();",
+											"    pm.environment.set(\"f5_license_dossier\", responseJsonData.dossier);",
+											"};",
+											"",
+											"autoSetF5Dossier();",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-F5-Auth-Token",
+										"value": "{{f5_auth_token}}",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/mgmt/tm/shared/licensing/activation",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"mgmt",
+										"tm",
+										"shared",
+										"licensing",
+										"activation"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_Device_License_ALTERNATIVE_MANUAL_PART1_Post_Dossier",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-F5-Auth-Token",
+										"value": "{{f5_auth_token}}",
+										"type": "default"
+									},
+									{
+										"key": "Content-Range",
+										"value": "0-11337/11338",
+										"description": "This needs to be: 0-$((LEN - 1))/$LEN , example:  0-26045534/26045535",
+										"type": "text"
+									},
+									{
+										"key": "Content-Length",
+										"value": "11338",
+										"description": "This needs to be file size or 'LEN';: One way to get is on cli , wc -c $FN | cut -f 2 -d ' ', linux it is 'cut -f 1 -d'",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "file",
+									"file": {
+										"src": "/Users/michaelj/Downloads/f5_lab_license.txt"
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/mgmt/cm/autodeploy/software-image-uploads/license_file_data",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"mgmt",
+										"cm",
+										"autodeploy",
+										"software-image-uploads",
+										"license_file_data"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_Device_License_ALTERNATIVE_PART2_MANUAL_Move_License",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-F5-Auth-Token",
+										"value": "{{f5_auth_token}}",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"command\": \"run\",\n    \"utilCmdArgs\":\"/shared/images/license_file_data /config/bigip.license\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/mgmt/tm/util/unix-mv",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"mgmt",
+										"tm",
+										"util",
+										"unix-mv"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_Device_License_ALTERNATIVE_PART3_MANUAL_Permissions_User_License",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-F5-Auth-Token",
+										"value": "{{f5_auth_token}}",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"command\": \"run\",\n    \"utilCmdArgs\":\" -c ' chown root /config/bigip.license'\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/mgmt/tm/util/bash",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"mgmt",
+										"tm",
+										"util",
+										"bash"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_Device_License_ALTERNATIVE_PART3_MANUAL_Permissions_Group_License",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-F5-Auth-Token",
+										"value": "{{f5_auth_token}}",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"command\": \"run\",\n    \"utilCmdArgs\":\" -c ' chgrp root /config/bigip.license'\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/mgmt/tm/util/bash",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"mgmt",
+										"tm",
+										"util",
+										"bash"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_Device_License_ALTERNATIVE_PART4_MANUAL_Remove_Unused_File",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-F5-Auth-Token",
+										"value": "{{f5_auth_token}}",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"command\": \"run\",\n    \"utilCmdArgs\":\" -c ' rm -f /shared/images/license_file_data'\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/mgmt/tm/util/bash",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"mgmt",
+										"tm",
+										"util",
+										"bash"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_Device_License_ALTERNATIVE_PART5_MANUAL_Restarting_MCPD",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-F5-Auth-Token",
+										"value": "{{f5_auth_token}}",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"command\": \"run\",\n    \"utilCmdArgs\":\" -c ' tmsh restart /sys service mcpd'\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/mgmt/tm/util/bash",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"mgmt",
+										"tm",
+										"util",
+										"bash"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_Device_License_MANUAL_Get_CM_STATUS",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-F5-Auth-Token",
+										"value": "{{f5_auth_token}}",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/mgmt/tm/cm/failover-status",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"mgmt",
+										"tm",
+										"cm",
+										"failover-status"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Manual-String-Upload",
+					"item": [
+						{
+							"name": "F5_TM_REST_First_Password_Change",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "{{default_web_user}}",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "{{default_web_pass}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"password\": \"{{user_password}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/mgmt/tm/auth/user/admin",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"mgmt",
+										"tm",
+										"auth",
+										"user",
+										"admin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_REST_Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"('use strict');",
+											"",
+											"function autoSetF5Token() {",
+											"    'use strict';",
+											"    var responseJsonData = pm.response.json();",
+											"    pm.environment.set(\"f5_auth_token\", responseJsonData.token.token);",
+											"};",
+											"",
+											"autoSetF5Token();",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"{{user_name}}\",\n    \"password\": \"{{user_password}}\",\n    \"loginProviderName\": \"tmos\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/mgmt/shared/authn/login",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"mgmt",
+										"shared",
+										"authn",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_Device_License_MANUAL",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-F5-Auth-Token",
+										"value": "{{f5_auth_token}}",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"baseRegKey\":\"{{base_registration_key}}\",\n    \"automaticActivation\":\"false\",\n    \"activationMethod\":\"MANUAL\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/mgmt/tm/shared/licensing/activation",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"mgmt",
+										"tm",
+										"shared",
+										"licensing",
+										"activation"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_Device_License_MANUAL_Get_Dossier",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"('use strict');",
+											"",
+											"function autoSetF5Dossier() {",
+											"    'use strict';",
+											"    var responseJsonData = pm.response.json();",
+											"    pm.environment.set(\"f5_license_dossier\", responseJsonData.dossier);",
+											"};",
+											"",
+											"autoSetF5Dossier();",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-F5-Auth-Token",
+										"value": "{{f5_auth_token}}",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/mgmt/tm/shared/licensing/activation",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"mgmt",
+										"tm",
+										"shared",
+										"licensing",
+										"activation"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_Device_License_MANUAL_Post_Dossie_EXAMPLE",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-F5-Auth-Token",
+										"value": "{{f5_auth_token}}",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"licenseText\": \"{{license_text}}\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/mgmt/tm/shared/licensing/registration",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"mgmt",
+										"tm",
+										"shared",
+										"licensing",
+										"registration"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_Device_License_MANUAL_Get_CM_STATUS",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-F5-Auth-Token",
+										"value": "{{f5_auth_token}}",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/mgmt/tm/cm/failover-status",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"mgmt",
+										"tm",
+										"cm",
+										"failover-status"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Automatic",
+					"item": [
+						{
+							"name": "F5_TM_REST_First_Password_Change",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "{{default_web_user}}",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "{{default_web_pass}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"password\": \"{{user_password}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/mgmt/tm/auth/user/admin",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"mgmt",
+										"tm",
+										"auth",
+										"user",
+										"admin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_REST_Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"('use strict');",
+											"",
+											"function autoSetF5Token() {",
+											"    'use strict';",
+											"    var responseJsonData = pm.response.json();",
+											"    pm.environment.set(\"f5_auth_token\", responseJsonData.token.token);",
+											"};",
+											"",
+											"autoSetF5Token();",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"{{user_name}}\",\n    \"password\": \"{{user_password}}\",\n    \"loginProviderName\": \"tmos\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/mgmt/shared/authn/login",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"mgmt",
+										"shared",
+										"authn",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "F5_Device_License_AUTOMATIC",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-F5-Auth-Token",
+										"value": "{{f5_auth_token}}",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"baseRegKey\":\"{{base_registration_key}}\",\n    \"automaticActivation\":\"false\",\n    \"activationMethod\":\"AUTOMATIC\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{f5_hostname}}:443/mgmt/tm/shared/licensing/activation",
+									"protocol": "https",
+									"host": [
+										"{{f5_hostname}}"
+									],
+									"port": "443",
+									"path": [
+										"mgmt",
+										"tm",
+										"shared",
+										"licensing",
+										"activation"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Resource_Module_Provisioning",
+			"item": [
+				{
+					"name": "F5_Provision_Modules_LTM_Nominal",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "X-F5-Auth-Token",
+								"value": "{{f5_auth_token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"level\":\"nominal\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/mgmt/tm/sys/provision/ltm",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"mgmt",
+								"tm",
+								"sys",
+								"provision",
+								"ltm"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_Provision_Modules_AVR_Nominal",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "X-F5-Auth-Token",
+								"value": "{{f5_auth_token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"level\":\"nominal\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/mgmt/tm/sys/provision/avr",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"mgmt",
+								"tm",
+								"sys",
+								"provision",
+								"avr"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_Provision_Modules_GTM_Nominal",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "X-F5-Auth-Token",
+								"value": "{{f5_auth_token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"level\":\"nominal\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/mgmt/tm/sys/provision/gtm",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"mgmt",
+								"tm",
+								"sys",
+								"provision",
+								"gtm"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_Provision_Modules_APM_Nominal",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "X-F5-Auth-Token",
+								"value": "{{f5_auth_token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"level\":\"nominal\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/mgmt/tm/sys/provision/apm",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"mgmt",
+								"tm",
+								"sys",
+								"provision",
+								"apm"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F5_Provision_Modules_ASM_Nominal",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "X-F5-Auth-Token",
+								"value": "{{f5_auth_token}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"level\":\"nominal\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{f5_hostname}}:443/mgmt/tm/sys/provision/asm",
+							"protocol": "https",
+							"host": [
+								"{{f5_hostname}}"
+							],
+							"port": "443",
+							"path": [
+								"mgmt",
+								"tm",
+								"sys",
+								"provision",
+								"asm"
 							]
 						}
 					},

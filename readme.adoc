@@ -144,6 +144,7 @@ Michael Johnson (https://github.com/samualblair[@samualblair])
 Using Calendar Versioning: https://calver.org/
 
 FORMAT: YY.0M.0D
+* 2025.09.05 - Added BIG-IP Postman REST Licensing
 * 2025.08.22 - Updates added HSTS examples and updated Postman API Collections
 * 2025.03.07 - Updates to Documentation , new TLS templates
 * 2025.01.21 - General release
