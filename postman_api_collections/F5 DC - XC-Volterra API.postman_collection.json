@@ -729,6 +729,1053 @@
 			]
 		},
 		{
+			"name": "DNS-LB-Operations",
+			"item": [
+				{
+					"name": "Show",
+					"item": [
+						{
+							"name": "1 - View DNS Zones - System Namespace",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/dns/namespaces/{{dns_namespace}}/dns_zones",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"dns",
+										"namespaces",
+										"{{dns_namespace}}",
+										"dns_zones"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "1 - View DNS Zone Specific - System Namespace",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/dns/namespaces/{{dns_namespace}}/dns_zones/{{dns_zone_name}}",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"dns",
+										"namespaces",
+										"{{dns_namespace}}",
+										"dns_zones",
+										"{{dns_zone_name}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "2 - Show DNS-LB HealthChecks",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/dns/namespaces/{{dns_namespace}}/dns_lb_health_checks",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"dns",
+										"namespaces",
+										"{{dns_namespace}}",
+										"dns_lb_health_checks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "2 - Show DNS-LB HealthCheck Specific Entry",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/dns/namespaces/{{dns_namespace}}/dns_lb_health_checks/{{dnslb_healthcheck_name}}",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"dns",
+										"namespaces",
+										"{{dns_namespace}}",
+										"dns_lb_health_checks",
+										"{{dnslb_healthcheck_name}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3 - Show DNS-LB Pools",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/dns/namespaces/{{dns_namespace}}/dns_lb_pools",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"dns",
+										"namespaces",
+										"{{dns_namespace}}",
+										"dns_lb_pools"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3 - Show DNS-LB Pool Specific Entry",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/dns/namespaces/{{dns_namespace}}/dns_lb_pools/{{dnslb_pool_name}}",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"dns",
+										"namespaces",
+										"{{dns_namespace}}",
+										"dns_lb_pools",
+										"{{dnslb_pool_name}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "4 - Show DNS-LBs",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/dns/namespaces/{{dns_namespace}}/dns_load_balancers",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"dns",
+										"namespaces",
+										"{{dns_namespace}}",
+										"dns_load_balancers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "4 - Show DNS-LBs Specific",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/dns/namespaces/{{dns_namespace}}/dns_load_balancers/{{dnslb_instance_name}}",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"dns",
+										"namespaces",
+										"{{dns_namespace}}",
+										"dns_load_balancers",
+										"{{dnslb_instance_name}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "5 - View DNS Zone RRSET Specific Record and Type",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/dns/namespaces/{{dns_namespace}}/dns_zones/{{dns_zone_name}}/rrsets/{{dns_zone_rr_group}}/{{dns_zone_rr_record_name}}/{{dns_zone_rr_type}}",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"dns",
+										"namespaces",
+										"{{dns_namespace}}",
+										"dns_zones",
+										"{{dns_zone_name}}",
+										"rrsets",
+										"{{dns_zone_rr_group}}",
+										"{{dns_zone_rr_record_name}}",
+										"{{dns_zone_rr_type}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "5 - View DNS Zone RRSET Specific Record Set",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/dns/namespaces/{{dns_namespace}}/dns_zones/{{dns_zone_name}}/rrsets/{{dns_zone_rr_group}}",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"dns",
+										"namespaces",
+										"{{dns_namespace}}",
+										"dns_zones",
+										"{{dns_zone_name}}",
+										"rrsets",
+										"{{dns_zone_rr_group}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "5 - View DNS Zone RRSET Specific Record Name",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/dns/namespaces/{{dns_namespace}}/dns_zones/{{dns_zone_name}}/rrsets/{{dns_zone_rr_group}}/{{dns_zone_rr_record_name}}",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"dns",
+										"namespaces",
+										"{{dns_namespace}}",
+										"dns_zones",
+										"{{dns_zone_name}}",
+										"rrsets",
+										"{{dns_zone_rr_group}}",
+										"{{dns_zone_rr_record_name}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "5 - View DNS Zone",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/dns/namespaces/{{dns_namespace}}/dns_zones/{{dns_zone_name}}",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"dns",
+										"namespaces",
+										"{{dns_namespace}}",
+										"dns_zones",
+										"{{dns_zone_name}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "5 - View DNS Zone - Format 4 - no status",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/dns/namespaces/{{dns_namespace}}/dns_zones/{{dns_zone_name}}?response_format=4",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"dns",
+										"namespaces",
+										"{{dns_namespace}}",
+										"dns_zones",
+										"{{dns_zone_name}}"
+									],
+									"query": [
+										{
+											"key": "response_format",
+											"value": "4"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "5 - View DNS Zone - Format 6",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/dns/namespaces/{{dns_namespace}}/dns_zones/{{dns_zone_name}}?response_format=6",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"dns",
+										"namespaces",
+										"{{dns_namespace}}",
+										"dns_zones",
+										"{{dns_zone_name}}"
+									],
+									"query": [
+										{
+											"key": "response_format",
+											"value": "6"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "5 - View DNS Zone RRSET Specific Record and Type Copy",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/dns/namespaces/{{dns_namespace}}/dns_zones/{{dns_zone_name}}/rrsets/{{dns_zone_rr_group}}/{{dns_zone_rr_record_name}}/{{dns_zone_rr_type}}",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"dns",
+										"namespaces",
+										"{{dns_namespace}}",
+										"dns_zones",
+										"{{dns_zone_name}}",
+										"rrsets",
+										"{{dns_zone_rr_group}}",
+										"{{dns_zone_rr_record_name}}",
+										"{{dns_zone_rr_type}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "5 - View DNS Zone Metrics",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/data/namespaces/{{dns_namespace}}/dns_zones/metrics",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"data",
+										"namespaces",
+										"{{dns_namespace}}",
+										"dns_zones",
+										"metrics"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "5 - View DNS Zone Export Specific - System Namespace",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/dns/namespaces/{{dns_namespace}}/dns_zone/{{dns_zone_name}}/zone_file/export",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"dns",
+										"namespaces",
+										"{{dns_namespace}}",
+										"dns_zone",
+										"{{dns_zone_name}}",
+										"zone_file",
+										"export"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Create",
+					"item": [
+						{
+							"name": "1 - Create DNS-LB HealthCheck",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"metadata\": {\n        \"name\": \"{{dnslb_healthcheck_name}}\",\n        \"namespace\": \"system\",\n        \"description\": \"{{dnslb_healthcheck_description}}\",\n        \"disable\": false\n    },\n    \"spec\": {\n        \"http_health_check\": {\n            \"send\": \"{{dnslb_healthcheck_http_send_string}}\",\n            \"receive\": \"{{dnslb_healthcheck_http_receive_string}}\",\n            \"health_check_port\": 8080\n        }\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/dns/namespaces/{{dns_namespace}}/dns_lb_health_checks",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"dns",
+										"namespaces",
+										"{{dns_namespace}}",
+										"dns_lb_health_checks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "2 - Create DNS-LB Pools",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"metadata\": {\n        \"name\": \"{{dnslb_pool_name}}\",\n        \"namespace\": \"system\",\n        \"description\": \"{{dnslb_pool_description}}\"\n    },\n    \"spec\": {\n        \"{{dnslb_pool_type}}\": {\n            \"members\": [\n                {\n                    \"ip_endpoint\": \"{{dnslb_pool_member_1_ip}}\",\n                    \"ratio\": 1,\n                    \"priority\": 10,\n                    \"disable\": false,\n                    \"name\": \"{{dnslb_pool_member_1_description}}\"\n                },\n                {\n                    \"ip_endpoint\": \"{{dnslb_pool_member_2_ip}}\",\n                    \"ratio\": 1,\n                    \"priority\": 10,\n                    \"disable\": false,\n                    \"name\": \"{{dnslb_pool_member_2_description}}\"\n                },\n                {\n                    \"ip_endpoint\": \"{{dnslb_pool_member_3_ip}}\",\n                    \"ratio\": 1,\n                    \"priority\": 10,\n                    \"disable\": false,\n                    \"name\": \"{{dnslb_pool_member_3_description}}\"\n                }\n            ],\n            \"health_check\": {\n                \"tenant\": \"{{long_tennat_id}}\",\n                \"namespace\": \"system\",\n                \"name\": \"{{dnslb_healthcheck_name}}\"\n            },\n            \"max_answers\": 1\n        },\n        \"load_balancing_mode\": \"ROUND_ROBIN\",\n        \"ttl\": 30\n    }\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/dns/namespaces/{{dns_namespace}}/dns_lb_pools",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"dns",
+										"namespaces",
+										"{{dns_namespace}}",
+										"dns_lb_pools"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3 - Create DNS-LB",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"metadata\": {\n        \"name\": \"{{dnslb_instance_name}}\",\n        \"namespace\": \"system\"\n    },\n    \"spec\": {\n        \"rule_list\": {\n            \"rules\": [\n                {\n                    \"geo_location_label_selector\": {\n                        \"expressions\": [\n                            \"geoip.ves.io/continent in (NA)\"\n                        ]\n                    },\n                    \"pool\": {\n                        \"tenant\": \"{{long_tennat_id}}\",\n                        \"namespace\": \"system\",\n                        \"name\": \"{{dnslb_primary_pool_name}}\"\n                    },\n                    \"score\": 100\n                },\n                {\n                    \"geo_location_label_selector\": {\n                        \"expressions\": [\n                            \"geoip.ves.io/continent in (CA)\"\n                        ]\n                    },\n                    \"pool\": {\n                        \"tenant\": \"{{long_tennat_id}}\",\n                        \"namespace\": \"system\",\n                        \"name\": \"{{dnslb_secondary_pool_name}}\"\n                    },\n                    \"score\": 100\n                }\n            ]\n        },\n        \"response_cache\": {\n            \"disable\": null\n        },\n        \"fallback_pool\": {\n            \"tenant\": \"{{long_tennat_id}}\",\n            \"namespace\": \"system\",\n            \"name\": \"{{dnslb_fallback_pool_name}}\"\n        }\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/dns/namespaces/{{dns_namespace}}/dns_load_balancers",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"dns",
+										"namespaces",
+										"{{dns_namespace}}",
+										"dns_load_balancers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3 - Create DNS-LB - Patch",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"metadata\": {\n        \"name\": \"{{dnslb_instance_name}}\",\n        \"namespace\": \"system\"\n    },\n    \"spec\": {\n        \"rule_list\": {\n            \"rules\": [\n                {\n                    \"geo_location_label_selector\": {\n                        \"expressions\": [\n                            \"geoip.ves.io/continent in (NA)\"\n                        ]\n                    },\n                    \"pool\": {\n                        \"tenant\": \"{{long_tennat_id}}\",\n                        \"namespace\": \"system\",\n                        \"name\": \"{{dnslb_primary_pool_name}}\"\n                    },\n                    \"score\": 100\n                },\n                {\n                    \"geo_location_label_selector\": {\n                        \"expressions\": [\n                            \"geoip.ves.io/continent in (CA)\"\n                        ]\n                    },\n                    \"pool\": {\n                        \"tenant\": \"{{long_tennat_id}}\",\n                        \"namespace\": \"system\",\n                        \"name\": \"{{dnslb_secondary_pool_name}}\"\n                    },\n                    \"score\": 100\n                }\n            ]\n        },\n        \"response_cache\": {\n            \"disable\": null\n        },\n        \"fallback_pool\": {\n            \"tenant\": \"{{long_tennat_id}}\",\n            \"namespace\": \"system\",\n            \"name\": \"{{dnslb_fallback_pool_name}}\"\n        }\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/dns/namespaces/{{dns_namespace}}/dns_load_balancers",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"dns",
+										"namespaces",
+										"{{dns_namespace}}",
+										"dns_load_balancers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "4 - Create DNS Zone RRSET Specific Entry",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/dns/namespaces/{{dns_namespace}}/dns_zones/{{dns_zone_name}}/rrsets/{{dns_zone_rr_group}}",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"dns",
+										"namespaces",
+										"{{dns_namespace}}",
+										"dns_zones",
+										"{{dns_zone_name}}",
+										"rrsets",
+										"{{dns_zone_rr_group}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Update",
+					"item": [
+						{
+							"name": "1 - Modify DNS-LB HealthCheck",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"metadata\": {\n        \"name\": \"{{dnslb_healthcheck_name}}\",\n        \"namespace\": \"system\",\n        \"description\": \"{{dnslb_healthcheck_description}}\",\n        \"disable\": false\n    },\n    \"spec\": {\n        \"http_health_check\": {\n            \"send\": \"{{dnslb_healthcheck_http_send_string}}\",\n            \"receive\": \"{{dnslb_healthcheck_http_receive_string}}\",\n            \"health_check_port\": 8080\n        }\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/dns/namespaces/{{dns_namespace}}/dns_lb_health_checks/{{dnslb_healthcheck_name}}",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"dns",
+										"namespaces",
+										"{{dns_namespace}}",
+										"dns_lb_health_checks",
+										"{{dnslb_healthcheck_name}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "2 - Modify DNS-LB Pools",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"metadata\": {\n        \"name\": \"{{dnslb_pool_name}}\",\n        \"namespace\": \"system\",\n        \"description\": \"{{dnslb_pool_description}}\"\n    },\n    \"spec\": {\n        \"{{dnslb_pool_type}}\": {\n            \"members\": [\n                {\n                    \"ip_endpoint\": \"{{dnslb_pool_member_1_ip}}\",\n                    \"ratio\": 1,\n                    \"priority\": 10,\n                    \"disable\": false,\n                    \"name\": \"{{dnslb_pool_member_1_description}}\"\n                },\n                {\n                    \"ip_endpoint\": \"{{dnslb_pool_member_2_ip}}\",\n                    \"ratio\": 1,\n                    \"priority\": 10,\n                    \"disable\": false,\n                    \"name\": \"{{dnslb_pool_member_2_description}}\"\n                },\n                {\n                    \"ip_endpoint\": \"{{dnslb_pool_member_3_ip}}\",\n                    \"ratio\": 1,\n                    \"priority\": 10,\n                    \"disable\": false,\n                    \"name\": \"{{dnslb_pool_member_3_description}}\"\n                }\n            ],\n            \"health_check\": {\n                \"tenant\": \"{{long_tennat_id}}\",\n                \"namespace\": \"system\",\n                \"name\": \"{{dnslb_healthcheck_name}}\"\n            },\n            \"max_answers\": 1\n        },\n        \"load_balancing_mode\": \"ROUND_ROBIN\",\n        \"ttl\": 30\n    }\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/dns/namespaces/{{dns_namespace}}/dns_lb_pools/{{dnslb_pool_name}}",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"dns",
+										"namespaces",
+										"{{dns_namespace}}",
+										"dns_lb_pools",
+										"{{dnslb_pool_name}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3 - Modify DNS-LB",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"metadata\": {\n        \"name\": \"{{dnslb_instance_name}}\",\n        \"namespace\": \"system\"\n    },\n    \"spec\": {\n        \"rule_list\": {\n            \"rules\": [\n                {\n                    \"geo_location_label_selector\": {\n                        \"expressions\": [\n                            \"geoip.ves.io/continent in (NA)\"\n                        ]\n                    },\n                    \"pool\": {\n                        \"tenant\": \"{{long_tennat_id}}\",\n                        \"namespace\": \"system\",\n                        \"name\": \"{{dnslb_primary_pool_name}}\"\n                    },\n                    \"score\": 100\n                },\n                {\n                    \"geo_location_label_selector\": {\n                        \"expressions\": [\n                            \"geoip.ves.io/continent in (CA)\"\n                        ]\n                    },\n                    \"pool\": {\n                        \"tenant\": \"{{long_tennat_id}}\",\n                        \"namespace\": \"system\",\n                        \"name\": \"{{dnslb_secondary_pool_name}}\"\n                    },\n                    \"score\": 100\n                }\n            ]\n        },\n        \"response_cache\": {\n            \"disable\": null\n        },\n        \"fallback_pool\": {\n            \"tenant\": \"{{long_tennat_id}}\",\n            \"namespace\": \"system\",\n            \"name\": \"{{dnslb_fallback_pool_name}}\"\n        }\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/dns/namespaces/{{dns_namespace}}/dns_load_balancers/{{dnslb_instance_name}}",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"dns",
+										"namespaces",
+										"{{dns_namespace}}",
+										"dns_load_balancers",
+										"{{dnslb_instance_name}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "4 - Create DNS Zone RRSET Specific Entry",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/dns/namespaces/{{dns_namespace}}/dns_zones/{{dns_zone_name}}/rrsets/{{dns_zone_rr_group}}",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"dns",
+										"namespaces",
+										"{{dns_namespace}}",
+										"dns_zones",
+										"{{dns_zone_name}}",
+										"rrsets",
+										"{{dns_zone_rr_group}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Delete",
+					"item": [
+						{
+							"name": "6a - DELETE DNS Zone RRSET Specific Entry Copy",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/dns/namespaces/{{dns_namespace}}/dns_zones/{{dns_zone_name}}/rrsets/{{dns_zone_rr_group}}/{{dns_zone_rr_record_name}}/DNSLB",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"dns",
+										"namespaces",
+										"{{dns_namespace}}",
+										"dns_zones",
+										"{{dns_zone_name}}",
+										"rrsets",
+										"{{dns_zone_rr_group}}",
+										"{{dns_zone_rr_record_name}}",
+										"DNSLB"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "6a - DELETE DNS Zone - Whole RRSET",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/dns/namespaces/{{dns_namespace}}/dns_zones/{{dns_zone_name}}/rrsets/{{dns_zone_rr_group}}",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"dns",
+										"namespaces",
+										"{{dns_namespace}}",
+										"dns_zones",
+										"{{dns_zone_name}}",
+										"rrsets",
+										"{{dns_zone_rr_group}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "6b - DELETE DNS-LB Copy",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/dns/namespaces/{{dns_namespace}}/dns_load_balancers/{{dnslb_instance_name}}",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"dns",
+										"namespaces",
+										"{{dns_namespace}}",
+										"dns_load_balancers",
+										"{{dnslb_instance_name}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "6c - DELETE DNS-LB Pools Copy",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/dns/namespaces/{{dns_namespace}}/dns_lb_pools/{{dnslb_pool_name}}",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"dns",
+										"namespaces",
+										"{{dns_namespace}}",
+										"dns_lb_pools",
+										"{{dnslb_pool_name}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "6d - DELETE DNS-LB HealthCheck Copy",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{short_tennat_id}}.console.ves.volterra.io/api/config/dns/namespaces/{{dns_namespace}}/dns_lb_health_checks/{{dnslb_healthcheck_name}}",
+									"protocol": "https",
+									"host": [
+										"{{short_tennat_id}}",
+										"console",
+										"ves",
+										"volterra",
+										"io"
+									],
+									"path": [
+										"api",
+										"config",
+										"dns",
+										"namespaces",
+										"{{dns_namespace}}",
+										"dns_lb_health_checks",
+										"{{dnslb_healthcheck_name}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
 			"name": "Troubleshooting Health Checks",
 			"item": [
 				{
