@@ -3,9 +3,9 @@
     "class": "AS3",
     "declaration": {
         "class": "ADC",
-        "schemaVersion": "3.46.2",
+        "schemaVersion": "3.54.0",
         "id": "urn:uuid:2b4e9b5a-0ca0-4d25-acbd-b710535eda12",
-        "label": "Secure Base Examples Snippit",
+        "label": "Secure Base Examples Snippet",
         "remark": "Secure HTTP aka HTTPS via HSTS Headers base Profiles Examples",
         "t_Example_HSTS_Samples": {
             "class": "Tenant",
