@@ -137,6 +137,12 @@ The included basic Postman API Collections and Environments may help with:
 - Delivering ready to use DO Declarations
 - Delivering ready to use AS3 Declarations
 
+== PowerShell API Collections
+The included basic PowerShell API Collections which may help with:
+
+- Delivering ready to use DO Declarations
+- Delivering ready to use AS3 Declarations
+
 == Authors
 Michael Johnson (https://github.com/samualblair[@samualblair])
 
@@ -144,6 +150,7 @@ Michael Johnson (https://github.com/samualblair[@samualblair])
 Using Calendar Versioning: https://calver.org/
 
 FORMAT: YY.0M.0D
+* 2025.10.31 - Added Powershell API Collections
 * 2025.10.29 - Updated Secure Cipher examples
 * 2025.09.05 - Added BIG-IP Postman REST Licensing
 * 2025.08.22 - Updates added HSTS examples and updated Postman API Collections
