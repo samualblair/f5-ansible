@@ -77,10 +77,9 @@ for unit in ansible_vars['devices']:
         content = template.render(topitem)
         with open("output/"+filename, mode="w", encoding="utf-8") as rendered_json:
             rendered_json.write(content)
-            # print(f"... wrote {filename}")
+            # print(f"... wrote output/{filename}")
 
         source = {}
-        # print("output/"+filename)
         with open("output/"+filename, 'r') as vars_file:
             source = json.load(vars_file)
         # output_filename = str(in_filename + '_updated.json')
@@ -108,10 +107,9 @@ for unit in ansible_vars['devices']:
         content = template.render(topitem)
         with open("output/"+filename, mode="w", encoding="utf-8") as rendered_json:
             rendered_json.write(content)
-            # print(f"... wrote {filename}")
+            # print(f"... wrote output/{filename}")
 
         source = {}
-        # print("output/"+filename)
         with open("output/"+filename, 'r') as vars_file:
             source = json.load(vars_file)
         # output_filename = str(in_filename + '_updated.json')

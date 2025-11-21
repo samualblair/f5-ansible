@@ -44,6 +44,8 @@
             "guiSecurityBanner": true,
             "guiSecurityBannerText": "{{ item.unit.login_banner }}",
 {% endif %}
+            "cliInactivityTimeout": 900,
+            "consoleInactivityTimeout": 900,
             "autoPhonehome": true
         },
 {% if item.unit.syslog_server_1_address is defined and item.unit.syslog_server_1_address %}
