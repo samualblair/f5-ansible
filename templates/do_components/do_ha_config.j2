@@ -1,0 +1,34 @@
+"myConfigSync": {
+            "class": "ConfigSync",
+            "configsyncIp": "{{ item.unit.self_ip_1_ip }}"
+        },
+        "{{ item.unit.clustername }}": {
+            "type": "sync-failover",
+            "class": "DeviceGroup",
+            "owner": "{{ item.unit.cluster_owner }}",
+            "members": [
+                "{{ item.unit.cluster_member_1 }}",
+                "{{ item.unit.cluster_member_2 }}"
+            ],
+            "autoSync": true,
+            "networkFailover": true
+        },
+        "myDeviceTrust": {
+            "class": "DeviceTrust",
+            "remoteHost": "{{ item.unit.cluster_trust_remote }}",
+            "localUsername": "{{ item.unit.bigip_user }}",
+            "remoteUsername": "{{ item.unit.bigip_user }}",
+            "localPassword": "{{ item.unit.bigip_password }}",
+            "remotePassword": "{{ item.unit.bigip_password }}"
+        },
+        "myMirror": {
+            "class": "MirrorIp",
+            "primaryIp": "{{ item.unit.self_ip_2_ip }}",
+            "secondaryIp": "any6"
+        },
+        "traffic-group-1": {
+            "class": "TrafficGroup"
+        },
+        "traffic-group-local-only": {
+            "class": "TrafficGroup"
+        }

@@ -1,9 +1,9 @@
 "NTP": {
             "class": "NTP",
             "servers": [
-                "pool.ntp.org",
-                "0.pool.ntp.org",
-                "1.pool.ntp.org"
+                "{{ item.unit.ntp_server_1 }}",
+                "{{ item.unit.ntp_server_2 }}",
+                "{{ item.unit.ntp_server_3 }}"
             ],
-            "timezone": "US/Pacific"
+            "timezone": "{{ item.unit.ntp_timezone }}"
         }

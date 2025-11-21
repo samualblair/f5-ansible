@@ -1,0 +1,34 @@
+"myAuth": {
+            "class": "Authentication",
+            "enabledSourceType": "radius",
+            "fallback": true,
+            "remoteUsersDefaults": {
+                "partitionAccess": "all",
+                "terminalAccess": "tmsh",
+                "role": "no-access"
+            },
+            "radius": {
+                "serviceType": "default",
+                "servers": {
+                    "primary": {
+                        "server": "{{ item.unit.radius_server_1_ip }}",
+                        "port": 1812,
+                        "secret": "{{ item.unit.radius_server_secret }}"
+                    },
+                    "secondary": {
+                        "server": "{{ item.unit.radius_server_2_ip }}",
+                        "secret": "{{ item.unit.radius_server_secret }}",
+                        "port": 1812
+                    }
+                }
+            }
+        },
+        "adm": {
+            "class": "RemoteAuthRole",
+            "attribute": "F5-LTM-User-Info-1=theadmin",
+            "console": "tmsh",
+            "lineOrder": 1,
+            "role": "admin",
+            "remoteAccess": true,
+            "userPartition": "all"
+        }

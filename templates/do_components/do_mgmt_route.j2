@@ -1,0 +1,42 @@
+"MGMT-ROUTE-1": {
+            "class": "ManagementRoute",
+            "gw": "{{ item.unit.oob_mgmt_gw }}",
+            "network": "{{ item.unit.system_dns_1 }}",
+            "remark": "DNS and NTP"
+        }{% if item.unit.system_dns_2 is defined and item.unit.system_dns_2 %},
+        "MGMT-ROUTE-2": {
+            "class": "ManagementRoute",
+            "gw": "{{ item.unit.oob_mgmt_gw }}",
+            "network": "{{ item.unit.system_dns_2 }}",
+            "remark": "DNS and NTP"
+        }{% endif %}{% if item.unit.ntp_server_3_ip is defined and item.unit.ntp_server_3_ip %},
+        "MGMT-ROUTE-3": {
+            "class": "ManagementRoute",
+            "gw": "{{ item.unit.oob_mgmt_gw }}",
+            "network": "{{ item.unit.ntp_server_3_ip }}",
+            "remark": "NTP"
+        }{% endif %}{% if item.unit.radius_server_1_ip is defined and item.unit.radius_server_1_ip %},
+        "RADIUS-1": {
+            "class": "ManagementRoute",
+            "gw": "{{ item.unit.oob_mgmt_gw }}",
+            "network": "{{ item.unit.radius_server_1_ip }}",
+            "remark": "{{ item.unit.radius_server_1_name }}"
+        }{% endif %}{% if item.unit.radius_server_2_ip is defined and item.unit.radius_server_2_ip %},
+        "RADIUS-2": {
+            "class": "ManagementRoute",
+            "gw": "{{ item.unit.oob_mgmt_gw }}",
+            "network": "{{ item.unit.radius_server_2_ip }}",
+            "remark": "{{ item.unit.radius_server_2_name }}"
+        }{% endif %}{% if item.unit.snmp_server_1_ip is defined and item.unit.snmp_server_1_ip %},
+        "SNMP-1": {
+            "class": "ManagementRoute",
+            "gw": "{{ item.unit.oob_mgmt_gw }}",
+            "network": "{{ item.unit.snmp_server_1_ip }}",
+            "remark": "{{ item.unit.snmp_server_1_name }}"
+        }{% endif %}{% if item.unit.snmp_server_2_ip is defined and item.unit.snmp_server_2_ip %},
+        "SNMP-1": {
+            "class": "ManagementRoute",
+            "gw": "{{ item.unit.oob_mgmt_gw }}",
+            "network": "{{ item.unit.snmp_server_2_ip }}",
+            "remark": "{{ item.unit.snmp_server_2_name }}"
+        }{% endif %}

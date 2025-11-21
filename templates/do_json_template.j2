@@ -26,9 +26,13 @@
 {% if item.unit.provision_asm is defined and item.unit.provision_asm == "yes" %}
             "asm": "nominal",
 {% endif %}
+{% if item.unit.provision_avr is defined and item.unit.provision_avr == "yes" %}
             "avr": "nominal"
+{% endif %}
         },
+{% if item.unit.system_dns_1 is defined and item.unit.system_dns_1 %}
         {% include "./do_components/do_dns.j2" %},
+{% endif %}
         {% include "./do_components/do_httpd.j2" %},
         {% include "./do_components/do_sshd.j2" %},
         {% include "./do_components/do_db_vars.j2" %},
@@ -36,14 +40,38 @@
             "class": "System",
             "hostname": "{{ item.unit.hostname }}",
             "autoCheck": true,
-{% if item.unit.login_banner is defined %}
-        "guiSecurityBanner": true,
-        "guiSecurityBannerText": "{{ item.unit.login_banner }}",
+{% if item.unit.login_banner is defined and item.unit.login_banner %}
+            "guiSecurityBanner": true,
+            "guiSecurityBannerText": "{{ item.unit.login_banner }}",
 {% endif %}
             "autoPhonehome": true
         },
-{% if item.unit.syslog_server_1_address is defined %}
+{% if item.unit.syslog_server_1_address is defined and item.unit.syslog_server_1_address %}
         {% include "./do_components/do_syslog.j2" %},
+{% endif %}
+{% if item.unit.system_dns_1 is defined and item.unit.system_dns_1 %}
+        {% include "./do_components/do_mgmt_route.j2" %},
+{% endif %}
+{% if item.unit.snmp_user_1 is defined and item.unit.snmp_user_1 %}
+        {% include "./do_components/do_snmp.j2" %},
+{% endif %}
+{% if item.unit.radius_server_1_ip is defined and item.unit.radius_server_1_ip %}
+        {% include "./do_components/do_radius.j2" %},
+{% endif %}
+{% if item.unit.self_ip_1_ip_and_cidr is defined and item.unit.self_ip_1_ip_and_cidr %}
+        {% include "./do_components/do_self_ips.j2" %},
+{% endif %}
+{% if item.unit.cluster is defined and item.unit.cluster == "yes" %}
+        {% include "./do_components/do_ha_config.j2" %},
+{% endif %}
+{% if item.unit.self_ip_3_ip_and_cidr_float1 is defined and item.unit.self_ip_3_ip_and_cidr_float1 %}
+        {% include "./do_components/do_self_float_ips.j2" %},
+{% endif %}
+{% if item.unit.net_route_1 is defined and item.unit.net_route_1 %}
+        {% include "./do_components/do_net_route.j2" %},
+{% endif %}
+{% if item.unit.license_needed is defined and item.unit.license_needed == "yes" %}
+        {% include "./do_components/do_licensing.j2" %},
 {% endif %}
         {% include "./do_components/do_ntp.j2" %}
     }

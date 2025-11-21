@@ -1,11 +1,10 @@
 "DNS": {
             "class": "DNS",
             "nameServers": [
-                "8.8.8.8",
-                "1.1.1.1",
-                "9.9.9.9"
+                "{{ item.unit.system_dns_1 }}",
+                "{{ item.unit.system_dns_2 }}"
             ],
             "search": [
-                "domain.local"
+                "{{ item.unit.hostname_domain }}"
             ]
         }

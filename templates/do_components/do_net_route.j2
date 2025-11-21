@@ -1,0 +1,24 @@
+"{{ item.unit.net_route_default_name }}": {
+            "class": "Route",
+            "gw": "{{ item.unit.net_route_default_gw }}",
+            "network": "default",
+            "localOnly": {{ item.unit.net_route_local_only }}
+        }{% if item.unit.net_route_2 is defined and item.unit.net_route_2 %},
+        "NET-ROUTE-2": {
+            "class": "Route",
+            "gw": "{{ item.unit.net_route_default_gw }}",
+            "network": "{{ item.unit.net_route_2 }}",
+            "localOnly": {{ item.unit.net_route_local_only }}
+        }{% endif %}{% if item.unit.net_route_3 is defined and item.unit.net_route_3 %},
+        "NET-ROUTE-3": {
+            "class": "Route",
+            "gw": "{{ item.unit.net_route_default_gw }}",
+            "network": "{{ item.unit.net_route_3 }}",
+            "localOnly": {{ item.unit.net_route_local_only }}
+        }{% endif %}{% if item.unit.net_route_4 is defined and item.unit.net_route_4 %},
+        "NET-ROUTE-4": {
+            "class": "Route",
+            "gw": "{{ item.unit.net_route_default_gw }}",
+            "network": "{{ item.unit.net_route_4 }}",
+            "localOnly": {{ item.unit.net_route_local_only }}
+        }{% endif %}

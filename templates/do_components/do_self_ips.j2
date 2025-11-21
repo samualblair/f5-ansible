@@ -1,0 +1,51 @@
+"{{ item.unit.self_ip_1_vlan_name }}": {
+            "class": "VLAN",
+            "tag": {{ item.unit.self_ip_1_vlan_tag }},
+            "interfaces": [
+                {
+                    "name": "1.1",
+                    "tagged": false
+                }
+            ]
+        },
+        "SELFIP_HA_SYNC__{{ item.unit.self_ip_1_vlan_tag }}": {
+            "class": "SelfIp",
+            "address": "{{ item.unit.self_ip_1_ip_and_cidr }}",
+            "vlan": "{{ item.unit.self_ip_1_vlan_name }}",
+            "trafficGroup": "traffic-group-local-only",
+            "allowService": "default"
+        },
+        "{{ item.unit.self_ip_2_vlan_name }}": {
+            "class": "VLAN",
+            "tag": {{ item.unit.self_ip_2_vlan_tag }},
+            "interfaces": [
+                {
+                    "name": "1.2",
+                    "tagged": false
+                }
+            ]
+        },
+        "SELFIP_HA_MIRROR_{{ item.unit.self_ip_2_vlan_tag }}": {
+            "class": "SelfIp",
+            "address": "{{ item.unit.self_ip_2_ip_and_cidr }}",
+            "vlan": "{{ item.unit.self_ip_2_vlan_name }}",
+            "trafficGroup": "traffic-group-local-only",
+            "allowService": "default"
+        },
+        "{{ item.unit.self_ip_3_vlan_name }}": {
+            "class": "VLAN",
+            "tag": {{ item.unit.self_ip_3_vlan_tag }},
+            "interfaces": [
+                {
+                    "name": "1.3",
+                    "tagged": false
+                }
+            ]
+        },
+        "SELFIP_DATA_{{ item.unit.self_ip_3_vlan_tag }}": {
+            "class": "SelfIp",
+            "address": "{{ item.unit.self_ip_3_ip_and_cidr }}",
+            "vlan": "{{ item.unit.self_ip_3_vlan_name }}",
+            "trafficGroup": "traffic-group-local-only",
+            "allowService": "none"
+        }

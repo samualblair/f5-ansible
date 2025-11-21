@@ -1,0 +1,28 @@
+"SnmpAgent": {
+            "class": "SnmpAgent",
+            "contact": "{{ item.unit.snmp_contact }}",
+            "location": "{{ item.unit.snmp_location }}",
+            "allowList": [
+                "127.0.0.0/8",
+                "10.0.0.0/8",
+                "172.16.0.0/12",
+                "192.168.0.0/16",
+                "::1"{% if item.unit.snmp_server_1_ip is defined and item.unit.snmp_server_1_ip %},
+                "{{ item.unit.snmp_server_1_ip }}/32"{% endif %}{% if item.unit.snmp_server_2_ip is defined and item.unit.snmp_server_2_ip %},
+                "{{ item.unit.snmp_server_2_ip }}/32"{% endif %}{% if item.unit.snmp_server_3_ip is defined and item.unit.snmp_server_3_ip %},
+                "{{ item.unit.snmp_server_3_ip }}/32"{% endif %}
+            ]
+        },
+        "snmpUser_1": {
+            "class": "SnmpUser",
+            "name": "{{ item.unit.snmp_user_1 }}",
+            "authentication": {
+                "protocol": "sha",
+                "password": "{{ item.unit.snmp_user_1_password }}"
+            },
+            "privacy": {
+                "protocol": "aes",
+                "password": "{{ item.unit.snmp_user_1_password }}"
+            },
+            "oid": ".1"
+        }

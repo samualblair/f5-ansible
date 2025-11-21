@@ -1,9 +1,19 @@
 # Michael Johnson - Nov 2025
-# Python Script to parse CSV file with headers and DO and AS3 from Jinja2 Templates
+# Python Script to parse CSV file with headers and create DO and AS3 from Jinja2 Templates
 
+import json
 import csv
 import uuid
 from jinja2 import Environment, FileSystemLoader
+
+bigip_user = input('Please Enter Username for BIG-IP {{user_name}} :\n')
+bigip_password = input('Please Enter Password for BIG-IP {{user_password}} :\n')
+snmp_user_1_password = input('Please Enter Password for SNMPv3 Auth and Priv {{snmp_user_1_password}} :\n')
+radius_server_secret = input('Please Enter Password for RADIUS Secret {{radius_server_secret}} :\n')
+# bigip_user = "{{user_name}}"
+# bigip_password = "{{user_password}}"
+# snmp_user_1_password = "{{snmp_user_1_password}}"
+# radius_server_secret = "{{radius_server_secret}}"
 
 ansible_vars_generate = {}
 
@@ -38,7 +48,7 @@ with open('./variables/device_variables.csv', 'r') as csv_file:
         else:
             itteration_index_value = itteration_index_value + 1
 
-    print(ansible_vars['devices'])
+    # print(ansible_vars['devices'])
     
     ansible_vars_generate = ansible_vars
 
@@ -56,12 +66,28 @@ for unit in ansible_vars['devices']:
     # Extra layer for now to be compatible with legacy ansible jinja2 templates
     topitem = { 'item': unit }
 
+    # Add in user/password from user input
+    topitem['item']['unit']['bigip_user'] = bigip_user
+    topitem['item']['unit']['bigip_password'] = bigip_password
+    topitem['item']['unit']['snmp_user_1_password'] = snmp_user_1_password
+    topitem['item']['unit']['radius_server_secret'] = radius_server_secret
+
     if 'bigip' == unit['unit']['role']:
         filename = f"do.bigip.{unit['unit']['hostname'].lower()}.json"
         content = template.render(topitem)
         with open("output/"+filename, mode="w", encoding="utf-8") as rendered_json:
             rendered_json.write(content)
             # print(f"... wrote {filename}")
+
+        source = {}
+        # print("output/"+filename)
+        with open("output/"+filename, 'r') as vars_file:
+            source = json.load(vars_file)
+        # output_filename = str(in_filename + '_updated.json')
+        output_filename = str("output/"+filename)
+        with open(output_filename, "w") as outfile: 
+            json.dump(source, outfile, indent=2)
+        source = {}
 
 # BigIQ_based_BigIP_DO_template Template Filling
 environment = Environment(loader=FileSystemLoader("templates/"))
@@ -71,6 +97,12 @@ for unit in ansible_vars['devices']:
     # Extra layer for now to be compatible with legacy ansible jinja2 templates
     topitem = { 'item': unit }
 
+    # Add in user/password from user input
+    topitem['item']['unit']['bigip_user'] = bigip_user
+    topitem['item']['unit']['bigip_password'] = bigip_password
+    topitem['item']['unit']['snmp_user_1_password'] = snmp_user_1_password
+    topitem['item']['unit']['radius_server_secret'] = radius_server_secret
+
     if 'bigip' == unit['unit']['role']:
         filename = f"do.bigiq.{unit['unit']['hostname'].lower()}.json"
         content = template.render(topitem)
@@ -78,6 +110,15 @@ for unit in ansible_vars['devices']:
             rendered_json.write(content)
             # print(f"... wrote {filename}")
 
+        source = {}
+        # print("output/"+filename)
+        with open("output/"+filename, 'r') as vars_file:
+            source = json.load(vars_file)
+        # output_filename = str(in_filename + '_updated.json')
+        output_filename = str("output/"+filename)
+        with open(output_filename, "w") as outfile: 
+            json.dump(source, outfile, indent=2)
+        source = {}
 
 # # Future add as3 generate
 # # BigIP_AS3_template Template Filling

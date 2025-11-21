@@ -1,9 +1,9 @@
 {
     "class": "DO",
     "declaration": {% include "./do_json_template.j2" %},
-    "targetUsername": "{{ item.unit.bigip_user }}",
+    "targetUsername": "{{ bigip_user }}",
     "targetHost": "{{ item.unit.hostname }}",
-    "targetPassphrase": "{{ item.unit.bigip_password }}",
+    "targetPassphrase": "{{ bigip_password }}",
     "bigIqSettings": {
 {% for sublist in devices %}
 {%   if (sublist.unit.cluster == "yes") and (sublist.unit.hostname == item.unit.hostname) %}
@@ -15,4 +15,4 @@
         "failImportOnConflict": true,
         "versionedConflictPolicy": "KEEP_VERSION"
     }
-}
+} 

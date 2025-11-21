@@ -1,6 +1,6 @@
 {
-    "$schema": "https://raw.githubusercontent.com/F5Networks/f5-declarative-onboarding/master/src/schema/latest/base.schema.json",
-    "schemaVersion": "1.27.0",
+    "$schema": "https://raw.githubusercontent.com/F5Networks/f5-declarative-onboarding/main/src/schema/latest/base.schema.json",
+    "schemaVersion": "1.46.0",
     "class": "Device",
     "async": true,
     "Common": {
@@ -149,6 +149,16 @@
                 "aes128-ctr",
                 "aes192-ctr",
                 "aes256-ctr"
+            ],
+            "kexAlgorithms": [
+                "curve25519-sha256",
+                "curve25519-sha256@libssh.org",
+                "diffie-hellman-group14-sha256",
+                "diffie-hellman-group16-sha512",
+                "diffie-hellman-group18-sha512",
+                "ecdh-sha2-nistp256",
+                "ecdh-sha2-nistp384",
+                "ecdh-sha2-nistp521"
             ],
             "MACS": [
                 "hmac-sha2-512-etm@openssh.com",

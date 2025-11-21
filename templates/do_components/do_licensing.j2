@@ -1,0 +1,18 @@
+{% if item.unit.license_pool is defined and item.unit.license_pool %}
+"myLicense": {
+            "class": "License",
+            "licenseType": "licensePool",
+            "reachable": true,
+            "licensePool": "{{ item.unit.license_pool }}",
+            "bigIpUsername": "{{ item.unit.bigip_user }}",
+            "bigIpPassword": "{{ item.unit.bigip_password }}"
+        }
+{% endif %}
+{% if item.unit.license_key is defined and item.unit.license_key %}
+"myLicense": {
+            "class": "License",
+            "licenseType": "regKey",
+            "regKey": "{{ item.unit.license_key }}",
+            "revokeCurrent": false
+        },
+{% endif %}
