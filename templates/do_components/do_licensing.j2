@@ -5,7 +5,10 @@
             "reachable": true,
             "licensePool": "{{ item.unit.license_pool }}",
             "bigIpUsername": "{{ item.unit.bigip_user }}",
-            "bigIpPassword": "{{ item.unit.bigip_password }}"
+            "bigIpPassword": "{{ item.unit.bigip_password }}",
+            "bigIqHost": "{{ item.unit.bigiq_licenser }}",
+            "bigIqPassword": "{{ item.unit.bigip_user }}",
+            "bigIqUsername": "{{ item.unit.bigip_password }}"
         }
 {% endif %}
 {% if item.unit.license_key is defined and item.unit.license_key %}
@@ -14,5 +17,5 @@
             "licenseType": "regKey",
             "regKey": "{{ item.unit.license_key }}",
             "revokeCurrent": false
-        },
+        }
 {% endif %}

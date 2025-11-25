@@ -1,0 +1,9 @@
+"ManagementIp_IPv4": {
+                "class": "ManagementIp",
+                "address": "{{ item.unit.oob_mgmt_ip }}{{ item.unit.oob_mgmt_ip_cidr }}"
+            },
+            "default": {
+                "class": "ManagementRoute",
+                "gw": "{{ item.unit.oob_mgmt_gw }}",
+                "network": "default"
+            }

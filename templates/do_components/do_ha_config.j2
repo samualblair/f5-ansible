@@ -13,6 +13,19 @@
             "autoSync": true,
             "networkFailover": true
         },
+        "myFailoverUnicast": {
+            "class": "FailoverUnicast",
+            "addressPorts": [
+                {
+                    "address": "{{ item.unit.self_ip_1_ip }}",
+                    "port": 1026
+                },
+                {
+                    "address": "{{ item.unit.oob_mgmt_ip }}",
+                    "port": 1026
+                }
+            ]
+        },
         "myDeviceTrust": {
             "class": "DeviceTrust",
             "remoteHost": "{{ item.unit.cluster_trust_remote }}",

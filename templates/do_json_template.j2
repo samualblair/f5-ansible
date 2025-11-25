@@ -54,6 +54,9 @@
 {% if item.unit.system_dns_1 is defined and item.unit.system_dns_1 %}
         {% include "./do_components/do_mgmt_route.j2" %},
 {% endif %}
+{% if item.unit.oob_mgmt_ip is defined and item.unit.oob_mgmt_ip %}
+        {% include "./do_components/do_mgmt_ip.j2" %},
+{% endif %}
 {% if item.unit.snmp_user_1 is defined and item.unit.snmp_user_1 %}
         {% include "./do_components/do_snmp.j2" %},
 {% endif %}
