@@ -3,13 +3,13 @@
     "class": "AS3",
     "declaration": {
         "class": "ADC",
-        "schemaVersion": "3.54.0",
-        "id": "urn:uuid:0202b091-aec0-4asf-8dea-cdf1deb6daf6",
-        "label": "Secure Base Snippet",
-        "remark": "Secure TLS/SSL Cipher base Profiles",
-        "t_Example_TLS_SSL_Ciphers": {
+        "schemaVersion": "3.55.0",
+        "id": "urn:uuid:666d1549-0d49-4faa-94af-19c942e16dd2",
+        "label": "Common Shared Objects",
+        "remark": "Common Shared Objects - TLS Ciphers",
+        "Common": {
             "class": "Tenant",
-            "a_Example_TLS_SSL_Ciphers": {
+            "Shared": {
                 "class": "Application",
                 "template": "shared",
                 "default-CertKey": {
@@ -20,6 +20,69 @@
                     "privateKey": {
                         "bigip": "/Common/default.key"
                     }
+                },
+                "cssl_tls13only_Gold_Base_2025": {
+                    "certificates": [
+                        {
+                            "certificate": "default-CertKey"
+                        }
+                    ],
+                    "cipherGroup": {
+                        "use": "Secure_tls13only_Gold_Cipher_Group_2025"
+                    },
+                    "class": "TLS_Server",
+                    "tls1_0Enabled": false,
+                    "tls1_1Enabled": false,
+                    "tls1_2Enabled": false,
+                    "tls1_3Enabled": true,
+                    "sslEnabled": false,
+                    "dtlsEnabled": false,
+                    "dataZeroRoundTripTime": "disabled"
+                },
+                "sssl_tls13only_Gold_Base_2025": {
+                    "cipherGroup": {
+                        "use": "Secure_tls13only_Gold_Cipher_Group_2025"
+                    },
+                    "class": "TLS_Client",
+                    "tls1_0Enabled": false,
+                    "tls1_1Enabled": false,
+                    "tls1_2Enabled": false,
+                    "tls1_3Enabled": true,
+                    "sslEnabled": false,
+                    "dtlsEnabled": false,
+                    "dataZeroRoundTripTime": false
+                },
+                "Secure_tls13only_Gold_Cipher_Rule_2025": {
+                    "class": "Cipher_Rule",
+                    "label": "ECDSA or RSA Keys for TLS 1_3 only",
+                    "cipherSuites": [
+                        "TLSv1_3"
+                    ],
+                    "namedGroups": [
+                        "P256",
+                        "P384",
+                        "X25519"
+                    ],
+                    "signatureAlgorithms": [
+                        "ECDSA-SHA256",
+                        "ECDSA-SHA384",
+                        "ECDSA-SHA512",
+                        "RSA-PKCS1-SHA256",
+                        "RSA-PKCS1-SHA384",
+                        "RSA-PKCS1-SHA512",
+                        "RSA-PSS-SHA256",
+                        "RSA-PSS-SHA384",
+                        "RSA-PSS-SHA512"
+                    ]
+                },
+                "Secure_tls13only_Gold_Cipher_Group_2025": {
+                    "class": "Cipher_Group",
+                    "label": "ECDSA or RSA Keys for TLS 1_3 only",
+                    "allowCipherRules": [
+                        {
+                            "use": "Secure_tls13only_Gold_Cipher_Rule_2025"
+                        }
+                    ]
                 },
                 "cssl_Gold_Base_2025": {
                     "certificates": [
@@ -35,7 +98,9 @@
                     "tls1_1Enabled": false,
                     "tls1_2Enabled": true,
                     "tls1_3Enabled": true,
-                    "singleUseDhEnabled": true
+                    "sslEnabled": false,
+                    "dtlsEnabled": false,
+                    "dataZeroRoundTripTime": "disabled"
                 },
                 "cssl_Silver_Base_2024": {
                     "certificates": [
@@ -63,7 +128,9 @@
                     "tls1_1Enabled": false,
                     "tls1_2Enabled": true,
                     "tls1_3Enabled": true,
-                    "singleUseDhEnabled": true
+                    "sslEnabled": false,
+                    "dtlsEnabled": false,
+                    "dataZeroRoundTripTime": false
                 },
                 "sssl_Silver_Base_2024": {
                     "cipherGroup": {
@@ -115,7 +182,8 @@
                         }
                     ]
                 },
-                "Secure_Silver_Cipher_Rule_2024": {
+                "Secure_Silver_Cipher_Rule_2024":
+                {
                     "class": "Cipher_Rule",
                     "label": "ECDSA or RSA Keys for TLS 1_3 or 1_2 only with weaker aes-cbc",
                     "cipherSuites": [
