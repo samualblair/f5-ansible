@@ -8,10 +8,14 @@ from jinja2 import Environment, FileSystemLoader
 
 bigip_user = input('Please Enter Username for BIG-IP {{user_name}} :\n')
 bigip_password = input('Please Enter Password for BIG-IP {{user_password}} :\n')
+bigiq_user = input('Please Enter Username for BIG-IQ {{user_name}} :\n')
+bigiq_password = input('Please Enter Password for BIG-IQ {{user_password}} :\n')
 snmp_user_1_password = input('Please Enter Password for SNMPv3 Auth and Priv {{snmp_user_1_password}} :\n')
 radius_server_secret = input('Please Enter Password for RADIUS Secret {{radius_server_secret}} :\n')
 # bigip_user = "{{user_name}}"
 # bigip_password = "{{user_password}}"
+# bigiq_user = "{{user_name}}"
+# bigiq_password = "{{user_password}}"
 # snmp_user_1_password = "{{snmp_user_1_password}}"
 # radius_server_secret = "{{radius_server_secret}}"
 
@@ -69,6 +73,8 @@ for unit in ansible_vars['devices']:
     # Add in user/password from user input
     topitem['item']['unit']['bigip_user'] = bigip_user
     topitem['item']['unit']['bigip_password'] = bigip_password
+    topitem['item']['unit']['bigiq_user'] = bigiq_user
+    topitem['item']['unit']['bigiq_password'] = bigiq_password
     topitem['item']['unit']['snmp_user_1_password'] = snmp_user_1_password
     topitem['item']['unit']['radius_server_secret'] = radius_server_secret
 
@@ -99,6 +105,8 @@ for unit in ansible_vars['devices']:
     # Add in user/password from user input
     topitem['item']['unit']['bigip_user'] = bigip_user
     topitem['item']['unit']['bigip_password'] = bigip_password
+    topitem['item']['unit']['bigiq_user'] = bigiq_user
+    topitem['item']['unit']['bigiq_password'] = bigiq_password
     topitem['item']['unit']['snmp_user_1_password'] = snmp_user_1_password
     topitem['item']['unit']['radius_server_secret'] = radius_server_secret
 
