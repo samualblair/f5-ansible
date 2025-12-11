@@ -1,0 +1,92 @@
+{
+    "$schema": "https://raw.githubusercontent.com/F5Networks/f5-appsvcs-extension/main/schema/latest/as3-schema.json",
+    "class": "AS3",
+    "declaration": {
+        "class": "ADC",
+        "schemaVersion": "3.56.0",
+        "id": "urn:uuid:666d1549-0d49-4faa-94af-19c942e16dd2",
+        "label": "Common Shared Objects",
+        "remark": "Common Shared Objects - TLS Cipher with TLS1.3 and PQC",
+        "Common": {
+            "class": "Tenant",
+            "Shared": {
+                "class": "Application",
+                "template": "shared",
+                "default-CertKey": {
+                    "class": "Certificate",
+                    "certificate": {
+                        "bigip": "/Common/default.crt"
+                    },
+                    "privateKey": {
+                        "bigip": "/Common/default.key"
+                    }
+                },
+                "cssl_tls13only_Gold_Base_2025": {
+                    "certificates": [
+                        {
+                            "certificate": "default-CertKey"
+                        }
+                    ],
+                    "cipherGroup": {
+                        "use": "Secure_tls13only_Gold_Cipher_Group_2025"
+                    },
+                    "class": "TLS_Server",
+                    "tls1_0Enabled": false,
+                    "tls1_1Enabled": false,
+                    "tls1_2Enabled": false,
+                    "tls1_3Enabled": true,
+                    "sslEnabled": false,
+                    "dtlsEnabled": false,
+                    "dataZeroRoundTripTime": "disabled"
+                },
+                "sssl_tls13only_Gold_Base_2025": {
+                    "cipherGroup": {
+                        "use": "Secure_tls13only_Gold_Cipher_Group_2025"
+                    },
+                    "class": "TLS_Client",
+                    "tls1_0Enabled": false,
+                    "tls1_1Enabled": false,
+                    "tls1_2Enabled": false,
+                    "tls1_3Enabled": true,
+                    "sslEnabled": false,
+                    "dtlsEnabled": false,
+                    "dataZeroRoundTripTime": false
+                },
+                "Secure_tls13only_Gold_Cipher_Rule_2025": {
+                    "class": "Cipher_Rule",
+                    "label": "ECDSA or RSA Keys for TLS 1_3 only",
+                    "cipherSuites": [
+                        "TLSv1_3"
+                    ],
+                    "namedGroups": [
+                        "P256",
+                        "P384",
+                        "X25519",
+                        "X25519KYBER768",
+                        "X25519MLKEM768"
+                    ],
+                    "signatureAlgorithms": [
+                        "ECDSA-SHA256",
+                        "ECDSA-SHA384",
+                        "ECDSA-SHA512",
+                        "RSA-PKCS1-SHA256",
+                        "RSA-PKCS1-SHA384",
+                        "RSA-PKCS1-SHA512",
+                        "RSA-PSS-SHA256",
+                        "RSA-PSS-SHA384",
+                        "RSA-PSS-SHA512"
+                    ]
+                },
+                "Secure_tls13only_Gold_Cipher_Group_2025": {
+                    "class": "Cipher_Group",
+                    "label": "ECDSA or RSA Keys for TLS 1_3 only",
+                    "allowCipherRules": [
+                        {
+                            "use": "Secure_tls13only_Gold_Cipher_Rule_2025"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}
