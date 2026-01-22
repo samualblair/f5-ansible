@@ -1,0 +1,349 @@
+{
+  "id": "farcrw46ap9",
+  "v": 2,
+  "name": "Basic_F5_DC_XC_Volterra_API",
+  "variables": [
+    {
+      "key": "short_tennat_id",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "long_tennat_id",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "current_namespace",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "app_type_name",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "service_hostname",
+      "secret": false,
+      "initialValue": "l7-lb.example.com",
+      "currentValue": ""
+    },
+    {
+      "key": "backend_sevice_colon_and_custom_port",
+      "secret": false,
+      "initialValue": ":8080",
+      "currentValue": ""
+    },
+    {
+      "key": "lb_healthcheck_name",
+      "secret": false,
+      "initialValue": "http-get-l7-healthcheck",
+      "currentValue": ""
+    },
+    {
+      "key": "orgin_pool_member_1_ip",
+      "secret": false,
+      "initialValue": "192.0.2.1",
+      "currentValue": ""
+    },
+    {
+      "key": "origin_pool_member_2_dns_name",
+      "secret": false,
+      "initialValue": "host.subdomain.example.com",
+      "currentValue": ""
+    },
+    {
+      "key": "lb_origin_pool_name",
+      "secret": false,
+      "initialValue": "l7-insecure-origin-pool-demo",
+      "currentValue": ""
+    },
+    {
+      "key": "orgin_pool_member_port",
+      "secret": false,
+      "initialValue": "8080",
+      "currentValue": ""
+    },
+    {
+      "key": "lb_l7_name",
+      "secret": false,
+      "initialValue": "l7-lb-https-frontend",
+      "currentValue": ""
+    },
+    {
+      "key": "lb_l7_port",
+      "secret": false,
+      "initialValue": "443",
+      "currentValue": ""
+    },
+    {
+      "key": "dns_short_name",
+      "secret": false,
+      "initialValue": "l7-lb-https-frontend",
+      "currentValue": ""
+    },
+    {
+      "key": "integrated_dns_domain",
+      "secret": false,
+      "initialValue": "doamain.example.com",
+      "currentValue": ""
+    },
+    {
+      "key": "external_dns_domain",
+      "secret": false,
+      "initialValue": "example.com",
+      "currentValue": ""
+    },
+    {
+      "key": "waf_policy_name",
+      "secret": false,
+      "initialValue": "l7-lb-https-integrated-waf-policy",
+      "currentValue": ""
+    },
+    {
+      "key": "dns_namespace",
+      "secret": false,
+      "initialValue": "system",
+      "currentValue": ""
+    },
+    {
+      "key": "dns_zone_name",
+      "secret": false,
+      "initialValue": "gslb-demo.example.com",
+      "currentValue": ""
+    },
+    {
+      "key": "dnslb_instance_name",
+      "secret": false,
+      "initialValue": "dnslb-demo",
+      "currentValue": ""
+    },
+    {
+      "key": "dnslb_primary_pool_name",
+      "secret": false,
+      "initialValue": "basic-font-end-pool-demo",
+      "currentValue": ""
+    },
+    {
+      "key": "dnslb_secondary_pool_name",
+      "secret": false,
+      "initialValue": "basic2-font-end-pool-demo",
+      "currentValue": ""
+    },
+    {
+      "key": "dnslb_fallback_pool_name",
+      "secret": false,
+      "initialValue": "basic3-font-end-pool-demo",
+      "currentValue": ""
+    },
+    {
+      "key": "dns_zone_rr_group",
+      "secret": false,
+      "initialValue": "default_rr_set_group",
+      "currentValue": ""
+    },
+    {
+      "key": "dns_zone_rr_record_name",
+      "secret": false,
+      "initialValue": "dns-lb-demo",
+      "currentValue": ""
+    },
+    {
+      "key": "dns_zone_rr_type",
+      "secret": false,
+      "initialValue": "DNSLB",
+      "currentValue": ""
+    },
+    {
+      "key": "dnslb_healthcheck_name",
+      "secret": false,
+      "initialValue": "basic-http-demo",
+      "currentValue": ""
+    },
+    {
+      "key": "dnslb_pool_name",
+      "secret": false,
+      "initialValue": "basic-font-end-pool-demo",
+      "currentValue": ""
+    },
+    {
+      "key": "dnslb_pool_type",
+      "secret": false,
+      "initialValue": "a_pool",
+      "currentValue": ""
+    },
+    {
+      "key": "dnslb_pool_description",
+      "secret": false,
+      "initialValue": "A Basic DNS LB HTTP Pool for App",
+      "currentValue": ""
+    },
+    {
+      "key": "dnslb_pool_member_1_ip",
+      "secret": false,
+      "initialValue": "192.0.2.1",
+      "currentValue": ""
+    },
+    {
+      "key": "dnslb_pool_member_1_description",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "dnslb_pool_member_2_ip",
+      "secret": false,
+      "initialValue": "192.0.2.1",
+      "currentValue": ""
+    },
+    {
+      "key": "dnslb_pool_member_2_description",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "dnslb_pool_member_3_ip",
+      "secret": false,
+      "initialValue": "192.0.2.1",
+      "currentValue": ""
+    },
+    {
+      "key": "dnslb_pool_member_3_description",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "dnslb_healthcheck_description",
+      "secret": false,
+      "initialValue": "A Basic HTTP Test over 8080 for App",
+      "currentValue": ""
+    },
+    {
+      "key": "lb_l7_description",
+      "secret": false,
+      "initialValue": "An L7 HTTP LB for App - External DNS",
+      "currentValue": ""
+    },
+    {
+      "key": "lb_l7_port_80",
+      "secret": false,
+      "initialValue": "80",
+      "currentValue": ""
+    },
+    {
+      "key": "api_definition_name",
+      "secret": false,
+      "initialValue": "api-def",
+      "currentValue": ""
+    },
+    {
+      "key": "api_fall_through_rule_name",
+      "secret": false,
+      "initialValue": "api-fall-through",
+      "currentValue": ""
+    },
+    {
+      "key": "openapi_spec_swagger_filename",
+      "secret": false,
+      "initialValue": "atm-locator-spec",
+      "currentValue": ""
+    },
+    {
+      "key": "openapi_spec_swagger_version",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "swagger_spec_url_1",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "swagger_spec_url_2",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "swagger_spec_url_3",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "ce_site_name",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "sites_namespace",
+      "secret": false,
+      "initialValue": "system",
+      "currentValue": ""
+    },
+    {
+      "key": "jwt_token_name",
+      "secret": false,
+      "initialValue": "jwt-token-123321456",
+      "currentValue": ""
+    },
+    {
+      "key": "ce_type",
+      "secret": false,
+      "initialValue": "kvm",
+      "currentValue": ""
+    },
+    {
+      "key": "jwt_token_name_value",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "ce_cloud_init",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "ce_cloud_init_rendered",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "orgin_pool_member_3_ip",
+      "secret": false,
+      "initialValue": "10.1.2.3",
+      "currentValue": ""
+    },
+    {
+      "key": "k8s_private_service_name",
+      "secret": false,
+      "initialValue": "dashboard.default",
+      "currentValue": ""
+    },
+    {
+      "key": "k8s_private_service_port",
+      "secret": false,
+      "initialValue": "5000",
+      "currentValue": ""
+    },
+    {
+      "key": "lb_origin_pool_private_ce_name",
+      "secret": false,
+      "initialValue": "basic-ce-pool-demo",
+      "currentValue": ""
+    }
+  ]
+}

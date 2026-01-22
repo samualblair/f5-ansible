@@ -1,0 +1,133 @@
+{
+  "id": "7vwjudgw5v6",
+  "v": 2,
+  "name": "Basic_F5_iHealth",
+  "variables": [
+    {
+      "key": "user",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "pass",
+      "secret": true,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "qkview_id",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "CURL_OPTS",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "ACCEPT_HEADER",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "CURL",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "TARGET_QKVIEW_ID",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "ihealth_visible_in_gui",
+      "secret": false,
+      "initialValue": "True",
+      "currentValue": ""
+    },
+    {
+      "key": "ihealth_description",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "ihealth_f5_support_case",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "ihealth_share_with_case_owner",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "api_diagnostics",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "api_files",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "api_commands",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "api_bigip",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "gui_uri",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "files_api_file_id",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "command_api_command_id",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "command_api_command_id_comma_list",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "ihealth_access_token",
+      "secret": true,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "ihealth_access_token1",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    }
+  ]
+}

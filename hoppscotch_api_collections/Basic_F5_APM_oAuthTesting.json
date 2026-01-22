@@ -1,0 +1,31 @@
+{
+  "id": "jn6np1rbanr",
+  "v": 2,
+  "name": "Basic_F5_APM_oAuthTesting",
+  "variables": [
+    {
+      "key": "testClientId",
+      "secret": true,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "testClientSecret",
+      "secret": true,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "idp_auth_hostname_or_ip",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    },
+    {
+      "key": "sp_vip_auth_hostname_or_ip",
+      "secret": false,
+      "initialValue": "",
+      "currentValue": ""
+    }
+  ]
+}
