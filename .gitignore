@@ -9,3 +9,4 @@ output/*
 # Except this file
 !output/.gitignore
 templates/.DS_Store
+.ansible/.lock
