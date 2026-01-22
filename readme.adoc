@@ -123,12 +123,22 @@ pb.do.csv_based.yml and pb.as3.csv_based.yml
 - Build out modular playbooks and templates (playbooks and templates that build configuration based on other playbooks/templates)
 
 
-== Postman API Collections
-The included basic Postman API Collections and Environments may help with:
+== API Collections
 
+=== Several API Collections are included in this repo.
+- Postman
+  * Popular GUI first platform for API interaction, has focused heavily on online first.
+  * I have seen this break when AWS is down, even when just trying to work locally!
+- Hoppscotch
+  * Open Source GUI first platform for API interaction, similar to postman, but focused on offline first.
+  * Does not break when AWS is down!
+- Powershell
+  * Common scripting/shell environment found on almost any Windows machine, but installable cross platform.
+
+=== The included basic API Collections and Environments may help with:
 - Preparing of F5OS platforms using F5OS API
 
- This API is not declarative. Collection of F5OS REST API calls to configure base F5OS system, install and provision tenants Tenants (BIG-IP NEXT or BIG-IP Classic).
+  This API is not declarative. Collection of F5OS REST API calls to configure base F5OS system, install and provision tenants Tenants (BIG-IP NEXT or BIG-IP Classic).
 
 - Preparing of BIG-IP Classic using F5 (Classic) REST API
   
@@ -136,12 +146,11 @@ The included basic Postman API Collections and Environments may help with:
 
 - Delivering ready to use DO Declarations
 - Delivering ready to use AS3 Declarations
+- Interacting with F5 Distributed Cloud (XC) platform
 
-== PowerShell API Collections
-The included basic PowerShell API Collections which may help with:
+  This API is not declarative. Configure many elements of a delivery network (DNS, LB, even remote CE devices).
 
-- Delivering ready to use DO Declarations
-- Delivering ready to use AS3 Declarations
+- All of these Examples can be used as starting point for working with other REST APIs.
 
 == Authors
 Michael Johnson (https://github.com/samualblair[@samualblair])
@@ -149,7 +158,9 @@ Michael Johnson (https://github.com/samualblair[@samualblair])
 == Versioning
 Using Calendar Versioning: https://calver.org/
 
-FORMAT: YY.0M.0D
+FORMAT: YYYY.0M.0D
+
+* 2026.01.21 - Added BIG-IP Hoppscotch REST API Collections
 * 2025.10.31 - Added Powershell API Collections
 * 2025.10.29 - Updated Secure Cipher examples
 * 2025.09.05 - Added BIG-IP Postman REST Licensing
