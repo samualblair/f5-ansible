@@ -1,0 +1,1418 @@
+{
+  "v": 11,
+  "name": "F5 TMOS installs",
+  "folders": [
+    {
+      "v": 11,
+      "name": "Device Cert SelfSign Renew",
+      "folders": [],
+      "requests": [
+        {
+          "v": "17",
+          "name": "F5_REST_Login",
+          "method": "POST",
+          "endpoint": "https://<<f5_hostname>>:443/mgmt/shared/authn/login",
+          "params": [],
+          "headers": [],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "contentType": "application/json",
+            "body": "{\n    \"username\": \"<<user_name>>\",\n    \"password\": \"<<user_password>>\",\n    \"loginProviderName\": \"tmos\"\n}"
+          },
+          "requestVariables": [],
+          "responses": {},
+          "description": null
+        },
+        {
+          "v": "17",
+          "name": "F5_Device_Cert_Renew",
+          "method": "POST",
+          "endpoint": "https://<<f5_hostname>>:443/mgmt/tm/util/gencert",
+          "params": [],
+          "headers": [
+            {
+              "key": "X-F5-Auth-Token",
+              "value": "<<f5_auth_token>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "Origin",
+              "value": "https://<<f5_hostname>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json;charset=UTF-8",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "contentType": "application/json",
+            "body": "{\n    \"command\":\"run\",\n    \"utilCmdArgs\":\" -n \\\"<<cert_key_filename_ha_share>>\\\" -p \\\"/config/httpd/conf/\\\" -e \\\"<<cert_admin_email>>\\\" -h \\\"<<fqdn_hostname>>\\\" -c \\\"<<cert_country>>\\\" -s \\\"<<cert_state>>\\\" -t \\\"<<cert_city>>\\\" --org \\\"<<cert_org>>\\\" -u \\\"<<cert_ou>>\\\" -k RSA <<cert_key_size>>\" \n}\n"
+          },
+          "requestVariables": [],
+          "responses": {},
+          "description": null
+        },
+        {
+          "v": "17",
+          "name": "F5_Device_Cert_Renew Copy",
+          "method": "POST",
+          "endpoint": "https://<<f5_hostname>>:443/mgmt/tm/util/gencert",
+          "params": [],
+          "headers": [
+            {
+              "key": "X-F5-Auth-Token",
+              "value": "<<f5_auth_token>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "Origin",
+              "value": "https://<<f5_hostname>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json;charset=UTF-8",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "contentType": "application/json",
+            "body": "{\n    \"command\":\"run\",\n    \"utilCmdArgs\":\" -n \\\"<<cert_key_filename_ha_share>>\\\" -p \\\"/config/httpd/conf/\\\" -e \\\"<<cert_admin_email>>\\\" -h \\\"<<fqdn_hostname>>\\\" -c \\\"<<cert_country>>\\\" -s \\\"<<cert_state>>\\\" -t \\\"<<cert_city>>\\\" --org \\\"<<cert_org>>\\\" -u \\\"<<cert_ou>>\\\" -k RSA <<cert_key_size>>\" \n}\n"
+          },
+          "requestVariables": [],
+          "responses": {},
+          "description": null
+        },
+        {
+          "v": "17",
+          "name": "F5_Generate_Device_Cert_Renew_ServiceRestart-OFTEN-FAILS",
+          "method": "POST",
+          "endpoint": "https://<<f5_hostname>>:443/mgmt/tm/sys/service",
+          "params": [],
+          "headers": [
+            {
+              "key": "X-F5-Auth-Token",
+              "value": "<<f5_auth_token>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "Origin",
+              "value": "https://<<f5_hostname>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json;charset=UTF-8",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "contentType": "application/json",
+            "body": "{\n    \"name\":\"httpd\",\n    \"command\":\"restart\"\n}\n"
+          },
+          "requestVariables": [],
+          "responses": {},
+          "description": null
+        }
+      ],
+      "auth": {
+        "authType": "inherit",
+        "authActive": true
+      },
+      "headers": [],
+      "variables": [],
+      "description": null
+    },
+    {
+      "v": 11,
+      "name": "Install Extentions - AS3 DO etc",
+      "folders": [],
+      "requests": [
+        {
+          "v": "17",
+          "name": "F5_REST_Login",
+          "method": "POST",
+          "endpoint": "https://<<f5_hostname>>:443/mgmt/shared/authn/login",
+          "params": [],
+          "headers": [],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "contentType": "application/json",
+            "body": "{\n    \"username\": \"<<user_name>>\",\n    \"password\": \"<<user_password>>\",\n    \"loginProviderName\": \"tmos\"\n}"
+          },
+          "requestVariables": [],
+          "responses": {},
+          "description": null
+        },
+        {
+          "v": "17",
+          "name": "F5_REST_Login_strict",
+          "method": "POST",
+          "endpoint": "https://<<f5_hostname>>:443/mgmt/shared/authn/login",
+          "params": [],
+          "headers": [],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "contentType": "application/json",
+            "body": "{\n    \"username\": \"<<user_name>>\",\n    \"password\": \"<<user_password>>\",\n    \"loginProviderName\": \"tmos\"\n}"
+          },
+          "requestVariables": [],
+          "responses": {},
+          "description": null
+        },
+        {
+          "v": "17",
+          "name": "F5_OS_Software_TMOS_Extensions_DO",
+          "method": "POST",
+          "endpoint": "https://<<f5_hostname>>:443/mgmt/shared/file-transfer/uploads/<<do_filename>>",
+          "params": [],
+          "headers": [
+            {
+              "key": "X-F5-Auth-Token",
+              "value": "<<f5_auth_token>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/octet-stream",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "Content-Range",
+              "value": "<<file_upload_range>>",
+              "active": true,
+              "description": "This needs to be: 0-$((LEN - 1))/$LEN , example:  0-2372152/2372153"
+            },
+            {
+              "key": "Content-Length",
+              "value": "<<file_upload_length>>",
+              "active": true,
+              "description": "This needs to be file size or 'LEN';: One way to get is on cli , wc -c $FN | cut -f 2 -d ' ', linux it is 'cut -f 1 -d'"
+            }
+          ],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "contentType": null,
+            "body": null
+          },
+          "requestVariables": [],
+          "responses": {},
+          "description": null
+        },
+        {
+          "v": "17",
+          "name": "F5_Install_Extension_LX_DO",
+          "method": "POST",
+          "endpoint": "https://<<f5_hostname>>:443/mgmt/shared/iapp/package-management-tasks",
+          "params": [],
+          "headers": [
+            {
+              "key": "X-F5-Auth-Token",
+              "value": "<<f5_auth_token>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "Origin",
+              "value": "https://<<f5_hostname>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json;charset=UTF-8",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "contentType": "application/json",
+            "body": "{\n    \"operation\": \"INSTALL\",\n    \"packageFilePath\": \"/var/config/rest/downloads/<<do_filename>>\"\n}"
+          },
+          "requestVariables": [],
+          "responses": {},
+          "description": null
+        },
+        {
+          "v": "17",
+          "name": "F5_OS_Software_TMOS_Extensions_AS3",
+          "method": "POST",
+          "endpoint": "https://<<f5_hostname>>:443/mgmt/shared/file-transfer/uploads/<<as3_filename>>",
+          "params": [],
+          "headers": [
+            {
+              "key": "X-F5-Auth-Token",
+              "value": "<<f5_auth_token>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/octet-stream",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "Content-Range",
+              "value": "<<file_upload_range>>",
+              "active": true,
+              "description": "This needs to be: 0-$((LEN - 1))/$LEN , example:  0-26045534/26045535"
+            },
+            {
+              "key": "Content-Length",
+              "value": "<<file_upload_length>>",
+              "active": true,
+              "description": "This needs to be file size or 'LEN';: One way to get is on cli , wc -c $FN | cut -f 2 -d ' ', linux it is 'cut -f 1 -d'"
+            }
+          ],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "contentType": null,
+            "body": null
+          },
+          "requestVariables": [],
+          "responses": {},
+          "description": null
+        },
+        {
+          "v": "17",
+          "name": "F5_Install_Extension_LX_AS3",
+          "method": "POST",
+          "endpoint": "https://<<f5_hostname>>:443/mgmt/shared/iapp/package-management-tasks",
+          "params": [],
+          "headers": [
+            {
+              "key": "X-F5-Auth-Token",
+              "value": "<<f5_auth_token>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "Origin",
+              "value": "https://<<f5_hostname>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json;charset=UTF-8",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "contentType": "application/json",
+            "body": "{\n    \"operation\": \"INSTALL\",\n    \"packageFilePath\": \"/var/config/rest/downloads/<<as3_filename>>\"\n}"
+          },
+          "requestVariables": [],
+          "responses": {},
+          "description": null
+        },
+        {
+          "v": "17",
+          "name": "F5_UnInstall_Extension_LX_AS3_or_DO",
+          "method": "POST",
+          "endpoint": "https://<<f5_hostname>>:443/mgmt/shared/iapp/package-management-tasks",
+          "params": [],
+          "headers": [
+            {
+              "key": "X-F5-Auth-Token",
+              "value": "<<f5_auth_token>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "Origin",
+              "value": "https://<<f5_hostname>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json;charset=UTF-8",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "contentType": "application/json",
+            "body": "{\n    \"operation\": \"UNINSTALL\",\n    \"packageFilePath\": \"/var/config/rest/downloads/<<package_filename_no_dot_rpm>>\"\n}"
+          },
+          "requestVariables": [],
+          "responses": {},
+          "description": null
+        }
+      ],
+      "auth": {
+        "authType": "inherit",
+        "authActive": true
+      },
+      "headers": [],
+      "variables": [],
+      "description": null
+    },
+    {
+      "v": 11,
+      "name": "UCSBackup",
+      "folders": [],
+      "requests": [
+        {
+          "v": "17",
+          "name": "F5_REST_Login",
+          "method": "POST",
+          "endpoint": "https://<<f5_hostname>>:443/mgmt/shared/authn/login",
+          "params": [],
+          "headers": [],
+          "preRequestScript": "",
+          "testScript": "('use strict');\n\nfunction autoSetF5Token() {\n    'use strict';\n    const responseJsonData = pw.response.body;\n    pw.env.set(\"f5_auth_token\", responseJsonData.token.token);\n};\n\nautoSetF5Token();\n",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "contentType": "application/json",
+            "body": "{\n    \"username\": \"<<user_name>>\",\n    \"password\": \"<<user_password>>\",\n    \"loginProviderName\": \"tmos\"\n}"
+          },
+          "requestVariables": [],
+          "responses": {},
+          "description": null
+        },
+        {
+          "v": "17",
+          "name": "F5_Create_LogRotate_First",
+          "method": "PATCH",
+          "endpoint": "https://<<f5_hostname>>:443/mgmt/tm/sys/log-rotate",
+          "params": [],
+          "headers": [
+            {
+              "key": "X-F5-Auth-Token",
+              "value": "<<f5_auth_token>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "Origin",
+              "value": "https://<<f5_hostname>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json;charset=UTF-8",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "contentType": "application/json",
+            "body": "{ \n    \"syslogInclude\": \"/var/ucs/*.ucs {\\n    nocompress\\n    missingok\\n    notifempty\\n    sharedscripts\\n    postrotate\\n    endscript\\n    rotate 2\\n }\"\n}"
+          },
+          "requestVariables": [],
+          "responses": {},
+          "description": null
+        },
+        {
+          "v": "17",
+          "name": "F5_Create_LogRotate_First Copy",
+          "method": "GET",
+          "endpoint": "https://<<f5_hostname>>:443/mgmt/tm/sys/log-rotate",
+          "params": [],
+          "headers": [
+            {
+              "key": "X-F5-Auth-Token",
+              "value": "<<f5_auth_token>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "Origin",
+              "value": "https://<<f5_hostname>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json;charset=UTF-8",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "contentType": "application/json",
+            "body": ""
+          },
+          "requestVariables": [],
+          "responses": {},
+          "description": null
+        },
+        {
+          "v": "17",
+          "name": "Save_to_disk",
+          "method": "POST",
+          "endpoint": "https://<<f5_hostname>>:443/mgmt/tm/sys/config",
+          "params": [],
+          "headers": [
+            {
+              "key": "X-F5-Auth-Token",
+              "value": "<<f5_auth_token>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "Origin",
+              "value": "https://<<f5_hostname>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json;charset=UTF-8",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "contentType": "application/json",
+            "body": "{\n    \"command\":\"save\"\n}"
+          },
+          "requestVariables": [],
+          "responses": {},
+          "description": null
+        },
+        {
+          "v": "17",
+          "name": "F5_Create_UCS_often_timesout",
+          "method": "POST",
+          "endpoint": "https://<<f5_hostname>>:443/mgmt/tm/sys/ucs",
+          "params": [],
+          "headers": [
+            {
+              "key": "X-F5-Auth-Token",
+              "value": "<<f5_auth_token>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "Origin",
+              "value": "https://<<f5_hostname>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json;charset=UTF-8",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "contentType": "application/json",
+            "body": "{\n    \"command\": \"save\",\n    \"name\": \"/var/local/ucs/<<base_hostname>>_baseha.ucs\",\n    \"includePrivateKeys\": true,\n    \"isEncrypted\": false,\n    \"description\": \"UCS Backup <<backup_description>>\"\n}\n"
+          },
+          "requestVariables": [],
+          "responses": {},
+          "description": null
+        },
+        {
+          "v": "17",
+          "name": "F5_Show_UCS",
+          "method": "GET",
+          "endpoint": "https://<<f5_hostname>>:443/mgmt/tm/sys/ucs",
+          "params": [],
+          "headers": [
+            {
+              "key": "X-F5-Auth-Token",
+              "value": "<<f5_auth_token>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "Origin",
+              "value": "https://<<f5_hostname>>",
+              "active": true,
+              "description": ""
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json;charset=UTF-8",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "contentType": "application/json",
+            "body": ""
+          },
+          "requestVariables": [],
+          "responses": {},
+          "description": null
+        }
+      ],
+      "auth": {
+        "authType": "inherit",
+        "authActive": true
+      },
+      "headers": [],
+      "variables": [],
+      "description": null
+    },
+    {
+      "v": 11,
+      "name": "Initial License REST",
+      "folders": [
+        {
+          "v": 11,
+          "name": "Manual-File-Upload",
+          "folders": [],
+          "requests": [
+            {
+              "v": "17",
+              "name": "F5_TM_REST_First_Password_Change",
+              "method": "PATCH",
+              "endpoint": "https://<<f5_hostname>>:443/mgmt/tm/auth/user/admin",
+              "params": [],
+              "headers": [],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "basic",
+                "username": "<<default_web_user>>",
+                "password": "<<default_web_pass>>",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "application/json",
+                "body": "{\n    \"password\": \"<<user_password>>\"\n}"
+              },
+              "requestVariables": [],
+              "responses": {},
+              "description": null
+            },
+            {
+              "v": "17",
+              "name": "F5_REST_Login",
+              "method": "POST",
+              "endpoint": "https://<<f5_hostname>>:443/mgmt/shared/authn/login",
+              "params": [],
+              "headers": [],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "application/json",
+                "body": "{\n    \"username\": \"<<user_name>>\",\n    \"password\": \"<<user_password>>\",\n    \"loginProviderName\": \"tmos\"\n}"
+              },
+              "requestVariables": [],
+              "responses": {},
+              "description": null
+            },
+            {
+              "v": "17",
+              "name": "F5_Device_License_MANUAL",
+              "method": "POST",
+              "endpoint": "https://<<f5_hostname>>:443/mgmt/tm/shared/licensing/activation",
+              "params": [],
+              "headers": [
+                {
+                  "key": "X-F5-Auth-Token",
+                  "value": "<<f5_auth_token>>",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "application/json",
+                "body": "{\n    \"baseRegKey\":\"<<base_registration_key>>\",\n    \"automaticActivation\":\"false\",\n    \"activationMethod\":\"MANUAL\"\n}"
+              },
+              "requestVariables": [],
+              "responses": {},
+              "description": null
+            },
+            {
+              "v": "17",
+              "name": "F5_Device_License_MANUAL_Get_Dossier",
+              "method": "GET",
+              "endpoint": "https://<<f5_hostname>>:443/mgmt/tm/shared/licensing/activation",
+              "params": [],
+              "headers": [
+                {
+                  "key": "X-F5-Auth-Token",
+                  "value": "<<f5_auth_token>>",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "contentType": null,
+                "body": null
+              },
+              "requestVariables": [],
+              "responses": {},
+              "description": null
+            },
+            {
+              "v": "17",
+              "name": "F5_Device_License_ALTERNATIVE_MANUAL_PART1_Post_Dossier",
+              "method": "POST",
+              "endpoint": "https://<<f5_hostname>>:443/mgmt/cm/autodeploy/software-image-uploads/license_file_data",
+              "params": [],
+              "headers": [
+                {
+                  "key": "X-F5-Auth-Token",
+                  "value": "<<f5_auth_token>>",
+                  "active": true,
+                  "description": ""
+                },
+                {
+                  "key": "Content-Range",
+                  "value": "0-11337/11338",
+                  "active": true,
+                  "description": "This needs to be: 0-$((LEN - 1))/$LEN , example:  0-26045534/26045535"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "11338",
+                  "active": true,
+                  "description": "This needs to be file size or 'LEN';: One way to get is on cli , wc -c $FN | cut -f 2 -d ' ', linux it is 'cut -f 1 -d'"
+                }
+              ],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "contentType": null,
+                "body": null
+              },
+              "requestVariables": [],
+              "responses": {},
+              "description": null
+            },
+            {
+              "v": "17",
+              "name": "F5_Device_License_ALTERNATIVE_PART2_MANUAL_Move_License",
+              "method": "POST",
+              "endpoint": "https://<<f5_hostname>>:443/mgmt/tm/util/unix-mv",
+              "params": [],
+              "headers": [
+                {
+                  "key": "X-F5-Auth-Token",
+                  "value": "<<f5_auth_token>>",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "application/json",
+                "body": "{\n    \"command\": \"run\",\n    \"utilCmdArgs\":\"/shared/images/license_file_data /config/bigip.license\"\n}"
+              },
+              "requestVariables": [],
+              "responses": {},
+              "description": null
+            },
+            {
+              "v": "17",
+              "name": "F5_Device_License_ALTERNATIVE_PART3_MANUAL_Permissions_User_License",
+              "method": "POST",
+              "endpoint": "https://<<f5_hostname>>:443/mgmt/tm/util/bash",
+              "params": [],
+              "headers": [
+                {
+                  "key": "X-F5-Auth-Token",
+                  "value": "<<f5_auth_token>>",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "application/json",
+                "body": "{\n    \"command\": \"run\",\n    \"utilCmdArgs\":\" -c ' chown root /config/bigip.license'\"\n}"
+              },
+              "requestVariables": [],
+              "responses": {},
+              "description": null
+            },
+            {
+              "v": "17",
+              "name": "F5_Device_License_ALTERNATIVE_PART3_MANUAL_Permissions_Group_License",
+              "method": "POST",
+              "endpoint": "https://<<f5_hostname>>:443/mgmt/tm/util/bash",
+              "params": [],
+              "headers": [
+                {
+                  "key": "X-F5-Auth-Token",
+                  "value": "<<f5_auth_token>>",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "application/json",
+                "body": "{\n    \"command\": \"run\",\n    \"utilCmdArgs\":\" -c ' chgrp root /config/bigip.license'\"\n}"
+              },
+              "requestVariables": [],
+              "responses": {},
+              "description": null
+            },
+            {
+              "v": "17",
+              "name": "F5_Device_License_ALTERNATIVE_PART4_MANUAL_Remove_Unused_File",
+              "method": "POST",
+              "endpoint": "https://<<f5_hostname>>:443/mgmt/tm/util/bash",
+              "params": [],
+              "headers": [
+                {
+                  "key": "X-F5-Auth-Token",
+                  "value": "<<f5_auth_token>>",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "application/json",
+                "body": "{\n    \"command\": \"run\",\n    \"utilCmdArgs\":\" -c ' rm -f /shared/images/license_file_data'\"\n}"
+              },
+              "requestVariables": [],
+              "responses": {},
+              "description": null
+            },
+            {
+              "v": "17",
+              "name": "F5_Device_License_ALTERNATIVE_PART5_MANUAL_Restarting_MCPD",
+              "method": "POST",
+              "endpoint": "https://<<f5_hostname>>:443/mgmt/tm/util/bash",
+              "params": [],
+              "headers": [
+                {
+                  "key": "X-F5-Auth-Token",
+                  "value": "<<f5_auth_token>>",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "application/json",
+                "body": "{\n    \"command\": \"run\",\n    \"utilCmdArgs\":\" -c ' tmsh restart /sys service mcpd'\"\n}"
+              },
+              "requestVariables": [],
+              "responses": {},
+              "description": null
+            },
+            {
+              "v": "17",
+              "name": "F5_Device_License_MANUAL_Get_CM_STATUS",
+              "method": "GET",
+              "endpoint": "https://<<f5_hostname>>:443/mgmt/tm/cm/failover-status",
+              "params": [],
+              "headers": [
+                {
+                  "key": "X-F5-Auth-Token",
+                  "value": "<<f5_auth_token>>",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "contentType": null,
+                "body": null
+              },
+              "requestVariables": [],
+              "responses": {},
+              "description": null
+            }
+          ],
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "headers": [],
+          "variables": [],
+          "description": null
+        },
+        {
+          "v": 11,
+          "name": "Manual-String-Upload",
+          "folders": [],
+          "requests": [
+            {
+              "v": "17",
+              "name": "F5_TM_REST_First_Password_Change",
+              "method": "PATCH",
+              "endpoint": "https://<<f5_hostname>>:443/mgmt/tm/auth/user/admin",
+              "params": [],
+              "headers": [],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "basic",
+                "username": "<<default_web_user>>",
+                "password": "<<default_web_pass>>",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "application/json",
+                "body": "{\n    \"password\": \"<<user_password>>\"\n}"
+              },
+              "requestVariables": [],
+              "responses": {},
+              "description": null
+            },
+            {
+              "v": "17",
+              "name": "F5_REST_Login",
+              "method": "POST",
+              "endpoint": "https://<<f5_hostname>>:443/mgmt/shared/authn/login",
+              "params": [],
+              "headers": [],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "application/json",
+                "body": "{\n    \"username\": \"<<user_name>>\",\n    \"password\": \"<<user_password>>\",\n    \"loginProviderName\": \"tmos\"\n}"
+              },
+              "requestVariables": [],
+              "responses": {},
+              "description": null
+            },
+            {
+              "v": "17",
+              "name": "F5_Device_License_MANUAL",
+              "method": "POST",
+              "endpoint": "https://<<f5_hostname>>:443/mgmt/tm/shared/licensing/activation",
+              "params": [],
+              "headers": [
+                {
+                  "key": "X-F5-Auth-Token",
+                  "value": "<<f5_auth_token>>",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "application/json",
+                "body": "{\n    \"baseRegKey\":\"<<base_registration_key>>\",\n    \"automaticActivation\":\"false\",\n    \"activationMethod\":\"MANUAL\"\n}"
+              },
+              "requestVariables": [],
+              "responses": {},
+              "description": null
+            },
+            {
+              "v": "17",
+              "name": "F5_Device_License_MANUAL_Get_Dossier",
+              "method": "GET",
+              "endpoint": "https://<<f5_hostname>>:443/mgmt/tm/shared/licensing/activation",
+              "params": [],
+              "headers": [
+                {
+                  "key": "X-F5-Auth-Token",
+                  "value": "<<f5_auth_token>>",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "contentType": null,
+                "body": null
+              },
+              "requestVariables": [],
+              "responses": {},
+              "description": null
+            },
+            {
+              "v": "17",
+              "name": "F5_Device_License_MANUAL_Post_Dossie_EXAMPLE",
+              "method": "POST",
+              "endpoint": "https://<<f5_hostname>>:443/mgmt/tm/shared/licensing/registration",
+              "params": [],
+              "headers": [
+                {
+                  "key": "X-F5-Auth-Token",
+                  "value": "<<f5_auth_token>>",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "application/json",
+                "body": "{\n    \"licenseText\": \"<<license_text>>\"\n}\n"
+              },
+              "requestVariables": [],
+              "responses": {},
+              "description": null
+            },
+            {
+              "v": "17",
+              "name": "F5_Device_License_MANUAL_Get_CM_STATUS",
+              "method": "GET",
+              "endpoint": "https://<<f5_hostname>>:443/mgmt/tm/cm/failover-status",
+              "params": [],
+              "headers": [
+                {
+                  "key": "X-F5-Auth-Token",
+                  "value": "<<f5_auth_token>>",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "contentType": null,
+                "body": null
+              },
+              "requestVariables": [],
+              "responses": {},
+              "description": null
+            }
+          ],
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "headers": [],
+          "variables": [],
+          "description": null
+        },
+        {
+          "v": 11,
+          "name": "Automatic",
+          "folders": [],
+          "requests": [
+            {
+              "v": "17",
+              "name": "F5_TM_REST_First_Password_Change",
+              "method": "PATCH",
+              "endpoint": "https://<<f5_hostname>>:443/mgmt/tm/auth/user/admin",
+              "params": [],
+              "headers": [],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "basic",
+                "username": "<<default_web_user>>",
+                "password": "<<default_web_pass>>",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "application/json",
+                "body": "{\n    \"password\": \"<<user_password>>\"\n}"
+              },
+              "requestVariables": [],
+              "responses": {},
+              "description": null
+            },
+            {
+              "v": "17",
+              "name": "F5_REST_Login",
+              "method": "POST",
+              "endpoint": "https://<<f5_hostname>>:443/mgmt/shared/authn/login",
+              "params": [],
+              "headers": [],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "application/json",
+                "body": "{\n    \"username\": \"<<user_name>>\",\n    \"password\": \"<<user_password>>\",\n    \"loginProviderName\": \"tmos\"\n}"
+              },
+              "requestVariables": [],
+              "responses": {},
+              "description": null
+            },
+            {
+              "v": "17",
+              "name": "F5_Device_License_AUTOMATIC",
+              "method": "POST",
+              "endpoint": "https://<<f5_hostname>>:443/mgmt/tm/shared/licensing/activation",
+              "params": [],
+              "headers": [
+                {
+                  "key": "X-F5-Auth-Token",
+                  "value": "<<f5_auth_token>>",
+                  "active": true,
+                  "description": ""
+                }
+              ],
+              "preRequestScript": "",
+              "testScript": "",
+              "auth": {
+                "authType": "inherit",
+                "authActive": true
+              },
+              "body": {
+                "contentType": "application/json",
+                "body": "{\n    \"baseRegKey\":\"<<base_registration_key>>\",\n    \"automaticActivation\":\"false\",\n    \"activationMethod\":\"AUTOMATIC\"\n}"
+              },
+              "requestVariables": [],
+              "responses": {},
+              "description": null
+            }
+          ],
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "headers": [],
+          "variables": [],
+          "description": null
+        }
+      ],
+      "requests": [],
+      "auth": {
+        "authType": "inherit",
+        "authActive": true
+      },
+      "headers": [],
+      "variables": [],
+      "description": null
+    },
+    {
+      "v": 11,
+      "name": "Resource_Module_Provisioning",
+      "folders": [],
+      "requests": [
+        {
+          "v": "17",
+          "name": "F5_Provision_Modules_LTM_Nominal",
+          "method": "PATCH",
+          "endpoint": "https://<<f5_hostname>>:443/mgmt/tm/sys/provision/ltm",
+          "params": [],
+          "headers": [
+            {
+              "key": "X-F5-Auth-Token",
+              "value": "<<f5_auth_token>>",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "contentType": "application/json",
+            "body": "{\n    \"level\":\"nominal\"\n}"
+          },
+          "requestVariables": [],
+          "responses": {},
+          "description": null
+        },
+        {
+          "v": "17",
+          "name": "F5_Provision_Modules_AVR_Nominal",
+          "method": "PATCH",
+          "endpoint": "https://<<f5_hostname>>:443/mgmt/tm/sys/provision/avr",
+          "params": [],
+          "headers": [
+            {
+              "key": "X-F5-Auth-Token",
+              "value": "<<f5_auth_token>>",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "contentType": "application/json",
+            "body": "{\n    \"level\":\"nominal\"\n}"
+          },
+          "requestVariables": [],
+          "responses": {},
+          "description": null
+        },
+        {
+          "v": "17",
+          "name": "F5_Provision_Modules_GTM_Nominal",
+          "method": "PATCH",
+          "endpoint": "https://<<f5_hostname>>:443/mgmt/tm/sys/provision/gtm",
+          "params": [],
+          "headers": [
+            {
+              "key": "X-F5-Auth-Token",
+              "value": "<<f5_auth_token>>",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "contentType": "application/json",
+            "body": "{\n    \"level\":\"nominal\"\n}"
+          },
+          "requestVariables": [],
+          "responses": {},
+          "description": null
+        },
+        {
+          "v": "17",
+          "name": "F5_Provision_Modules_APM_Nominal",
+          "method": "PATCH",
+          "endpoint": "https://<<f5_hostname>>:443/mgmt/tm/sys/provision/apm",
+          "params": [],
+          "headers": [
+            {
+              "key": "X-F5-Auth-Token",
+              "value": "<<f5_auth_token>>",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "contentType": "application/json",
+            "body": "{\n    \"level\":\"nominal\"\n}"
+          },
+          "requestVariables": [],
+          "responses": {},
+          "description": null
+        },
+        {
+          "v": "17",
+          "name": "F5_Provision_Modules_ASM_Nominal",
+          "method": "PATCH",
+          "endpoint": "https://<<f5_hostname>>:443/mgmt/tm/sys/provision/asm",
+          "params": [],
+          "headers": [
+            {
+              "key": "X-F5-Auth-Token",
+              "value": "<<f5_auth_token>>",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "inherit",
+            "authActive": true
+          },
+          "body": {
+            "contentType": "application/json",
+            "body": "{\n    \"level\":\"nominal\"\n}"
+          },
+          "requestVariables": [],
+          "responses": {},
+          "description": null
+        }
+      ],
+      "auth": {
+        "authType": "inherit",
+        "authActive": true
+      },
+      "headers": [],
+      "variables": [],
+      "description": null
+    }
+  ],
+  "requests": [],
+  "auth": {
+    "authType": "inherit",
+    "authActive": true
+  },
+  "headers": [],
+  "variables": [],
+  "description": null
+}

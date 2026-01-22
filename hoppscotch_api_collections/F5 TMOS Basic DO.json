@@ -1,0 +1,119 @@
+{
+  "v": 11,
+  "name": "F5 TMOS Basic DO",
+  "folders": [],
+  "requests": [
+    {
+      "v": "17",
+      "name": "F5_REST_Login",
+      "method": "POST",
+      "endpoint": "https://<<f5_hostname>>:443/mgmt/shared/authn/login",
+      "params": [],
+      "headers": [],
+      "preRequestScript": "",
+      "testScript": "('use strict');\n\nfunction autoSetF5Token() {\n    'use strict';\n    const responseJsonData = pw.response.body;\n    pw.env.set(\"f5_auth_token\", responseJsonData.token.token);\n};\n\nautoSetF5Token();\n",
+      "auth": {
+        "authType": "inherit",
+        "authActive": true
+      },
+      "body": {
+        "contentType": "application/json",
+        "body": "{\n    \"username\": \"<<user_name>>\",\n    \"password\": \"<<user_password>>\",\n    \"loginProviderName\": \"tmos\"\n}"
+      },
+      "requestVariables": [],
+      "responses": {},
+      "description": null
+    },
+    {
+      "v": "17",
+      "name": "F5_DO_Service_Status_Check",
+      "method": "GET",
+      "endpoint": "https://<<f5_hostname>>:443/mgmt/shared/declarative-onboarding/info",
+      "params": [],
+      "headers": [
+        {
+          "key": "X-F5-Auth-Token",
+          "value": "<<f5_auth_token>>",
+          "active": true,
+          "description": ""
+        }
+      ],
+      "preRequestScript": "",
+      "testScript": "",
+      "auth": {
+        "authType": "inherit",
+        "authActive": true
+      },
+      "body": {
+        "contentType": null,
+        "body": null
+      },
+      "requestVariables": [],
+      "responses": {},
+      "description": null
+    },
+    {
+      "v": "17",
+      "name": "F5_DO_Declare_POST",
+      "method": "POST",
+      "endpoint": "https://<<f5_hostname>>:443/mgmt/shared/declarative-onboarding",
+      "params": [],
+      "headers": [
+        {
+          "key": "X-F5-Auth-Token",
+          "value": "<<f5_auth_token>>",
+          "active": true,
+          "description": ""
+        }
+      ],
+      "preRequestScript": "",
+      "testScript": "('use strict');\n\nfunction autoSetF5DOId() {\n    'use strict';\n    const responseJsonData = pw.response.body();\n    pw.env.set(\"last_declaration_id\", responseJsonData.id);\n};\n\nautoSetF5DOId();\n",
+      "auth": {
+        "authType": "inherit",
+        "authActive": true
+      },
+      "body": {
+        "contentType": "application/json",
+        "body": "<<f5_post_json>>"
+      },
+      "requestVariables": [],
+      "responses": {},
+      "description": null
+    },
+    {
+      "v": "17",
+      "name": "F5_DO_Service_Status_job_Check",
+      "method": "GET",
+      "endpoint": "https://<<f5_hostname>>:443/mgmt/shared/declarative-onboarding/task/<<last_declaration_id>>",
+      "params": [],
+      "headers": [
+        {
+          "key": "X-F5-Auth-Token",
+          "value": "<<f5_auth_token>>",
+          "active": true,
+          "description": ""
+        }
+      ],
+      "preRequestScript": "",
+      "testScript": "",
+      "auth": {
+        "authType": "inherit",
+        "authActive": true
+      },
+      "body": {
+        "contentType": null,
+        "body": null
+      },
+      "requestVariables": [],
+      "responses": {},
+      "description": null
+    }
+  ],
+  "auth": {
+    "authType": "inherit",
+    "authActive": true
+  },
+  "headers": [],
+  "variables": [],
+  "description": null
+}

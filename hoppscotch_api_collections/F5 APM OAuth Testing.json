@@ -1,0 +1,70 @@
+{
+  "v": 11,
+  "name": "F5 APM OAuth Testing",
+  "folders": [],
+  "requests": [
+    {
+      "v": "17",
+      "name": "APM OAuth Basic",
+      "method": "GET",
+      "endpoint": "https://<<sp_vip_auth_hostname_or_ip>>/headers",
+      "params": [],
+      "headers": [],
+      "preRequestScript": "",
+      "testScript": "",
+      "auth": {
+        "authType": "none",
+        "authActive": true
+      },
+      "body": {
+        "contentType": null,
+        "body": null
+      },
+      "requestVariables": [],
+      "responses": {},
+      "description": null
+    },
+    {
+      "v": "17",
+      "name": "APM OAuth Token",
+      "method": "GET",
+      "endpoint": "https://<<sp_vip_auth_hostname_or_ip>>/headers",
+      "params": [],
+      "headers": [],
+      "preRequestScript": "",
+      "testScript": "",
+      "auth": {
+        "authType": "oauth-2",
+        "grantTypeInfo": {
+          "grantType": "AUTHORIZATION_CODE",
+          "authEndpoint": "https://<<idp_auth_hostname_or_ip>>/f5-oauth2/v1/authorize",
+          "tokenEndpoint": "https://<<idp_auth_hostname_or_ip>>/f5-oauth2/v1/token",
+          "clientID": "<<testClientId>>",
+          "clientSecret": "",
+          "scopes": "read write",
+          "token": "",
+          "isPKCE": false,
+          "authRequestParams": [],
+          "tokenRequestParams": [],
+          "refreshRequestParams": []
+        },
+        "addTo": "HEADERS",
+        "authActive": true
+      },
+      "body": {
+        "contentType": null,
+        "body": null
+      },
+      "requestVariables": [],
+      "responses": {},
+      "description": null
+    }
+  ],
+  "auth": {
+    "authType": "inherit",
+    "authActive": true
+  },
+  "headers": [],
+  "variables": [],
+  "description": null
+}

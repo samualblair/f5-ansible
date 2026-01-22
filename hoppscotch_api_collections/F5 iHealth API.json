@@ -1,0 +1,525 @@
+{
+  "v": 11,
+  "name": "F5 iHealth API",
+  "folders": [
+    {
+      "v": 11,
+      "name": "Upload_qKview_Flow",
+      "folders": [],
+      "requests": [
+        {
+          "v": "17",
+          "name": "Upload_qkview",
+          "method": "POST",
+          "endpoint": "https://ihealth2-api.f5.com/qkview-analyzer/api/qkviews",
+          "params": [],
+          "headers": [
+            {
+              "key": "Accept",
+              "value": "application/vnd.f5.ihealth.api",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "bearer",
+            "token": "<<ihealth_access_token>>",
+            "authActive": true
+          },
+          "body": {
+            "contentType": "multipart/form-data",
+            "body": [
+              {
+                "key": "qkview",
+                "active": true,
+                "isFile": false,
+                "value": ""
+              },
+              {
+                "key": "visible_in_gui",
+                "active": true,
+                "isFile": false,
+                "value": "<<ihealth_visible_in_gui>>"
+              },
+              {
+                "key": "description",
+                "active": true,
+                "isFile": false,
+                "value": "<<ihealth_description>>"
+              },
+              {
+                "key": "f5_support_case",
+                "active": true,
+                "isFile": false,
+                "value": "<<ihealth_f5_support_case>>"
+              },
+              {
+                "key": "share_with_case_owner",
+                "active": true,
+                "isFile": false,
+                "value": "<<ihealth_share_with_case_owner>>"
+              }
+            ]
+          },
+          "requestVariables": [],
+          "responses": {},
+          "description": null
+        },
+        {
+          "v": "17",
+          "name": "Get_diagnostics_hits_json_VAR",
+          "method": "GET",
+          "endpoint": "<<api_diagnostics>>.json",
+          "params": [
+            {
+              "key": "set",
+              "value": "hit",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "headers": [
+            {
+              "key": "Accept",
+              "value": "application/vnd.f5.ihealth.api",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "bearer",
+            "token": "<<ihealth_access_token>>",
+            "authActive": true
+          },
+          "body": {
+            "contentType": null,
+            "body": null
+          },
+          "requestVariables": [],
+          "responses": {},
+          "description": null
+        },
+        {
+          "v": "17",
+          "name": "Get_files_list_json_VAR",
+          "method": "GET",
+          "endpoint": "<<api_files>>.json",
+          "params": [],
+          "headers": [
+            {
+              "key": "Accept",
+              "value": "application/vnd.f5.ihealth.api",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "bearer",
+            "token": "<<ihealth_access_token>>",
+            "authActive": true
+          },
+          "body": {
+            "contentType": null,
+            "body": null
+          },
+          "requestVariables": [],
+          "responses": {},
+          "description": null
+        },
+        {
+          "v": "17",
+          "name": "Get_files_download_one_file",
+          "method": "GET",
+          "endpoint": "<<api_files>>/<<files_api_file_id>>",
+          "params": [],
+          "headers": [
+            {
+              "key": "Accept",
+              "value": "application/octet-stream",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "bearer",
+            "token": "<<ihealth_access_token>>",
+            "authActive": true
+          },
+          "body": {
+            "contentType": null,
+            "body": null
+          },
+          "requestVariables": [],
+          "responses": {},
+          "description": null
+        },
+        {
+          "v": "17",
+          "name": "Get_files_download_full_qkview",
+          "method": "GET",
+          "endpoint": "<<api_files>>/qkview",
+          "params": [],
+          "headers": [
+            {
+              "key": "Accept",
+              "value": "application/octet-stream",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "bearer",
+            "token": "<<ihealth_access_token>>",
+            "authActive": true
+          },
+          "body": {
+            "contentType": null,
+            "body": null
+          },
+          "requestVariables": [],
+          "responses": {},
+          "description": null
+        },
+        {
+          "v": "17",
+          "name": "Get_commands_list_json_VAR",
+          "method": "GET",
+          "endpoint": "<<api_commands>>.json",
+          "params": [],
+          "headers": [
+            {
+              "key": "Accept",
+              "value": "application/vnd.f5.ihealth.api",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "bearer",
+            "token": "<<ihealth_access_token>>",
+            "authActive": true
+          },
+          "body": {
+            "contentType": null,
+            "body": null
+          },
+          "requestVariables": [],
+          "responses": {},
+          "description": null
+        },
+        {
+          "v": "17",
+          "name": "Get_commands_run_one_command_json_VAR",
+          "method": "GET",
+          "endpoint": "<<api_commands>>/<<command_api_command_id>>.json",
+          "params": [],
+          "headers": [
+            {
+              "key": "Accept",
+              "value": "application/vnd.f5.ihealth.api",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "bearer",
+            "token": "<<ihealth_access_token>>",
+            "authActive": true
+          },
+          "body": {
+            "contentType": null,
+            "body": null
+          },
+          "requestVariables": [],
+          "responses": {},
+          "description": null
+        },
+        {
+          "v": "17",
+          "name": "Get_commands_run_multiple_commands_json_VAR",
+          "method": "GET",
+          "endpoint": "<<api_commands>>.json",
+          "params": [
+            {
+              "key": "resources",
+              "value": "<<command_api_command_id_comma_list>>",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "headers": [
+            {
+              "key": "Accept",
+              "value": "application/vnd.f5.ihealth.api",
+              "active": true,
+              "description": ""
+            }
+          ],
+          "preRequestScript": "",
+          "testScript": "",
+          "auth": {
+            "authType": "bearer",
+            "token": "<<ihealth_access_token>>",
+            "authActive": true
+          },
+          "body": {
+            "contentType": null,
+            "body": null
+          },
+          "requestVariables": [],
+          "responses": {},
+          "description": null
+        }
+      ],
+      "auth": {
+        "authType": "inherit",
+        "authActive": true
+      },
+      "headers": [],
+      "variables": [],
+      "description": null
+    }
+  ],
+  "requests": [
+    {
+      "v": "17",
+      "name": "iHealth_Login_Access_Token_Request",
+      "method": "POST",
+      "endpoint": "https://identity.account.f5.com/oauth2/ausp95ykc80HOU7SQ357/v1/token",
+      "params": [],
+      "headers": [
+        {
+          "key": "Accept",
+          "value": "application/json",
+          "active": true,
+          "description": ""
+        },
+        {
+          "key": "Content-Type",
+          "value": "application/x-www-form-urlencoded",
+          "active": true,
+          "description": ""
+        }
+      ],
+      "preRequestScript": "",
+      "testScript": "('use strict');\n\nfunction autoSetF5iHealthToken() {\n    'use strict';\n    const responseJsonData = pw.response.body;\n    pw.env.set(\"ihealth_access_token\", responseJsonData.access_token);\n};\n\nautoSetF5iHealthToken();\n",
+      "auth": {
+        "authType": "basic",
+        "username": "<<user>>",
+        "password": "<<pass>>",
+        "authActive": true
+      },
+      "body": {
+        "contentType": "application/x-www-form-urlencoded",
+        "body": "grant_type: client_credentials\nscope: ihealth"
+      },
+      "requestVariables": [],
+      "responses": {},
+      "description": null
+    },
+    {
+      "v": "17",
+      "name": "Get_diagnostics_hits",
+      "method": "GET",
+      "endpoint": "https://ihealth-api.f5.com/qkview-analyzer/api/qkviews/<<qkview_id>>/diagnostics",
+      "params": [
+        {
+          "key": "set",
+          "value": "hit",
+          "active": true,
+          "description": ""
+        }
+      ],
+      "headers": [
+        {
+          "key": "Accept",
+          "value": "application/vnd.f5.ihealth.api",
+          "active": true,
+          "description": ""
+        }
+      ],
+      "preRequestScript": "",
+      "testScript": "",
+      "auth": {
+        "authType": "bearer",
+        "token": "<<ihealth_access_token>>",
+        "authActive": true
+      },
+      "body": {
+        "contentType": null,
+        "body": null
+      },
+      "requestVariables": [],
+      "responses": {},
+      "description": null
+    },
+    {
+      "v": "17",
+      "name": "Get_diagnostics_hit_JSON",
+      "method": "GET",
+      "endpoint": "https://ihealth-api.f5.com/qkview-analyzer/api/qkviews/<<qkview_id>>/diagnostics.json",
+      "params": [
+        {
+          "key": "set",
+          "value": "hit",
+          "active": true,
+          "description": ""
+        }
+      ],
+      "headers": [
+        {
+          "key": "Accept",
+          "value": "application/vnd.f5.ihealth.api",
+          "active": true,
+          "description": ""
+        }
+      ],
+      "preRequestScript": "",
+      "testScript": "",
+      "auth": {
+        "authType": "bearer",
+        "token": "<<ihealth_access_token>>",
+        "authActive": true
+      },
+      "body": {
+        "contentType": null,
+        "body": null
+      },
+      "requestVariables": [],
+      "responses": {},
+      "description": null
+    },
+    {
+      "v": "17",
+      "name": "Upload_qkview",
+      "method": "POST",
+      "endpoint": "https://ihealth2-api.f5.com/qkview-analyzer/api/qkviews",
+      "params": [],
+      "headers": [
+        {
+          "key": "Accept",
+          "value": "application/vnd.f5.ihealth.api",
+          "active": true,
+          "description": ""
+        }
+      ],
+      "preRequestScript": "",
+      "testScript": "",
+      "auth": {
+        "authType": "bearer",
+        "token": "<<ihealth_access_token>>",
+        "authActive": true
+      },
+      "body": {
+        "contentType": "multipart/form-data",
+        "body": [
+          {
+            "key": "qkview",
+            "active": true,
+            "isFile": false,
+            "value": ""
+          },
+          {
+            "key": "visible_in_gui",
+            "active": true,
+            "isFile": false,
+            "value": "<<ihealth_visible_in_gui>>"
+          },
+          {
+            "key": "description",
+            "active": true,
+            "isFile": false,
+            "value": "<<ihealth_description>>"
+          },
+          {
+            "key": "f5_support_case",
+            "active": true,
+            "isFile": false,
+            "value": "<<ihealth_f5_support_case>>"
+          },
+          {
+            "key": "share_with_case_owner",
+            "active": true,
+            "isFile": false,
+            "value": "<<ihealth_share_with_case_owner>>"
+          }
+        ]
+      },
+      "requestVariables": [],
+      "responses": {},
+      "description": null
+    },
+    {
+      "v": "17",
+      "name": "LEGACY_Authenticate_With_iHealth",
+      "method": "GET",
+      "endpoint": "https://api.f5.com/auth/pub/sso/login/ihealth-api",
+      "params": [],
+      "headers": [],
+      "preRequestScript": "",
+      "testScript": "",
+      "auth": {
+        "authType": "inherit",
+        "authActive": true
+      },
+      "body": {
+        "contentType": "application/json",
+        "body": "{\n    \"user_id\": \"<<user>>\", \n    \"user_secret\": \"<<pass>>\"\n}"
+      },
+      "requestVariables": [],
+      "responses": {},
+      "description": null
+    },
+    {
+      "v": "17",
+      "name": "iHealth_Login_Access_Token_Request - Duplicate",
+      "method": "POST",
+      "endpoint": "https://identity.account.f5.com/oauth2/ausp95ykc80HOU7SQ357/v1/token",
+      "params": [],
+      "headers": [
+        {
+          "key": "Accept",
+          "value": "application/json",
+          "active": true,
+          "description": ""
+        }
+      ],
+      "preRequestScript": "",
+      "testScript": "pw.env.set(\"ihealth_access_token\", pw.response.body.access_token);\n",
+      "auth": {
+        "authType": "basic",
+        "username": "<<user>>",
+        "password": "<<pass>>",
+        "authActive": true
+      },
+      "body": {
+        "contentType": "application/x-www-form-urlencoded",
+        "body": "grant_type: client_credentials\nscope: ihealth"
+      },
+      "requestVariables": [],
+      "responses": {},
+      "description": null
+    }
+  ],
+  "auth": {
+    "authType": "inherit",
+    "authActive": true
+  },
+  "headers": [],
+  "variables": [],
+  "description": null
+}
