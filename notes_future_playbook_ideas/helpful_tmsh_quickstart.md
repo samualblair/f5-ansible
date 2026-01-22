@@ -30,6 +30,17 @@ tmsh create sys management-route default gateway 192.168.1.1 network default
 tmsh save sys config
 ```
 
+# Additional TMSH interface configuration example
+Additional example commands for basic interface configuration with TMSH
+This is a data plane interface but can also used for some management
+```bash
+# Define vlan - example shown is defined as vlan 4 but is assigned to interface 1.1 untagged
+tmsh net vlan VLAN4 { interfaces { 1.1 { } } tag 4 }
+# Define Self-IP with traffic-group-local-only , so non-floating self ip
+tmsh net self VLAN4_SELF { address 172.16.4.4/24 allow-service { default } traffic-group traffic-group-local-only vlan VLAN4 }
+# Define Network Route (default gateway for tmm data plane, default route domain 0, not management routing table)
+tmsh net route VLAN4_ROUTE { gw 172.16.4.1 network default }
+```
 
 # Management TLS and SSH Lockdown with TMSH
 
