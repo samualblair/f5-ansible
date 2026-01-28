@@ -25,6 +25,9 @@ tmsh delete sys management-route default
 tmsh create sys management-ip 192.168.1.10/24
 tmsh create sys management-route default gateway 192.168.1.1 network default
 
+# May want to disable gui setup - if so
+tmsh modify sys global-settings gui-setup disabled
+
 # Should be able to test connectivity now and/or remotely connect if mgmt network is online
 # After testing, or when ready, good idea to save
 tmsh save sys config
@@ -35,11 +38,14 @@ Additional example commands for basic interface configuration with TMSH
 This is a data plane interface but can also used for some management
 ```bash
 # Define vlan - example shown is defined as vlan 4 but is assigned to interface 1.1 untagged
-tmsh net vlan VLAN4 { interfaces { 1.1 { } } tag 4 }
+tmsh create net vlan VLAN4 { interfaces add { 1.1 { } } tag 4 }
 # Define Self-IP with traffic-group-local-only , so non-floating self ip
-tmsh net self VLAN4_SELF { address 172.16.4.4/24 allow-service { default } traffic-group traffic-group-local-only vlan VLAN4 }
+tmsh create net self VLAN4_SELF { address 172.16.4.4/24 allow-service replace-all-with { default } traffic-group traffic-group-local-only vlan VLAN4 }
 # Define Network Route (default gateway for tmm data plane, default route domain 0, not management routing table)
-tmsh net route VLAN4_ROUTE { gw 172.16.4.1 network default }
+tmsh create net route VLAN4_ROUTE { gw 172.16.4.1 network default }
+
+# Optional - Can Define a DNS server as well - otherwise auto licensing for example will not work
+tmsh modify sys dns name-server add { 1.1.1.1 8.8.8.8 }
 ```
 
 # Management TLS and SSH Lockdown with TMSH
@@ -57,9 +63,20 @@ tmsh modify sys httpd ssl-ciphersuite "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-ECDSA
 # tmsh modify sys httpd ssl-ciphersuite "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384"
 tmsh modify sys httpd auth-pam-idle-timeout 900
 
+# To add gui-banner use global-settings, and set gui-security-banner-text
+# Also note, Note: To enter a carriage return in the text type Ctrl-V followed by Ctrl-J. 
+# Additionally, you must escape special characters, such as a question mark(?), with a back slash.
+
 tmsh modify sys sshd banner enabled
-tmsh modify sys sshd banner-text "****\nTHIS SYSTEM IS PROVIDED FOR USE BY AUTHORIZED USERS ONLY.  \n  UNAUTHORIZED USE PROHIBITED. VIOLATORS WILL BE PROSECUTED. \n\n****"
-tmsh modify sys httpd auth-pam-idle-timeout 900
+# When using this method must be 1 line
+tmsh modify sys sshd banner-text "****THIS SYSTEM IS PROVIDED FOR USE BY AUTHORIZED USERS ONLY.  UNAUTHORIZED USE PROHIBITED. VIOLATORS WILL BE PROSECUTED.****"
+tmsh modify sys sshd auth-pam-idle-timeout 900
+
+# Can also add post-login banner that is multi-line by creating a file with multi-line banner, and then include in sshd config - see cipher includes
+# Example would be, add data to file '/config/ssh/ssh_banner' then add:
+# tmsh modify /sys sshd include "Banner /config/ssh/ssh_banner"
+# Alternatively just enable post-login motd banner by adding data to file: /etc/motd
+# nano /etc/motd
 
 # Reference https://my.f5.com/manage/s/article/K80425458
 # Still pretty secure, allow for slightly weaker keys which seem to be default on many f5s so easier to say ssh from one F5 to another with this (keeps ecdh-sha2-nistp256)
