@@ -10,8 +10,8 @@ link:readme[README]
 
 == Description
 
-This is a reference of notes that can be used to debug failures or test new chagnes.
-Most of these references are regarding F5 DO or F5 AS3 not neccisarly the Ansible Playbooks.
+This is a reference of notes that can be used to debug failures or test new changes.
+Most of these references are regarding F5 DO or F5 AS3 not necessary the Ansible Playbooks.
 
 == Quick Reference: Log Files to watch
 
@@ -41,8 +41,44 @@ Most of these references are regarding F5 DO or F5 AS3 not neccisarly the Ansibl
 
 == DO Through BIG-IQ to BIG-IP
 
+== Memory concerns - Adjustments likely to be needed
+Included in DO examples are memory adjustments, this is because these are very commonely needed.
+
+Some good example starting changes are:
+```json
+		"DataBaseVariablesSet": {
+			"class": "DbVariables",
+			"provision.extramb": 2048,
+			"provision.tomcat.extramb": 256,
+			"provision.restjavad.extramb": 1664,
+			"icrd.timeout": 180,
+			"restjavad.timeout": 180,
+			"restnoded.timeout": 180
+		},
+```
+
+This can also be acomplished at CLI via:
+```bash
+# Memory adjustments - good stating examples, but more (or in some environments maybe less) may be needed, be aware this takes from TMM aka LTM
+tmsh modify sys db provision.extramb value 2048
+tmsh modify sys db provision.restjavad.extramb value 1664
+tmsh modify sys db provision.tomcat.extramb value 256
+
+# FYI Only on older code (which you should move off - not supported) - but in some old v15, v16, v16 code instead of a provision.restjavad.extramb value you
+# You must just use 'restjavad.useextramb value true' which just allows restjava to use some of the extra ram, not as clear how much it is allowed
+# Newer code introduced the provision.restjavad.extramb which lets you specify the number and removes the restjavad.useextramb as an option
+
+# Timeout adjustments - may not often be needed, but may also be helpful - this is a good time to adjust before restarting all the services
+tmsh modify sys db icrd.timeout value 180
+tmsh modify sys db restjavad.timeout value 180
+tmsh modify sys db restnoded.timeout value 180
+
+# Save the config and restart the services to ensure new values are in place - traffic impacting so do on standby devices or new builds
+tmsh save sys config
+tmsh restart sys service restjavad restnoded tomcat avrd
+```
 
 == Warnings
 
 For Better or worse, the primary 'source of truth' is expected to be the CSV formatted variables file.
-This doens't always read or organize as nicely as JSON so I may change to that in the future, but one benifit of CSV is it is very clear for less programatic people to understand and assist with filling (when viewing in a spreadsheet syle layout). I have seen problems in the past with CSV files easily courpted (bad invisble header bytes, or extra trailing characters), so this is something to be aware of. When I say courputed data is usually intact but parsers have a hard time reading so ansible and/or python scripts may start failing when otherwise should be working. Often easy enough to fix once you recognize the issue (copy data out and put in new CSV file, or use advanced editor).
+This doesn't always read or organize as nicely as JSON so I may change to that in the future, but one benefit of CSV is it is very clear for less programmatic people to understand and assist with filling (when viewing in a spreadsheet syle layout). I have seen problems in the past with CSV files easily corrupted (bad invisible header bytes, or extra trailing characters), so this is something to be aware of. When I say corrupted, the data is usually intact but parsers have a hard time reading so ansible and/or python scripts may start failing when otherwise should be working. Often easy enough to fix once you recognize the issue (copy data out and put in new CSV file, or use advanced editor).

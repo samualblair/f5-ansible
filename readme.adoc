@@ -69,7 +69,7 @@ Key operations of the Ansible Playbooks:
 - pb.do.wipeconf.yml (USE WITH CAUTION)
 
   Wipes a DO configuration, does not delete configuration, just DO status, but can have long-term effects on future DO pushes.
-  This effectivly will reset any DO, as if you have never configured device with DO before. This can be helpful to deal with configuration conflicts such as removing a vlan that previously existed (prior to first DO push). This will require entering the Configuration ID (will be prompted) as this is used in the DELETE message of the DO REST API.
+  This effectively will reset any DO, as if you have never configured device with DO before. This can be helpful to deal with configuration conflicts such as removing a vlan that previously existed (prior to first DO push). This will require entering the Configuration ID (will be prompted) as this is used in the DELETE message of the DO REST API.
   You can obtain the Configuration ID from the pb.do.getconf.yml
 
 - pb.do.status.yml
@@ -113,7 +113,38 @@ pb.do.csv_based.yml and pb.as3.csv_based.yml
 - Pushes config with REST API POST using URL module and generated JSON file
 - Cleans up by removing any generated files
 
+== Dedicated DO Generation with Pyhon Script , bypassing Ansible Requirement
+To simplify requirements , and help with conditions of Ansible Jinja Templating issues, a dedicated Python Generate script has been built.
+This uses Python directly with Jinja2 to generate DO files, using the same source variables (CSV) file that would otherwise be used by the Ansible playbooks.
 
+Included is a requirements.txt for easy standup of a Python venv (virtual environment) in case of needing to install python libraries for use.
+
+Quick refresher for installing/setting up a Python venv and activating for use
+
+```bash
+# Can create a venv and folder with -m option in current folder
+python3 -m venv .venv
+# Environment can be activated
+source .venv/bin/activate
+# All requirements can now be installed - should cover all needs of this repo
+pip install -r requirements.txt
+# If additional installs are required they can also be added - in this example Jinja2 is the package
+python3 -m pip install Jinja2
+```
+
+Quick refresher for setting up a Python venv and activating for use in the future
+
+```bash
+# To activate a virtual environment in python
+For this repo:
+source .venv/bin/activate
+## From Bash , Linux or MacOS (from Bash)
+source venv/bin/activate
+## To activate from Git shell or Unix environments
+source venv/Scripts/activate
+## To activate a virtual environment in python (from powershell)
+.\venv\Scripts\Activate.ps1
+```
 
 == Future TO-DO goals
 - Build out more templates for BIG-IQ
@@ -160,6 +191,7 @@ Using Calendar Versioning: https://calver.org/
 
 FORMAT: YYYY.0M.0D
 
+* 2026.01.28 - Doc updates, Direct Python Generation updates
 * 2026.01.21 - Added BIG-IP Hoppscotch REST API Collections
 * 2025.10.31 - Added Powershell API Collections
 * 2025.10.29 - Updated Secure Cipher examples
