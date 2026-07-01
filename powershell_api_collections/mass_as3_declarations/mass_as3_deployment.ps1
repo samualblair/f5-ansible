@@ -1,3 +1,9 @@
+#!/bin/pwsh
+# Name: mass_as3_deployment.ps1
+# Author Michael Johnson 05-30-2026
+# Simple Script to easily perform mass AS3 declarations from system with PowerShell
+# Script recursively finds AS3 Declarations and Posts them all to a single F5 BIG-IP using AS3 API
+
 # ############# STEP 0 #############
 # Create a List for Declaration IDs
 $listOfDeclarationIDs = [System.Collections.Generic.List[string]]::new()
