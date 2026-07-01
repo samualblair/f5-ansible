@@ -7,6 +7,54 @@ This can also be used on other systems if they have PowerShell installed, for ex
 
 NOTE: Up to 10 second delay will occur to allow declaration to process, after that id sand status will simply be displayed
 
+# Versions of Script
+
+## Powershell 6 and up with certificates verified
+
+The main script enforces valid certificates (so likely need to have valid hostname not IP when running script).
+
+Script file is 'mass_as3_deployment.ps1'.
+
+## Powershell 6 and up 
+
+In Powershell 6 and up you can add '-SkipCertificateCheck' to ignore certificate validation. 
+
+Script 'mass_as3_deployment_powershell_6plus_cert_ignore.ps1' does this.
+
+## Powershell 5 and below
+
+In addition, you cannot have the -SkipCertificateCheck as it is not supported.
+In Powershell 5 and below you must do a little more, to override the normal 'failure' of cert validation (force a valid state / no-error)
+
+Script 'mass_as3_deployment_powershell_5_cert_ignore.ps1' does this.
+
+```powershell
+if (-not("dummy" -as [type])) {
+    add-type -TypeDefinition @"
+using System;
+using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
+
+public static class Dummy {
+    public static bool ReturnTrue(object sender,
+        X509Certificate certificate,
+        X509Chain chain,
+        SslPolicyErrors sslPolicyErrors) { return true; }
+
+    public static RemoteCertificateValidationCallback GetDelegate() {
+        return new RemoteCertificateValidationCallback(Dummy.ReturnTrue);
+    }
+}
+"@
+}
+
+[System.Net.ServicePointManager]::ServerCertificateValidationCallback = [dummy]::GetDelegate()
+```
+
+
+
+
 # Run Example
 
 * Example below is a run of the script on a MacOS system that has PowerShell installed.
