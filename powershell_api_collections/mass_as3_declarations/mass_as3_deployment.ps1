@@ -1,6 +1,6 @@
 #!/bin/pwsh
 # Name: mass_as3_deployment.ps1
-# Author Michael Johnson 05-30-2026
+# Author Michael Johnson 06-01-2026
 # Simple Script to easily perform mass AS3 declarations from system with PowerShell
 # Script recursively finds AS3 Declarations and Posts them all to a single F5 BIG-IP using AS3 API
 
@@ -19,9 +19,14 @@ Write-Host "NOTE: Must be Folder Path ending in '\' or '/' such as: '../AS3_File
 $f5_as3_base_folder = Read-Host "Enter Base Folder"
 $f5Hostname = Read-Host "Enter F5 Hostname or IP Address"
 $f5_username = Read-Host "Enter F5 User Name (e.g. admin)"
-$f5_password = Read-Host "Enter F5 Password" -MaskInput
-# TODO: Future PS7 and above only Consider using -AsSecureString but then would also need to use ConvertFrom-SecureString -SecureString $secureString -AsPlainText
-
+# Take in a secure string
+$f5_password_input = Read-Host "Enter F5 Password" -AsSecureString
+# Convert to insecure string for use with API
+$f5_password_bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($f5_password_input)
+# Convert to insecure string for use with API
+$f5_password = [System.Runtime.InteropServices.Marshal]::PtrToStringBSTR($f5_password_bstr)
+# Free up the unused memory when no longer needed
+[Runtime.InteropServices.Marshal]::ZeroFreeBSTR($f5_password_bstr)
 
 # Prepare Login API Call
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
@@ -36,7 +41,7 @@ $body = @"
 "@
 
 # Perform Login API Call
-$response = Invoke-RestMethod "https://$f5Hostname`:443/mgmt/shared/authn/login" -Method 'POST' -Headers $headers -Body $body -SkipCertificateCheck
+$response = Invoke-RestMethod "https://$f5Hostname`:443/mgmt/shared/authn/login" -Method 'POST' -Headers $headers -Body $body
 # $response | ConvertTo-Json
 $responseToken = $response.token.token
 # $responseToken | ConvertTo-Json
@@ -50,7 +55,7 @@ $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.Add("X-F5-Auth-Token", "$responseToken")
 
 # Perform Service Info/Status Check API Call
-$response = Invoke-RestMethod "https://$f5Hostname`:443/mgmt/shared/appsvcs/info" -Method 'GET' -Headers $headers -SkipCertificateCheck
+$response = Invoke-RestMethod "https://$f5Hostname`:443/mgmt/shared/appsvcs/info" -Method 'GET' -Headers $headers
 Write-Host "AS3 Service Status:"
 $response | ConvertTo-Json
 Write-Host "`n"
@@ -79,7 +84,7 @@ foreach ($filename in $filenameList) {
     # Load Body
     $body = Get-Content $filename
     # Perform Declaration
-    $response = Invoke-RestMethod "https://$f5Hostname`:443/mgmt/shared/appsvcs/declare?async=true" -Method 'POST' -Headers $headers -Body $body -SkipCertificateCheck
+    $response = Invoke-RestMethod "https://$f5Hostname`:443/mgmt/shared/appsvcs/declare?async=true" -Method 'POST' -Headers $headers -Body $body
     # $response | ConvertTo-Json
     $responseDeclarationID = $response.id
     # $responseDeclarationID | ConvertTo-Json    
@@ -91,19 +96,19 @@ foreach ($filename in $filenameList) {
     $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
     $headers.Add("X-F5-Auth-Token", "$responseToken")
     # Perform Check
-    $response = Invoke-RestMethod "https://$f5Hostname`:443/mgmt/shared/appsvcs/task/$responseDeclarationID" -Method 'GET' -Headers $headers -SkipCertificateCheck
+    $response = Invoke-RestMethod "https://$f5Hostname`:443/mgmt/shared/appsvcs/task/$responseDeclarationID" -Method 'GET' -Headers $headers
 
     # First Attempt to wait and retry
     if ("in progress" -eq $response.results.message) {
         Write-Host "Waiting 3 seconds - Second sleep"
         Start-Sleep -Seconds 3
-        $response = Invoke-RestMethod "https://$f5Hostname`:443/mgmt/shared/appsvcs/task/$responseDeclarationID" -Method 'GET' -Headers $headers -SkipCertificateCheck
+        $response = Invoke-RestMethod "https://$f5Hostname`:443/mgmt/shared/appsvcs/task/$responseDeclarationID" -Method 'GET' -Headers $headers
     }
     # Last Attempt to wait and retry
     if ("in progress" -eq $response.results.message) {
         Write-Host "Waiting 4 seconds - Final sleep"
         Start-Sleep -Seconds 4
-        $response = Invoke-RestMethod "https://$f5Hostname`:443/mgmt/shared/appsvcs/task/$responseDeclarationID" -Method 'GET' -Headers $headers -SkipCertificateCheck
+        $response = Invoke-RestMethod "https://$f5Hostname`:443/mgmt/shared/appsvcs/task/$responseDeclarationID" -Method 'GET' -Headers $headers
     }
     $response.id | ConvertTo-Json
     $response.results | ConvertTo-Json
@@ -125,3 +130,8 @@ foreach ($filename in $filenameList) {
 Write-Host "List of all Declaration Job IDs:"
 Write-Host $listOfDeclarationIDs -Separator "`n"
 Write-Host "`n"
+
+# ############# Step 6 - CleanUp #############
+
+# Free up the memory when no longer needed
+Clear-Variable -Name "f5_password"
