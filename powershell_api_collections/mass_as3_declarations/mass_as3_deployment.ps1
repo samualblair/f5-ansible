@@ -1,13 +1,15 @@
 # ############# STEP 0 #############
-# Create a List of Declaration IDs
+# Create a List for Declaration IDs
 $listOfDeclarationIDs = [System.Collections.Generic.List[string]]::new()
-
+# Create a List files Declaration IDs
+$filenameList = [System.Collections.Generic.List[string]]::new()
 
 
 # ############# STEP 1 Login #############
 
 # Prompt User Details
-Write-Host "Base Folder for Recursive AS3 Deployment for example: '../AS3_Files/' or 'C:\AS3_files\'"
+Write-Host "Base Folder for Recursive AS3 Deployment for example - Must be Folder ending in '\' or '/' : '../AS3_Files/' or 'C:\AS3_files\'"
+Write-Host "NOTE: Must be Folder Path ending in '\' or '/' such as: '../AS3_Files/' or 'C:\AS3_files\'"
 $f5_as3_base_folder = Read-Host "Enter Base Folder"
 $f5Hostname = Read-Host "Enter F5 Hostname or IP Address"
 $f5_username = Read-Host "Enter F5 User Name (e.g. admin)"
@@ -31,9 +33,9 @@ $body = @"
 $response = Invoke-RestMethod "https://$f5Hostname`:443/mgmt/shared/authn/login" -Method 'POST' -Headers $headers -Body $body -SkipCertificateCheck
 # $response | ConvertTo-Json
 $responseToken = $response.token.token
-$responseToken | ConvertTo-Json
-
-
+# $responseToken | ConvertTo-Json
+Write-Host "Login Process Finished"
+Write-Host "`n"
 
 # ############# STEP 2 Check Status #############
 
@@ -43,23 +45,11 @@ $headers.Add("X-F5-Auth-Token", "$responseToken")
 
 # Perform Service Info/Status Check API Call
 $response = Invoke-RestMethod "https://$f5Hostname`:443/mgmt/shared/appsvcs/info" -Method 'GET' -Headers $headers -SkipCertificateCheck
+Write-Host "AS3 Service Status:"
 $response | ConvertTo-Json
+Write-Host "`n"
 
-
-
-# ############# STEP 3 Perform Declaration #############
-
-# Prepare AS3 Declaration API Call
-$headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
-$headers.Add("X-F5-Auth-Token", "$responseToken")
-$headers.Add("Content-Type", "application/json")
-# If needed remove content type header
-# $headers.Remove("Content-Type")
-
-# $filename = "{{C:/Users/UserName/Downloads/declare.as3.json}}"
-# LIST OF FILENAMES FOR TESTING
-
-$filenameList = [System.Collections.Generic.List[string]]::new()
+# ############# STEP 3 Perform Declaration and Job Status Check #############
 
 # Built List of filenames
 $partialFileNameList = Get-ChildItem -Path $f5_as3_base_folder -Name -Recurse -Attributes !Directory
@@ -71,35 +61,61 @@ foreach ($partialFileName in $partialFileNameList) {
 # Inform User of Files Found
 Write-Host "Found the following AS3 Files:"
 Write-Host $filenameList -Separator "`n"
+Write-Host "`n"
 
 # Loop through Declaration of Each File
 foreach ($filename in $filenameList) {
-    $body = Get-Content $filename
 
+    # Prepare AS3 Declaration API Call
+    $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+    $headers.Add("X-F5-Auth-Token", "$responseToken")
+    $headers.Add("Content-Type", "application/json")
+    # Load Body
+    $body = Get-Content $filename
+    # Perform Declaration
     $response = Invoke-RestMethod "https://$f5Hostname`:443/mgmt/shared/appsvcs/declare?async=true" -Method 'POST' -Headers $headers -Body $body -SkipCertificateCheck
     # $response | ConvertTo-Json
     $responseDeclarationID = $response.id
-    $responseDeclarationID | ConvertTo-Json    
+    # $responseDeclarationID | ConvertTo-Json    
     $listOfDeclarationIDs.Add($responseDeclarationID)
-    Start-Sleep -Seconds 10
+    Write-Host "Waiting 3 seconds - First sleep"
+    Start-Sleep -Seconds 3
+
+    # Prepare AS3 Task/Job Check API Call
+    $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+    $headers.Add("X-F5-Auth-Token", "$responseToken")
+    # Perform Check
+    $response = Invoke-RestMethod "https://$f5Hostname`:443/mgmt/shared/appsvcs/task/$responseDeclarationID" -Method 'GET' -Headers $headers -SkipCertificateCheck
+
+    # First Attempt to wait and retry
+    if ("in progress" -eq $response.results.message) {
+        Write-Host "Waiting 3 seconds - Second sleep"
+        Start-Sleep -Seconds 3
+        $response = Invoke-RestMethod "https://$f5Hostname`:443/mgmt/shared/appsvcs/task/$responseDeclarationID" -Method 'GET' -Headers $headers -SkipCertificateCheck
+    }
+    # Last Attempt to wait and retry
+    if ("in progress" -eq $response.results.message) {
+        Write-Host "Waiting 4 seconds - Final sleep"
+        Start-Sleep -Seconds 4
+        $response = Invoke-RestMethod "https://$f5Hostname`:443/mgmt/shared/appsvcs/task/$responseDeclarationID" -Method 'GET' -Headers $headers -SkipCertificateCheck
+    }
+    $response.id | ConvertTo-Json
+    $response.results | ConvertTo-Json
+    Write-Host "`n"
+
 }
 
 
 
 # ############# STEP 4 Check Job Status #############
 
-# Prepare AS3 Task/Job Check API Call
-$headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
-$headers.Add("X-F5-Auth-Token", "$responseToken")
-
 # Loop through Status Check of of Each File
-foreach ($responseDeclarationID in $listOfDeclarationIDs) {
-    $response = Invoke-RestMethod "https://$f5Hostname`:443/mgmt/shared/appsvcs/task/$responseDeclarationID" -Method 'GET' -Headers $headers -SkipCertificateCheck
-    $response.id | ConvertTo-Json
-    $response.results | ConvertTo-Json
-}
+# foreach ($responseDeclarationID in $listOfDeclarationIDs) {
+# }
 
 
 
-# ############# Optional Step 5 - Print out or Save All Declarations Made #############
-# $listOfDeclarationIDs
+# ############# Step 5 - Print out or Save All Declarations Made #############
+Write-Host "List of all Declaration Job IDs:"
+Write-Host $listOfDeclarationIDs -Separator "`n"
+Write-Host "`n"
