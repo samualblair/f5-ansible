@@ -26,6 +26,9 @@
 {% if item.unit.provision_asm is defined and item.unit.provision_asm == "yes" %}
             "asm": "nominal",
 {% endif %}
+{% if item.unit.provision_afm is defined and item.unit.provision_afm == "yes" %}
+            "afm": "nominal",
+{% endif %}
 {% if item.unit.provision_avr is defined and item.unit.provision_avr == "yes" %}
             "avr": "nominal"
 {% endif %}
